@@ -1,0 +1,135 @@
+name: UMAJA Text Generation
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic for reflection generation'
+        required: true
+        default: 'artificial intelligence'
+        type: string
+      length: 
+        description: 'Text length'
+        required: true
+        default: 'short'
+        type: choice
+        options:
+          - short
+          - long
+      noise_level:
+        description: 'Noise level (0.0 = deterministic, 1.0 = chaos)'
+        required: true
+        default: '0.5'
+        type: string
+
+jobs:
+  generate-text:
+    runs-on:  ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run:  |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🎨 Generate and analyze text
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          sys.path.insert(0, '.')
+          from src.rauschen_generator import RauschenGenerator
+          from src.vektor_analyzer import VektorAnalyzer
+          
+          print("="*70)
+          print("🧠 UMAJA-CORE TEXT GENERATION")
+          print("="*70)
+          print()
+          
+          topic = "${{ github.event.inputs.topic }}"
+          length = "${{ github. event.inputs.length }}"
+          noise_level = float("${{ github.event.inputs. noise_level }}")
+          
+          print(f"📋 Configuration:")
+          print(f"   Topic: {topic}")
+          print(f"   Length: {length}")
+          print(f"   Noise Level: {noise_level}")
+          print()
+          
+          print("🎨 Generating text...")
+          generator = RauschenGenerator()
+          result = generator.generate_reflection(topic, length, noise_level)
+          print("✅ Generation complete!")
+          print()
+          
+          print("🔍 Analyzing quality...")
+          analyzer = VektorAnalyzer()
+          analysis = analyzer.analyze_coherence(result['text'], topic)
+          print("✅ Analysis complete!")
+          print()
+          
+          print("="*70)
+          print("📄 GENERATED TEXT")
+          print("="*70)
+          print()
+          print(result['text'])
+          print()
+          
+          print("="*70)
+          print("📊 METADATA")
+          print("="*70)
+          print(f"🆔 Text ID: {result['text_id']}")
+          print(f"📏 Word Count: {result['word_count']}")
+          print(f"💰 Price: ${result['price']}")
+          print(f"🕒 Timestamp: {result['timestamp']}")
+          print()
+          
+          print("="*70)
+          print("🎯 QUALITY ANALYSIS")
+          print("="*70)
+          print(f"🎨 Theme Similarity: {analysis['theme_similarity']:.3f}")
+          print(f"🔗 Coherence:  {analysis['avg_inter_sentence_coherence']:.3f}")
+          print(f"⭐ Overall Score: {analysis['overall_score']:.3f}")
+          print(f"🏆 Quality:  {analysis['quality']. upper()}")
+          print()
+          PYTHON_SCRIPT
+      
+      - name: 💾 Save output as artifact
+        run: |
+          mkdir -p outputs
+          python << 'PYTHON_SCRIPT'
+          import sys
+          sys.path.insert(0, '.')
+          from src.rauschen_generator import RauschenGenerator
+          import json
+          
+          topic = "${{ github.event.inputs.topic }}"
+          length = "${{ github.event.inputs. length }}"
+          noise_level = float("${{ github.event.inputs.noise_level }}")
+          
+          generator = RauschenGenerator()
+          result = generator.generate_reflection(topic, length, noise_level)
+          
+          with open('outputs/generated_text.txt', 'w') as f:
+              f.write(result['text'])
+          
+          with open('outputs/metadata.json', 'w') as f:
+              json.dump(result, f, indent=2, default=str)
+          
+          print("✅ Output saved to outputs/")
+          PYTHON_SCRIPT
+      
+      - name: 📤 Upload generated text
+        uses: actions/upload-artifact@v4
+        with:
+          name: umaja-generated-text
+          path: outputs/
+          retention-days: 30 i8
