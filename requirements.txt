@@ -1,0 +1,36 @@
+# UMAJA v3 - Production Dependencies
+# Python 3.11+
+
+# Core ML & NLP
+sentence-transformers==2.2.2
+torch==2.1.2
+transformers==4.36.0
+scikit-learn==1.3.2
+numpy==1.24.3
+pandas==2.1.4
+
+# Text Processing
+deep-translator==1.11.4
+langdetect==1.0.9
+
+# Web & APIs
+requests==2.31.0
+tweepy==4.14.0
+praw==7.7.1
+pytrends==4.9.2
+
+# Payment Processing
+paypalrestsdk==1.13.1
+
+# Data Storage
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# Scheduling
+schedule==1.2.0
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+black==23.12.1
+flake8==6.1.0
