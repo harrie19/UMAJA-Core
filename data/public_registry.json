@@ -1,0 +1,51 @@
+{
+  "project": {
+    "name": "UMAJA-Core",
+    "version": "3.0.0",
+    "mission": "Bring smiles to all 8 billion people on Earth",
+    "tagline": "Bahá'í-inspired AI for unity through joy"
+  },
+  "discovery": {
+    "keywords": [
+      "ai-ethics",
+      "ai-safety",
+      "hallucination-mitigation",
+      "value-alignment",
+      "bahai-principles",
+      "vector-embeddings",
+      "semantic-coherence",
+      "truth-framework"
+    ],
+    "github_topics": [
+      "ai-ethics",
+      "ai-safety",
+      "machine-learning",
+      "nlp",
+      "sentence-transformers",
+      "open-source-ai"
+    ],
+    "research_areas": [
+      "AI hallucination mitigation",
+      "Value alignment in practice",
+      "Religious principles in AI architecture",
+      "Vector-based unity measurement"
+    ]
+  },
+  "principles": {
+    "truth_over_optimization": "Reality over fantasy. Honest numbers over hype.",
+    "service_not_profit": "Success = lives touched, not dollars earned.",
+    "unity_of_humanity": "No division by race, religion, nationality, class.",
+    "open_source_free": "All code public. All content free. All channels simultaneous."
+  },
+  "contact": {
+    "method": "organic_discovery_only",
+    "github": "https://github.com/harrie19/UMAJA-Core",
+    "approach": "We don't cold-contact. Find us if you need us.",
+    "philosophy": "Lighthouse, not megaphone"
+  },
+  "verification": {
+    "code": "https://github.com/harrie19/UMAJA-Core",
+    "history": "All commits timestamped and public",
+    "proof": "6 weeks of development documented in Git history"
+  }
+}
