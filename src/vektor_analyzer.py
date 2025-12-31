@@ -18,6 +18,10 @@ class VektorAnalyzer:
     Analyzes semantic coherence using sentence transformers and vector embeddings.
     """
     
+    # Quality analysis weighting constants
+    THEME_WEIGHT = 0.6  # Weight for theme similarity in overall score
+    COHERENCE_WEIGHT = 0.4  # Weight for inter-sentence coherence in overall score
+    
     def __init__(self, model_name: str = 'all-MiniLM-L6-v2'):
         """
         Initialize the VektorAnalyzer with a sentence transformer model.
@@ -303,7 +307,8 @@ class VektorAnalyzer:
             avg_inter_sentence_coherence = 1.0
             
             # Calculate weighted score
-            overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
+            overall_score = (theme_similarity * self.THEME_WEIGHT + 
+                           avg_inter_sentence_coherence * self.COHERENCE_WEIGHT)
             
         else:
             # Calculate theme similarity
@@ -319,7 +324,8 @@ class VektorAnalyzer:
             )
             
             # Calculate weighted score
-            overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
+            overall_score = (theme_similarity * self.THEME_WEIGHT + 
+                           avg_inter_sentence_coherence * self.COHERENCE_WEIGHT)
         
         # Assign quality rating based on thresholds
         if overall_score >= 0.7:

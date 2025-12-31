@@ -539,7 +539,7 @@ UMAJA-Core includes automated workflows for testing, deployment, and on-demand c
 
 **Inputs:**
 - **topic** (required): Topic for generation (1-200 characters)
-- **length** (required): 'short', 'medium', or 'long'
+- **length** (required): 'short' (50-150 words) or 'long' (200-500 words)
 - **noise_level** (required): Float between 0.0-1.0 (default: 0.3)
 
 **What it does:**
@@ -616,7 +616,7 @@ After a workflow run completes:
 # 3. Click "Run workflow"
 # 4. Fill in inputs:
 #    - Topic: "quantum computing"
-#    - Length: "medium"
+#    - Length: "long"
 #    - Noise Level: "0.4"
 # 5. Click "Run workflow" button
 # 6. Wait for completion (~2-3 minutes)
