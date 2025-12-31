@@ -59,3 +59,31 @@ htmlcov/
 # Data
 data/request_queue.json
 data/processed_requests.json
+
+# ============================================
+# MULTIMEDIA SYSTEM EXCLUSIONS
+# ============================================
+
+# Generated content
+static/audio/
+static/images/
+static/videos/
+static/purchases/
+static/samples/
+
+# AI Models (too large for git)
+models/
+*.pth
+*.ckpt
+*.safetensors
+
+# Temporary generation files
+temp_generation/
+*.mp3
+*.mp4
+*.wav
+*.avi
+
+# City database (if contains sensitive data)
+data/sales.json
+data/analytics.json

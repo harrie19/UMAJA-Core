@@ -34,3 +34,35 @@ pytest==7.4.3
 pytest-cov==4.1.0
 black==23.12.1
 flake8==6.1.0
+
+# ============================================
+# MULTIMEDIA SYSTEM DEPENDENCIES
+# ============================================
+
+# Voice Synthesis
+elevenlabs==0.2.27
+gTTS==2.4.0
+pyttsx3==2.90
+
+# Image Generation
+diffusers==0.25.0
+pillow==10.1.0
+
+# Video Generation
+moviepy==1.0.3
+opencv-python==4.8.1.78
+pydub==0.25.1
+imageio==2.33.0
+imageio-ffmpeg==0.4.9
+
+# Audio Processing
+soundfile==0.12.1
+librosa==0.10.1
+scipy==1.11.4
+
+# Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+
+# Additional Utilities
+Pillow==10.1.0
