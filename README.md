@@ -14,6 +14,8 @@ python scripts/remember_me.py
 
 Paste the output into any AI chat (Copilot, ChatGPT, Claude) and the AI will instantly understand the full mission, history, and context.
 
+The full Bahá'í soul architecture system prompt for UMAJA agents lives in [`docs/BAHAI_SOUL_ARCHITECTURE_PROMPT.md`](docs/BAHAI_SOUL_ARCHITECTURE_PROMPT.md).
+
 See [AI Memory Guide](docs/AI_MEMORY_GUIDE.md) for details.
 
 ## 🌟 Our Friendly Archetypes
