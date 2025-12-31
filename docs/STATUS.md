@@ -3,12 +3,12 @@
 ## What we built
 - **Personality Engine** with three warm archetypes (Professor, Worrier, Enthusiast) for Daily Smiles content (`src/personality_engine.py`).
 - **Multimedia World Tour** with city database, content templates, and API endpoints for text, audio, image, video (`src/worldtour_generator.py`, `api/simple_server.py`).
-- **Shop / bundle skeleton** including pricing and purchase flow, but sales are disabled (`multimedia_text_seller.py`, `bundle_builder.py`).
+- **Shop / bundle skeleton** including pricing and purchase flow, but sales are disabled (`src/multimedia_text_seller.py`, `src/bundle_builder.py`).
 - **Deployment guides** and start commands for Railway/Heroku (`docs/DEPLOYMENT.md`, `Procfile`, `railway.json`).
 
 ## Why progress paused
 - Sales are intentionally off: `/api/create-multimedia-sale` and bundle endpoints check `SALES_ENABLED` and return “Shop coming soon” (`api/simple_server.py`).
-- External keys (voice/image) are optional and absent in `.env.example`, so the system runs primarily with local fallbacks (gTTS/pyttsx3 for TTS, PIL quote cards instead of hosted AI image services).
+- External keys (voice/image) are optional and absent in `.env.example`. The system runs primarily with local fallbacks (gTTS/pyttsx3 for TTS, PIL quote cards instead of hosted AI image services).
 - No production database or persistent storage configured; JSON files act as demo data (`data/worldtour_cities.json`).
 
 ## Is it live?
