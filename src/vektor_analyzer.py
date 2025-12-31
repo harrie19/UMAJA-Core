@@ -5,8 +5,9 @@ Using Sentence Transformers for semantic similarity analysis
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 import logging
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -247,6 +248,99 @@ class VektorAnalyzer:
         pairs.sort(key=lambda x: x[2], reverse=True)
         
         return pairs[:top_k]
+    
+    def analyze_coherence(self, text: str, theme: str) -> Dict[str, Any]:
+        """
+        Analyze text coherence with respect to a theme.
+        
+        Args:
+            text: Text to analyze
+            theme: Theme/topic to check coherence against
+            
+        Returns:
+            Dictionary containing:
+            - quality: Quality rating ('excellent', 'good', 'acceptable', 'poor')
+            - theme_similarity: Cosine similarity between theme and text (0-1)
+            - avg_inter_sentence_coherence: Average inter-sentence coherence (0-1)
+            - overall_score: Weighted overall score (0-1)
+        """
+        # Edge case: empty text
+        if not text or not text.strip():
+            return {
+                'quality': 'poor',
+                'theme_similarity': 0.0,
+                'avg_inter_sentence_coherence': 0.0,
+                'overall_score': 0.0
+            }
+        
+        # Split text into sentences using regex
+        sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
+        
+        # Edge case: single sentence
+        if len(sentences) == 1:
+            # Calculate theme similarity
+            embeddings = self.encode_texts([theme, text])
+            theme_similarity = float(self.cosine_similarity(embeddings[0], embeddings[1]))
+            theme_similarity = max(0.0, min(1.0, theme_similarity))  # Clamp to [0, 1]
+            
+            # For single sentence, treat inter-sentence coherence as perfect
+            avg_inter_sentence_coherence = 1.0
+            
+            # Calculate weighted score
+            overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
+            
+        else:
+            # Calculate theme similarity
+            embeddings = self.encode_texts([theme, text])
+            theme_similarity = float(self.cosine_similarity(embeddings[0], embeddings[1]))
+            theme_similarity = max(0.0, min(1.0, theme_similarity))  # Clamp to [0, 1]
+            
+            # Calculate inter-sentence coherence
+            coherence_metrics = self.semantic_coherence_score(sentences)
+            avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
+            avg_inter_sentence_coherence = max(0.0, min(1.0, avg_inter_sentence_coherence))  # Clamp to [0, 1]
+            
+            # Calculate weighted score
+            overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
+        
+        # Assign quality rating based on thresholds
+        if overall_score >= 0.7:
+            quality = 'excellent'
+        elif overall_score >= 0.5:
+            quality = 'good'
+        elif overall_score >= 0.3:
+            quality = 'acceptable'
+        else:
+            quality = 'poor'
+        
+        return {
+            'quality': quality,
+            'theme_similarity': float(theme_similarity),
+            'avg_inter_sentence_coherence': float(avg_inter_sentence_coherence),
+            'overall_score': float(overall_score)
+        }
+    
+    def compare_texts(self, text1: str, text2: str) -> float:
+        """
+        Compare semantic similarity between two texts.
+        
+        Args:
+            text1: First text
+            text2: Second text
+            
+        Returns:
+            Cosine similarity score between 0.0 and 1.0
+        """
+        # Encode both texts
+        embeddings = self.encode_texts([text1, text2])
+        
+        # Calculate cosine similarity
+        similarity = self.cosine_similarity(embeddings[0], embeddings[1])
+        
+        # Clamp to [0, 1]
+        similarity = max(0.0, min(1.0, float(similarity)))
+        
+        return similarity
 
 
 def main():
