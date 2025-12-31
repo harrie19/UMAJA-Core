@@ -17,6 +17,15 @@ class VektorAnalyzer:
     Analyzes semantic coherence using sentence transformers and vector embeddings.
     """
     
+    # Quality score weights for analyze_coherence
+    THEME_SIMILARITY_WEIGHT = 0.6
+    INTER_SENTENCE_COHERENCE_WEIGHT = 0.4
+    
+    # Quality thresholds for rating
+    EXCELLENT_THRESHOLD = 0.7
+    GOOD_THRESHOLD = 0.5
+    ACCEPTABLE_THRESHOLD = 0.3
+    
     def __init__(self, model_name: str = 'all-MiniLM-L6-v2'):
         """
         Initialize the VektorAnalyzer with a sentence transformer model.
@@ -294,15 +303,16 @@ class VektorAnalyzer:
             coherence_metrics = self.semantic_coherence_score(sentences)
             avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
         
-        # Compute weighted average: overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
-        overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
+        # Compute weighted average: overall_score = theme_similarity * THEME_SIMILARITY_WEIGHT + avg_inter_sentence_coherence * INTER_SENTENCE_COHERENCE_WEIGHT
+        overall_score = (theme_similarity * self.THEME_SIMILARITY_WEIGHT + 
+                        avg_inter_sentence_coherence * self.INTER_SENTENCE_COHERENCE_WEIGHT)
         
         # Assign quality rating based on score thresholds
-        if overall_score >= 0.7:
+        if overall_score >= self.EXCELLENT_THRESHOLD:
             quality = 'excellent'
-        elif overall_score >= 0.5:
+        elif overall_score >= self.GOOD_THRESHOLD:
             quality = 'good'
-        elif overall_score >= 0.3:
+        elif overall_score >= self.ACCEPTABLE_THRESHOLD:
             quality = 'acceptable'
         else:
             quality = 'poor'

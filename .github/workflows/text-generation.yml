@@ -42,12 +42,18 @@ jobs:
           cache: 'pip'
       
       - name: ✅ Validate inputs
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
         run: |
           python << 'PYTHON_SCRIPT'
           import sys
+          import os
           
-          topic = "${{ github.event.inputs.topic }}"
-          noise_level = "${{ github.event.inputs.noise_level }}"
+          topic = os.environ['INPUT_TOPIC']
+          noise_level = os.environ['INPUT_NOISE_LEVEL']
+          length = os.environ['INPUT_LENGTH']
           
           # Validate topic length (1-200 chars)
           if len(topic) < 1 or len(topic) > 200:
@@ -72,7 +78,7 @@ jobs:
           print("📋 Generation Parameters")
           print("="*60)
           print(f"Topic: {topic}")
-          print(f"Length: ${{ github.event.inputs.length }}")
+          print(f"Length: {length}")
           print(f"Noise Level: {noise}")
           print("="*60)
           print()
@@ -89,10 +95,15 @@ jobs:
       
       - name: 🎨 Generate text using RauschenGenerator
         id: generate
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
         run: |
           python << 'PYTHON_SCRIPT'
           import sys
           import json
+          import os
           sys.path.insert(0, '.')
           
           from src.rauschen_generator import RauschenGenerator
@@ -102,10 +113,10 @@ jobs:
           print("="*60)
           print()
           
-          # Parse inputs
-          topic = "${{ github.event.inputs.topic }}"
-          length = "${{ github.event.inputs.length }}"
-          noise_level = float("${{ github.event.inputs.noise_level }}")
+          # Parse inputs from environment
+          topic = os.environ['INPUT_TOPIC']
+          length = os.environ['INPUT_LENGTH']
+          noise_level = float(os.environ['INPUT_NOISE_LEVEL'])
           
           # Initialize generator
           print("Initializing RauschenGenerator...")
@@ -143,10 +154,13 @@ jobs:
           PYTHON_SCRIPT
       
       - name: 🔍 Analyze quality using VektorAnalyzer
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
         run: |
           python << 'PYTHON_SCRIPT'
           import sys
           import json
+          import os
           sys.path.insert(0, '.')
           
           from src.vektor_analyzer import VektorAnalyzer
@@ -167,7 +181,7 @@ jobs:
           print()
           
           # Analyze coherence
-          topic = "${{ github.event.inputs.topic }}"
+          topic = os.environ['INPUT_TOPIC']
           text = result['text']
           
           print(f"Analyzing coherence with theme: {topic}")
@@ -193,10 +207,15 @@ jobs:
           PYTHON_SCRIPT
       
       - name: 💾 Save results to files
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
         run: |
           python << 'PYTHON_SCRIPT'
           import sys
           import json
+          import os
           sys.path.insert(0, '.')
           
           print("="*60)
@@ -208,6 +227,11 @@ jobs:
           with open('output/text_generation/generation_result.json', 'r') as f:
               result = json.load(f)
           
+          # Get inputs from environment
+          topic = os.environ['INPUT_TOPIC']
+          length = os.environ['INPUT_LENGTH']
+          noise_level = os.environ['INPUT_NOISE_LEVEL']
+          
           # Save JSON output
           with open('output/text_generation/generated_text_output.json', 'w') as f:
               json.dump(result, f, indent=2)
@@ -218,9 +242,9 @@ jobs:
               f.write("="*60 + "\n")
               f.write("UMAJA-Core Generated Text\n")
               f.write("="*60 + "\n\n")
-              f.write(f"Topic: ${{ github.event.inputs.topic }}\n")
-              f.write(f"Length: ${{ github.event.inputs.length }}\n")
-              f.write(f"Noise Level: ${{ github.event.inputs.noise_level }}\n")
+              f.write(f"Topic: {topic}\n")
+              f.write(f"Length: {length}\n")
+              f.write(f"Noise Level: {noise_level}\n")
               f.write(f"Word Count: {result['word_count']}\n")
               f.write(f"Quality: {result['quality_analysis']['quality']}\n")
               f.write(f"Overall Score: {result['quality_analysis']['overall_score']:.3f}\n")
@@ -243,23 +267,33 @@ jobs:
           PYTHON_SCRIPT
       
       - name: 📊 Display results summary
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
         run: |
           python << 'PYTHON_SCRIPT'
           import sys
           import json
+          import os
           
           # Load result
           with open('output/text_generation/generation_result.json', 'r') as f:
               result = json.load(f)
+          
+          # Get inputs from environment
+          topic = os.environ['INPUT_TOPIC']
+          length = os.environ['INPUT_LENGTH']
+          noise_level = os.environ['INPUT_NOISE_LEVEL']
           
           print()
           print("="*60)
           print("📊 GENERATION SUMMARY")
           print("="*60)
           print()
-          print(f"Topic: ${{ github.event.inputs.topic }}")
-          print(f"Length: ${{ github.event.inputs.length }}")
-          print(f"Noise Level: ${{ github.event.inputs.noise_level }}")
+          print(f"Topic: {topic}")
+          print(f"Length: {length}")
+          print(f"Noise Level: {noise_level}")
           print()
           print("Generated Text Stats:")
           print(f"  📝 Word Count: {result['word_count']}")
