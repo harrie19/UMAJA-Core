@@ -247,6 +247,85 @@ class VektorAnalyzer:
         pairs.sort(key=lambda x: x[2], reverse=True)
         
         return pairs[:top_k]
+    
+    def analyze_coherence(self, text: str, theme: str) -> Dict[str, any]:
+        """
+        Analyze the coherence of a text in relation to a theme.
+        
+        Args:
+            text: The text to analyze
+            theme: The theme/topic to compare against
+            
+        Returns:
+            Dictionary containing:
+            - quality: Quality rating ('excellent', 'good', 'acceptable', 'poor')
+            - theme_similarity: Similarity score to theme (0-1)
+            - avg_inter_sentence_coherence: Average coherence between sentences (0-1)
+            - overall_score: Overall quality score (0-1)
+        """
+        # Split text into sentences
+        sentences = [s.strip() for s in text.split('.') if s.strip()]
+        
+        if not sentences:
+            return {
+                'quality': 'poor',
+                'theme_similarity': 0.0,
+                'avg_inter_sentence_coherence': 0.0,
+                'overall_score': 0.0
+            }
+        
+        # Calculate theme similarity
+        theme_embedding = self.encode_texts([theme])[0]
+        text_embedding = self.encode_texts([text])[0]
+        theme_similarity = float(self.cosine_similarity(theme_embedding, text_embedding))
+        
+        # Calculate inter-sentence coherence
+        if len(sentences) >= 2:
+            coherence_metrics = self.semantic_coherence_score(sentences)
+            avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
+        else:
+            avg_inter_sentence_coherence = 1.0
+        
+        # Calculate overall score (weighted average)
+        overall_score = (theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4)
+        
+        # Determine quality rating
+        if overall_score >= 0.7:
+            quality = 'excellent'
+        elif overall_score >= 0.5:
+            quality = 'good'
+        elif overall_score >= 0.3:
+            quality = 'acceptable'
+        else:
+            quality = 'poor'
+        
+        return {
+            'quality': quality,
+            'theme_similarity': theme_similarity,
+            'avg_inter_sentence_coherence': avg_inter_sentence_coherence,
+            'overall_score': overall_score
+        }
+    
+    def compare_texts(self, text1: str, text2: str) -> float:
+        """
+        Compare two texts and return their similarity score.
+        
+        Args:
+            text1: First text
+            text2: Second text
+            
+        Returns:
+            Similarity score between 0 and 1
+        """
+        if not text1 or not text2:
+            return 0.0
+        
+        embeddings = self.encode_texts([text1, text2])
+        if len(embeddings) < 2:
+            return 0.0
+        
+        similarity = self.cosine_similarity(embeddings[0], embeddings[1])
+        return float(similarity)
 
 
 def main():

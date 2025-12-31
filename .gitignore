@@ -59,3 +59,5 @@ htmlcov/
 # Data
 data/request_queue.json
 data/processed_requests.json
+data/transactions.json
+data/transactions_*.csv
