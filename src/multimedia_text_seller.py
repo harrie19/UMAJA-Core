@@ -6,6 +6,7 @@ Extended seller for all content types (text, audio, image, video)
 import os
 import json
 import uuid
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Literal, Optional
@@ -171,7 +172,6 @@ class MultimediaTextSeller:
                 
                 if audio_result['success']:
                     # Copy audio to purchase directory
-                    import shutil
                     audio_dest = purchase_dir / f"{personality}_audio.mp3"
                     shutil.copy2(audio_result['audio_path'], audio_dest)
                     
@@ -218,7 +218,6 @@ class MultimediaTextSeller:
                 
                 if image_result['success']:
                     # Copy image to purchase directory
-                    import shutil
                     image_dest = purchase_dir / f"{personality}_image.png"
                     shutil.copy2(image_result['image_path'], image_dest)
                     
@@ -280,7 +279,6 @@ class MultimediaTextSeller:
                     
                     if video_result['success']:
                         # Copy video to purchase directory
-                        import shutil
                         video_dest = purchase_dir / f"{personality}_video.mp4"
                         shutil.copy2(video_result['video_path'], video_dest)
                         

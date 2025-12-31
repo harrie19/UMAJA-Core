@@ -1,0 +1,1331 @@
+{
+  "new_york": {
+    "name": "New York",
+    "country": "USA",
+    "topics": [
+      "pizza",
+      "subway",
+      "Central Park",
+      "Broadway",
+      "hot dogs",
+      "Times Square"
+    ],
+    "stereotypes": [
+      "Always rushing",
+      "Coffee addicts",
+      "Loud",
+      "Never sleeps"
+    ],
+    "fun_facts": [
+      "8.3 million people",
+      "800 languages spoken",
+      "Central Park larger than Monaco"
+    ],
+    "local_phrases": [
+      "Forget about it!",
+      "The City",
+      "Bodega"
+    ],
+    "language": "English (American)",
+    "visited": false,
+    "visit_date": null,
+    "video_views": 0,
+    "video_url": null
+  },
+  "london": {
+    "name": "London",
+    "country": "UK",
+    "topics": [
+      "tea",
+      "tube",
+      "Big Ben",
+      "fish and chips",
+      "queuing",
+      "weather"
+    ],
+    "stereotypes": [
+      "Polite",
+      "Tea obsessed",
+      "Love queuing",
+      "Talk about weather"
+    ],
+    "fun_facts": [
+      "2000 years old",
+      "300 languages",
+      "Invented the sandwich"
+    ],
+    "local_phrases": [
+      "Bloody hell!",
+      "Cheers",
+      "Mind the gap"
+    ],
+    "language": "English (British)",
+    "visited": false
+  },
+  "tokyo": {
+    "name": "Tokyo",
+    "country": "Japan",
+    "topics": [
+      "sushi",
+      "trains",
+      "technology",
+      "anime",
+      "vending machines",
+      "karaoke"
+    ],
+    "stereotypes": [
+      "Ultra polite",
+      "Tech-savvy",
+      "Punctual",
+      "Hardworking"
+    ],
+    "fun_facts": [
+      "37 million in metro area",
+      "Most Michelin stars",
+      "Busiest train station"
+    ],
+    "local_phrases": [
+      "Sumimasen",
+      "Kawaii",
+      "Oishii"
+    ],
+    "language": "Japanese",
+    "visited": false
+  },
+  "paris": {
+    "name": "Paris",
+    "country": "France",
+    "topics": [
+      "croissants",
+      "Eiffel Tower",
+      "fashion",
+      "wine",
+      "art",
+      "baguettes"
+    ],
+    "stereotypes": [
+      "Romantic",
+      "Fashion-forward",
+      "Artistic",
+      "Love strikes"
+    ],
+    "fun_facts": [
+      "City of Light",
+      "20 million visitors/year",
+      "300 bakeries"
+    ],
+    "local_phrases": [
+      "Bonjour",
+      "C'est la vie",
+      "Voil\u00e0"
+    ],
+    "language": "French",
+    "visited": false
+  },
+  "berlin": {
+    "name": "Berlin",
+    "country": "Germany",
+    "topics": [
+      "currywurst",
+      "techno",
+      "history",
+      "beer gardens",
+      "graffiti"
+    ],
+    "stereotypes": [
+      "Efficient",
+      "Direct",
+      "Party culture",
+      "History-conscious"
+    ],
+    "fun_facts": [
+      "More bridges than Venice",
+      "1500 museums",
+      "D\u00f6ner kebab capital"
+    ],
+    "local_phrases": [
+      "Alles klar",
+      "Schnell",
+      "Prost"
+    ],
+    "language": "German",
+    "visited": false
+  },
+  "rome": {
+    "name": "Rome",
+    "country": "Italy",
+    "topics": [
+      "pasta",
+      "Colosseum",
+      "gelato",
+      "espresso",
+      "scooters",
+      "ruins"
+    ],
+    "stereotypes": [
+      "Passionate",
+      "Loud",
+      "Gesticulate",
+      "Late dinners"
+    ],
+    "fun_facts": [
+      "2800 years old",
+      "280 fountains",
+      "Cat sanctuary"
+    ],
+    "local_phrases": [
+      "Ciao",
+      "Basta",
+      "Mamma mia"
+    ],
+    "language": "Italian",
+    "visited": false
+  },
+  "barcelona": {
+    "name": "Barcelona",
+    "country": "Spain",
+    "topics": [
+      "tapas",
+      "Gaud\u00ed",
+      "beaches",
+      "sangria",
+      "siesta",
+      "football"
+    ],
+    "stereotypes": [
+      "Late nights",
+      "Siesta lovers",
+      "Passionate",
+      "Football crazy"
+    ],
+    "fun_facts": [
+      "Unfinished cathedral 140+ years",
+      "Unique architecture",
+      "Las Ramblas"
+    ],
+    "local_phrases": [
+      "Hola",
+      "Bon dia",
+      "Tapas"
+    ],
+    "language": "Spanish/Catalan",
+    "visited": false
+  },
+  "amsterdam": {
+    "name": "Amsterdam",
+    "country": "Netherlands",
+    "topics": [
+      "bikes",
+      "canals",
+      "tulips",
+      "cheese",
+      "windmills",
+      "coffee shops"
+    ],
+    "stereotypes": [
+      "Tall",
+      "Bike everywhere",
+      "Direct",
+      "Liberal"
+    ],
+    "fun_facts": [
+      "More bikes than people",
+      "165 canals",
+      "Built on poles"
+    ],
+    "local_phrases": [
+      "Hallo",
+      "Gezellig",
+      "Lekker"
+    ],
+    "language": "Dutch",
+    "visited": false
+  },
+  "sydney": {
+    "name": "Sydney",
+    "country": "Australia",
+    "topics": [
+      "beaches",
+      "Opera House",
+      "barbecue",
+      "surfing",
+      "wildlife"
+    ],
+    "stereotypes": [
+      "Laid back",
+      "Beach lovers",
+      "Friendly",
+      "Outdoorsy"
+    ],
+    "fun_facts": [
+      "Harbor Bridge climb",
+      "300 days sunshine",
+      "70+ beaches"
+    ],
+    "local_phrases": [
+      "G'day",
+      "No worries",
+      "Arvo"
+    ],
+    "language": "English (Australian)",
+    "visited": false
+  },
+  "dubai": {
+    "name": "Dubai",
+    "country": "UAE",
+    "topics": [
+      "skyscrapers",
+      "malls",
+      "desert",
+      "luxury",
+      "Burj Khalifa"
+    ],
+    "stereotypes": [
+      "Wealthy",
+      "Modern",
+      "Shopping",
+      "Ambitious"
+    ],
+    "fun_facts": [
+      "Tallest building",
+      "Gold ATMs",
+      "Indoor skiing"
+    ],
+    "local_phrases": [
+      "Marhaba",
+      "Shukran",
+      "Yalla"
+    ],
+    "language": "Arabic/English",
+    "visited": false
+  },
+  "mumbai": {
+    "name": "Mumbai",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "singapore": {
+    "name": "Singapore",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "bangkok": {
+    "name": "Bangkok",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "istanbul": {
+    "name": "Istanbul",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "moscow": {
+    "name": "Moscow",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "mexico_city": {
+    "name": "Mexico City",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "rio_de_janeiro": {
+    "name": "Rio De Janeiro",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "buenos_aires": {
+    "name": "Buenos Aires",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "toronto": {
+    "name": "Toronto",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "vancouver": {
+    "name": "Vancouver",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "chicago": {
+    "name": "Chicago",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "los_angeles": {
+    "name": "Los Angeles",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "san_francisco": {
+    "name": "San Francisco",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "miami": {
+    "name": "Miami",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "seattle": {
+    "name": "Seattle",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "boston": {
+    "name": "Boston",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "madrid": {
+    "name": "Madrid",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "lisbon": {
+    "name": "Lisbon",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "vienna": {
+    "name": "Vienna",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "prague": {
+    "name": "Prague",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "budapest": {
+    "name": "Budapest",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "athens": {
+    "name": "Athens",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "cairo": {
+    "name": "Cairo",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "cape_town": {
+    "name": "Cape Town",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "nairobi": {
+    "name": "Nairobi",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "lagos": {
+    "name": "Lagos",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "shanghai": {
+    "name": "Shanghai",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "beijing": {
+    "name": "Beijing",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "seoul": {
+    "name": "Seoul",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "hong_kong": {
+    "name": "Hong Kong",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "delhi": {
+    "name": "Delhi",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "jakarta": {
+    "name": "Jakarta",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "manila": {
+    "name": "Manila",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "hanoi": {
+    "name": "Hanoi",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "kuala_lumpur": {
+    "name": "Kuala Lumpur",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "karachi": {
+    "name": "Karachi",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "tehran": {
+    "name": "Tehran",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "baghdad": {
+    "name": "Baghdad",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "tel_aviv": {
+    "name": "Tel Aviv",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "stockholm": {
+    "name": "Stockholm",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "copenhagen": {
+    "name": "Copenhagen",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "oslo": {
+    "name": "Oslo",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "helsinki": {
+    "name": "Helsinki",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "dublin": {
+    "name": "Dublin",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "edinburgh": {
+    "name": "Edinburgh",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "brussels": {
+    "name": "Brussels",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "zurich": {
+    "name": "Zurich",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "munich": {
+    "name": "Munich",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  },
+  "hamburg": {
+    "name": "Hamburg",
+    "country": "Various",
+    "topics": [
+      "local food",
+      "culture",
+      "landmarks",
+      "people"
+    ],
+    "stereotypes": [
+      "Unique culture"
+    ],
+    "fun_facts": [
+      "Rich history"
+    ],
+    "local_phrases": [
+      "Hello"
+    ],
+    "language": "Local",
+    "visited": false
+  }
+}
