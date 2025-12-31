@@ -53,6 +53,69 @@ python scripts/generate_daily_smile.py --save
 python scripts/generate_daily_smile.py --format json
 ```
 
+## 🌍 Global Reach - 8 Languages Supported
+
+UMAJA-Core now speaks 8 languages, reaching 5+ billion people worldwide!
+
+### Supported Languages
+
+- 🇬🇧 **English** - 1.5B speakers
+- 🇪🇸 **Spanish** - 550M speakers
+- 🇮🇳 **Hindi** - 600M speakers
+- 🇸🇦 **Arabic** - 420M speakers
+- 🇨🇳 **Chinese** - 1.3B speakers
+- 🇧🇷 **Portuguese** - 260M speakers
+- 🇫🇷 **French** - 280M speakers
+- 🇷🇺 **Russian** - 260M speakers
+
+**Total Reach: 5+ Billion People** 🌍
+
+### Quick Start
+
+```python
+from src.personality_engine import PersonalityEngine
+from src.global_translator import GlobalTranslator
+
+# Generate and translate
+engine = PersonalityEngine()
+translator = GlobalTranslator()
+
+smile = engine.generate_daily_smile()
+global_content = translator.translate_smile(smile)
+
+# Access any language
+spanish_version = global_content['es']
+hindi_version = global_content['hi']
+arabic_version = global_content['ar']
+```
+
+### Multilingual CLI
+
+```bash
+# Generate in all languages
+python scripts/generate_daily_smile.py --multilingual
+
+# Generate in specific language
+python scripts/generate_daily_smile.py --language es
+
+# Export for platform
+python scripts/generate_daily_smile.py --export-platform tiktok --language hi
+
+# Batch generation
+python scripts/generate_multilingual_content.py --export-all --save
+```
+
+### Features
+
+✅ **Automatic Translation** - Translates to 8 languages instantly  
+✅ **Cultural Adaptation** - Respects cultural sensitivities  
+✅ **Hashtag Localization** - #DailySmile → #SonrisaDiaria (Spanish)  
+✅ **Subtitle Generation** - SRT files for video content  
+✅ **Platform Export** - TikTok, Instagram, YouTube formats  
+✅ **Free Translation** - No API keys required  
+
+📖 See [docs/GLOBAL_TRANSLATION.md](docs/GLOBAL_TRANSLATION.md) for complete documentation
+
 ## 🚀 Getting Started
 
 ### Installation

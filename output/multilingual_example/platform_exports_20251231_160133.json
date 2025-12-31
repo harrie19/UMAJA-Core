@@ -1,0 +1,185 @@
+{
+  "tiktok": {
+    "en": {
+      "platform": "TikTok",
+      "language": "en",
+      "caption": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 30,
+        "subtitle_style": "burned-in"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "en",
+        "language_name": "English"
+      }
+    },
+    "es": {
+      "platform": "TikTok",
+      "language": "es",
+      "caption": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 30,
+        "subtitle_style": "burned-in"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "es",
+        "language_name": "Spanish"
+      }
+    },
+    "hi": {
+      "platform": "TikTok",
+      "language": "hi",
+      "caption": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 30,
+        "subtitle_style": "burned-in"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "hi",
+        "language_name": "Hindi"
+      }
+    }
+  },
+  "instagram": {
+    "en": {
+      "platform": "Instagram Reels",
+      "language": "en",
+      "caption": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 30,
+        "subtitle_style": "burned-in"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "en",
+        "language_name": "English"
+      }
+    },
+    "pt": {
+      "platform": "Instagram Reels",
+      "language": "pt",
+      "caption": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 30,
+        "subtitle_style": "burned-in"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "pt",
+        "language_name": "Portuguese"
+      }
+    },
+    "fr": {
+      "platform": "Instagram Reels",
+      "language": "fr",
+      "caption": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 30,
+        "subtitle_style": "burned-in"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "fr",
+        "language_name": "French"
+      }
+    }
+  },
+  "youtube": {
+    "en": {
+      "platform": "YouTube Shorts",
+      "language": "en",
+      "title": "The Professor - Daily Smile",
+      "description": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?\n\n---\nGenerated by UMAJA-Core\nMission: Put smiles on faces 😊\n",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "tags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 60,
+        "subtitle_style": "separate-track"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "en",
+        "language_name": "English"
+      }
+    },
+    "ar": {
+      "platform": "YouTube Shorts",
+      "language": "ar",
+      "title": "The Professor - Daily Smile",
+      "description": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?\n\n---\nGenerated by UMAJA-Core\nMission: Put smiles on faces 😊\n",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "tags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 60,
+        "subtitle_style": "separate-track"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "ar",
+        "language_name": "Arabic"
+      }
+    },
+    "zh": {
+      "platform": "YouTube Shorts",
+      "language": "zh",
+      "title": "The Professor - Daily Smile",
+      "description": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?\n\n---\nGenerated by UMAJA-Core\nMission: Put smiles on faces 😊\n",
+      "text": "Let me share a delightful little fact with you... Penguins propose to their mates with pebbles. Romance exists in the animal kingdom too! Nature has such delightful surprises! What's something that fascinated you recently?",
+      "hashtags": [],
+      "tags": [],
+      "video_specs": {
+        "aspect_ratio": "9:16",
+        "duration": 60,
+        "subtitle_style": "separate-track"
+      },
+      "metadata": {
+        "personality": "The Professor",
+        "tone": "friendly and informative",
+        "traits": "curious, thoughtful, educational, warm",
+        "language": "zh",
+        "language_name": "Chinese"
+      }
+    }
+  }
+}

@@ -61,8 +61,23 @@ class GlobalTranslator:
             raise ValueError(f"Unsupported language: {target_language}")
         
         try:
+            # Map our language codes to Google Translator codes
+            lang_map = {
+                'zh': 'zh-CN',  # Chinese Simplified
+                'ar': 'ar',
+                'en': 'en',
+                'es': 'es',
+                'fr': 'fr',
+                'hi': 'hi',
+                'pt': 'pt',
+                'ru': 'ru'
+            }
+            
+            target_lang_code = lang_map.get(target_language, target_language)
+            source_lang_code = lang_map.get(source_language, source_language)
+            
             # Use Google Translator (free, no API key needed)
-            translator = GoogleTranslator(source=source_language, target=target_language)
+            translator = GoogleTranslator(source=source_lang_code, target=target_lang_code)
             
             # Split into sentences to preserve formatting
             sentences = text.split('\n')
