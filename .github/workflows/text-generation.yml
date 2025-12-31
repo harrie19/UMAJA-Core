@@ -51,10 +51,10 @@ jobs:
           import sys
           import os
           
-          # Get inputs from environment
-          topic = """${{ github.event.inputs.topic }}"""
-          length = """${{ github.event.inputs.length }}"""
-          noise_level = """${{ github.event.inputs.noise_level }}"""
+          # Get inputs from environment variables (secure against injection)
+          topic = os.environ.get('INPUT_TOPIC', '')
+          length = os.environ.get('INPUT_LENGTH', '')
+          noise_level = os.environ.get('INPUT_NOISE_LEVEL', '')
           
           print("="*60)
           print("📝 Input Validation")
@@ -87,6 +87,10 @@ jobs:
           print("✅ All inputs validated successfully!")
           print()
           PYTHON_SCRIPT
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
       
       - name: 🎨 Generate text with RauschenGenerator
         run: |

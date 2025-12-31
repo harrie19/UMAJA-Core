@@ -265,6 +265,21 @@ class VektorAnalyzer:
         """
         return max(0.0, min(1.0, float(value)))
     
+    def _calculate_overall_score(self, theme_similarity: float, 
+                                avg_coherence: float) -> float:
+        """
+        Calculate weighted overall quality score.
+        
+        Args:
+            theme_similarity: Theme similarity score (0-1)
+            avg_coherence: Average inter-sentence coherence (0-1)
+            
+        Returns:
+            Weighted overall score (0-1)
+        """
+        return (theme_similarity * self.THEME_WEIGHT + 
+                avg_coherence * self.COHERENCE_WEIGHT)
+    
     def analyze_coherence(self, text: str, theme: str) -> Dict[str, Any]:
         """
         Analyze text coherence with respect to a theme.
@@ -307,8 +322,9 @@ class VektorAnalyzer:
             avg_inter_sentence_coherence = 1.0
             
             # Calculate weighted score
-            overall_score = (theme_similarity * self.THEME_WEIGHT + 
-                           avg_inter_sentence_coherence * self.COHERENCE_WEIGHT)
+            overall_score = self._calculate_overall_score(
+                theme_similarity, avg_inter_sentence_coherence
+            )
             
         else:
             # Calculate theme similarity
@@ -324,8 +340,9 @@ class VektorAnalyzer:
             )
             
             # Calculate weighted score
-            overall_score = (theme_similarity * self.THEME_WEIGHT + 
-                           avg_inter_sentence_coherence * self.COHERENCE_WEIGHT)
+            overall_score = self._calculate_overall_score(
+                theme_similarity, avg_inter_sentence_coherence
+            )
         
         # Assign quality rating based on thresholds
         if overall_score >= 0.7:
