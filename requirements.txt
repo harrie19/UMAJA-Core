@@ -12,6 +12,8 @@ pandas==2.1.4
 # Text Processing
 deep-translator==1.11.4
 langdetect==1.0.9
+pycountry==23.12.11
+pysrt==1.1.2
 
 # Web & APIs
 requests==2.31.0

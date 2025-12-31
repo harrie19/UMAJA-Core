@@ -161,3 +161,41 @@ class PersonalityEngine:
             "tone": archetype.tone,
             "traits": ", ".join(archetype.traits)
         }
+    
+    def generate_global_smile(self, archetype_name: str = None, languages: List[str] = None) -> Dict:
+        """Generate smile in multiple languages at once
+        
+        Args:
+            archetype_name: Optional specific archetype, or random if None
+            languages: List of language codes to generate, or None for all supported
+            
+        Returns:
+            {
+                'original': {...},  # English version
+                'translations': {
+                    'es': {...},
+                    'hi': {...},
+                    ...
+                }
+            }
+        """
+        # Import here to avoid circular dependency
+        try:
+            from global_translator import GlobalTranslator
+        except ImportError:
+            raise ImportError("GlobalTranslator not available. Install required packages.")
+        
+        # Generate original English smile
+        original = self.generate_daily_smile(archetype_name)
+        
+        # Translate to other languages
+        translator = GlobalTranslator()
+        translations = translator.translate_smile(original, languages)
+        
+        # Separate English original from other translations
+        english = translations.pop('en', original)
+        
+        return {
+            'original': english,
+            'translations': translations
+        }
