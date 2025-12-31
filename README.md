@@ -1,6 +1,8 @@
 # 🎭 UMAJA WORLDTOUR - Autonomous Comedy System
 
-[![Build Status](https://github.com/harrie19/UMAJA-Core/workflows/CI/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions)
+[![Tests](https://github.com/harrie19/UMAJA-Core/workflows/UMAJA%20Core%20Tests/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions/workflows/tests.yml)
+[![Deploy](https://github.com/harrie19/UMAJA-Core/workflows/Deploy%20UMAJA%20WORLDTOUR/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions/workflows/deploy.yml)
+[![Text Generation](https://github.com/harrie19/UMAJA-Core/workflows/Text%20Generation%20Workflow/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions/workflows/text-generation.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/harrie19/UMAJA-Core/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -96,6 +98,51 @@ curl -X POST http://localhost:5000/api/create-multimedia-sale \
     "content_types":["text","audio","image"]
   }'
 ```
+
+---
+
+## ⚙️ GitHub Actions Workflows
+
+UMAJA-Core includes automated workflows for testing, deployment, and on-demand text generation:
+
+### 🧪 Automated Testing (`tests.yml`)
+- **Triggers**: Push to main, Pull requests, Manual dispatch
+- **Coverage**: 
+  - RauschenGenerator (text generation engine)
+  - VektorAnalyzer (semantic coherence analysis)
+  - DistributionEngine (payment allocation)
+  - Integration tests (full pipeline)
+- **Python Version**: 3.11
+- **Status**: [![Tests](https://github.com/harrie19/UMAJA-Core/workflows/UMAJA%20Core%20Tests/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions/workflows/tests.yml)
+
+### 🎨 On-Demand Text Generation (`text-generation.yml`)
+Generate text directly from GitHub's Actions tab!
+
+- **Trigger**: Manual workflow_dispatch
+- **Inputs**:
+  - `topic`: Topic for text generation (e.g., "artificial intelligence")
+  - `length`: "short" (50-150 words) or "long" (200-500 words)
+  - `noise_level`: Variation level (0.0 to 1.0, default: 0.3)
+- **Output**: 
+  - Generated text with quality analysis
+  - Downloadable artifact (JSON + TXT formats)
+  - Quality metrics (theme similarity, coherence score)
+- **Use Case**: Test text generation without running code locally
+
+**To use:**
+1. Go to [Actions → Text Generation Workflow](https://github.com/harrie19/UMAJA-Core/actions/workflows/text-generation.yml)
+2. Click "Run workflow"
+3. Enter your parameters
+4. Download the generated text from Artifacts
+
+### 🚀 Deployment (`deploy.yml`)
+- **Triggers**: Push to main (auto), Manual dispatch
+- **Platforms**: Railway (default), Heroku
+- **Features**:
+  - Automatic deployment on code changes
+  - Environment selection (production/staging)
+  - Pre-deployment testing
+- **Status**: [![Deploy](https://github.com/harrie19/UMAJA-Core/workflows/Deploy%20UMAJA%20WORLDTOUR/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions/workflows/deploy.yml)
 
 ---
 
