@@ -303,7 +303,7 @@ class VektorAnalyzer:
             coherence_metrics = self.semantic_coherence_score(sentences)
             avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
         
-        # Compute weighted average: overall_score = theme_similarity * THEME_SIMILARITY_WEIGHT + avg_inter_sentence_coherence * INTER_SENTENCE_COHERENCE_WEIGHT
+        # Compute weighted average
         overall_score = (theme_similarity * self.THEME_SIMILARITY_WEIGHT + 
                         avg_inter_sentence_coherence * self.INTER_SENTENCE_COHERENCE_WEIGHT)
         
