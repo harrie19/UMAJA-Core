@@ -7,6 +7,8 @@ Generates daily comedy content about a city for the worldtour campaign
 import os
 import sys
 import json
+import shutil
+import traceback
 from pathlib import Path
 from datetime import datetime
 import logging
@@ -207,7 +209,6 @@ def generate_daily_content():
         audio_path = audio_result.get('audio_path')
         if audio_path and Path(audio_path).exists():
             # Copy to output directory
-            import shutil
             dest_audio = output_dir / 'voice.mp3'
             shutil.copy(audio_path, dest_audio)
             print_success(f"Audio saved: {dest_audio}")
@@ -237,7 +238,6 @@ def generate_daily_content():
         image_path = image_result.get('image_path')
         if image_path and Path(image_path).exists():
             # Copy to output directory
-            import shutil
             dest_image = output_dir / 'quote_card.png'
             shutil.copy(image_path, dest_image)
             print_success(f"Image saved: {dest_image}")
@@ -266,7 +266,6 @@ def generate_daily_content():
             video_path = video_result.get('video_path')
             if video_path and Path(video_path).exists():
                 # Copy to output directory
-                import shutil
                 dest_video = output_dir / 'final_video.mp4'
                 shutil.copy(video_path, dest_video)
                 print_success(f"Video saved: {dest_video}")
@@ -336,6 +335,5 @@ if __name__ == '__main__':
         sys.exit(1)
     except Exception as e:
         print_error(f"\n\nUnexpected error: {e}")
-        import traceback
         traceback.print_exc()
         sys.exit(1)

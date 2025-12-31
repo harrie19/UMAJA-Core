@@ -6,6 +6,9 @@ Quickly generates 3-5 sample videos to prepare for launch
 
 import os
 import sys
+import json
+import shutil
+import traceback
 from pathlib import Path
 from datetime import datetime
 import logging
@@ -148,7 +151,6 @@ def generate_demo_video(config, demo_num, output_base_dir):
         
         audio_path = audio_result.get('audio_path')
         if audio_path and Path(audio_path).exists():
-            import shutil
             dest_audio = output_dir / 'voice.mp3'
             shutil.copy(audio_path, dest_audio)
             print_success("Audio generated")
@@ -168,7 +170,6 @@ def generate_demo_video(config, demo_num, output_base_dir):
         
         image_path = image_result.get('image_path')
         if image_path and Path(image_path).exists():
-            import shutil
             dest_image = output_dir / 'quote_card.png'
             shutil.copy(image_path, dest_image)
             print_success("Image generated")
@@ -187,7 +188,6 @@ def generate_demo_video(config, demo_num, output_base_dir):
         
         video_path = video_result.get('video_path')
         if video_path and Path(video_path).exists():
-            import shutil
             dest_video = output_dir / 'demo_video.mp4'
             shutil.copy(video_path, dest_video)
             print_success(f"Video saved: {dest_video}")
@@ -196,7 +196,6 @@ def generate_demo_video(config, demo_num, output_base_dir):
             return False
         
         # Save metadata
-        import json
         metadata = {
             'city_id': city_id,
             'city_name': city_name,
@@ -221,7 +220,6 @@ def generate_demo_video(config, demo_num, output_base_dir):
         
     except Exception as e:
         print_error(f"Demo generation failed: {e}")
-        import traceback
         traceback.print_exc()
         return False
 
@@ -305,6 +303,5 @@ if __name__ == '__main__':
         sys.exit(1)
     except Exception as e:
         print_error(f"\n\nUnexpected error: {e}")
-        import traceback
         traceback.print_exc()
         sys.exit(1)
