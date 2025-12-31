@@ -5,7 +5,7 @@ Using Sentence Transformers for semantic similarity analysis
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +16,15 @@ class VektorAnalyzer:
     """
     Analyzes semantic coherence using sentence transformers and vector embeddings.
     """
+    
+    # Quality score weights for analyze_coherence
+    THEME_SIMILARITY_WEIGHT = 0.6
+    INTER_SENTENCE_COHERENCE_WEIGHT = 0.4
+    
+    # Quality thresholds for rating
+    EXCELLENT_THRESHOLD = 0.7
+    GOOD_THRESHOLD = 0.5
+    ACCEPTABLE_THRESHOLD = 0.3
     
     def __init__(self, model_name: str = 'all-MiniLM-L6-v2'):
         """
@@ -247,6 +256,98 @@ class VektorAnalyzer:
         pairs.sort(key=lambda x: x[2], reverse=True)
         
         return pairs[:top_k]
+    
+    def analyze_coherence(self, text: str, theme: str) -> Dict[str, Any]:
+        """
+        Analyze text coherence with respect to a theme.
+        
+        Args:
+            text: Text to analyze
+            theme: Theme to compare against
+            
+        Returns:
+            Dictionary containing:
+            - quality: Rating ('excellent', 'good', 'acceptable', 'poor')
+            - theme_similarity: Similarity score between text and theme (0-1)
+            - avg_inter_sentence_coherence: Average coherence between sentences (0-1)
+            - overall_score: Combined quality score (0-1)
+        """
+        if not text or not theme:
+            return {
+                'quality': 'poor',
+                'theme_similarity': 0.0,
+                'avg_inter_sentence_coherence': 0.0,
+                'overall_score': 0.0
+            }
+        
+        # Split text into sentences
+        sentences = [s.strip() for s in text.replace('!', '.').replace('?', '.').split('.') if s.strip()]
+        
+        if not sentences:
+            return {
+                'quality': 'poor',
+                'theme_similarity': 0.0,
+                'avg_inter_sentence_coherence': 0.0,
+                'overall_score': 0.0
+            }
+        
+        # Calculate theme similarity using embeddings
+        text_embedding = self.encode_texts([text])[0]
+        theme_embedding = self.encode_texts([theme])[0]
+        theme_similarity = float(self.cosine_similarity(text_embedding, theme_embedding))
+        
+        # Calculate inter-sentence coherence
+        if len(sentences) < 2:
+            avg_inter_sentence_coherence = 1.0  # Single sentence is perfectly coherent with itself
+        else:
+            coherence_metrics = self.semantic_coherence_score(sentences)
+            avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
+        
+        # Compute weighted average
+        overall_score = (theme_similarity * self.THEME_SIMILARITY_WEIGHT + 
+                        avg_inter_sentence_coherence * self.INTER_SENTENCE_COHERENCE_WEIGHT)
+        
+        # Assign quality rating based on score thresholds
+        if overall_score >= self.EXCELLENT_THRESHOLD:
+            quality = 'excellent'
+        elif overall_score >= self.GOOD_THRESHOLD:
+            quality = 'good'
+        elif overall_score >= self.ACCEPTABLE_THRESHOLD:
+            quality = 'acceptable'
+        else:
+            quality = 'poor'
+        
+        return {
+            'quality': quality,
+            'theme_similarity': float(theme_similarity),
+            'avg_inter_sentence_coherence': float(avg_inter_sentence_coherence),
+            'overall_score': float(overall_score)
+        }
+    
+    def compare_texts(self, text1: str, text2: str) -> float:
+        """
+        Compare semantic similarity between two texts.
+        
+        Args:
+            text1: First text to compare
+            text2: Second text to compare
+            
+        Returns:
+            Similarity score between 0 and 1
+        """
+        if not text1 or not text2:
+            return 0.0
+        
+        # Encode both texts
+        embeddings = self.encode_texts([text1, text2])
+        
+        if len(embeddings) < 2:
+            return 0.0
+        
+        # Compute cosine similarity
+        similarity = self.cosine_similarity(embeddings[0], embeddings[1])
+        
+        return float(similarity)
 
 
 def main():
