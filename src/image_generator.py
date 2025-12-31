@@ -29,7 +29,7 @@ class ImageGenerator:
     Supports Stable Diffusion for AI images and PIL for quote cards.
     """
     
-    PERSONALITIES = ['john_cleese', 'c3po', 'robin_williams']
+    PERSONALITIES = ['the_professor', 'the_worrier', 'the_enthusiast']
     
     def __init__(self, output_dir: str = "static/images"):
         """
@@ -43,44 +43,44 @@ class ImageGenerator:
         
         # Personality-themed prompt templates
         self.prompt_templates = {
-            'john_cleese': {
-                'style_keywords': ['Monty Python style', 'British comedy', 'surreal', 'absurdist'],
-                'background_themes': ['British countryside', 'Ministry office', 'comedy stage'],
-                'color_palette': ['muted', 'classic', 'sophisticated'],
-                'mood': 'dry, witty, sophisticated'
+            'the_professor': {
+                'style_keywords': ['academic', 'scholarly', 'thoughtful', 'warm'],
+                'background_themes': ['library', 'study', 'cozy cafe', 'peaceful setting'],
+                'color_palette': ['warm browns', 'soft blues', 'scholarly'],
+                'mood': 'curious, warm, contemplative'
             },
-            'c3po': {
-                'style_keywords': ['Star Wars', 'protocol droid', 'futuristic', 'metallic'],
-                'background_themes': ['spaceship interior', 'desert planet', 'command center'],
-                'color_palette': ['gold', 'metallic', 'sci-fi blues'],
-                'mood': 'precise, anxious, formal'
+            'the_worrier': {
+                'style_keywords': ['caring', 'gentle', 'concerned', 'protective'],
+                'background_themes': ['safe space', 'cozy interior', 'friendly environment'],
+                'color_palette': ['soft pastels', 'calming blues', 'gentle'],
+                'mood': 'caring, considerate, thoughtful'
             },
-            'robin_williams': {
-                'style_keywords': ['energetic', 'colorful', 'warm', 'theatrical'],
-                'background_themes': ['comedy club', 'Broadway stage', 'vibrant cityscape'],
-                'color_palette': ['vibrant', 'warm tones', 'dynamic'],
-                'mood': 'energetic, warm, improvisational'
+            'the_enthusiast': {
+                'style_keywords': ['joyful', 'bright', 'energetic', 'positive'],
+                'background_themes': ['vibrant cityscape', 'sunny park', 'celebration'],
+                'color_palette': ['bright yellows', 'warm oranges', 'happy colors'],
+                'mood': 'joyful, energetic, positive'
             }
         }
         
         # Quote card themes
         self.quote_card_themes = {
-            'john_cleese': {
-                'bg_color': (45, 52, 54),  # Dark gray
+            'the_professor': {
+                'bg_color': (52, 73, 94),  # Scholarly blue-gray
                 'text_color': (236, 240, 241),  # Off white
-                'accent_color': (231, 76, 60),  # British red
+                'accent_color': (52, 152, 219),  # Bright blue
                 'font_style': 'classic'
             },
-            'c3po': {
-                'bg_color': (44, 62, 80),  # Dark blue
-                'text_color': (241, 196, 15),  # Gold
-                'accent_color': (52, 152, 219),  # Bright blue
-                'font_style': 'futuristic'
+            'the_worrier': {
+                'bg_color': (149, 165, 166),  # Gentle gray
+                'text_color': (44, 62, 80),  # Dark blue
+                'accent_color': (127, 140, 141),  # Soft gray
+                'font_style': 'gentle'
             },
-            'robin_williams': {
-                'bg_color': (230, 126, 34),  # Warm orange
-                'text_color': (255, 255, 255),  # White
-                'accent_color': (155, 89, 182),  # Purple
+            'the_enthusiast': {
+                'bg_color': (241, 196, 15),  # Bright yellow
+                'text_color': (44, 62, 80),  # Dark text
+                'accent_color': (230, 126, 34),  # Warm orange
                 'font_style': 'playful'
             }
         }
@@ -187,7 +187,7 @@ class ImageGenerator:
     
     def generate_quote_card(self,
                            quote: str,
-                           personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                           personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                            author_name: Optional[str] = None,
                            size: Tuple[int, int] = (1080, 1080),
                            format: str = 'png') -> Dict:
@@ -304,7 +304,7 @@ class ImageGenerator:
     
     def generate_ai_image(self,
                          topic: str,
-                         personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                         personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                          size: Tuple[int, int] = (512, 512),
                          format: str = 'png') -> Dict:
         """
@@ -438,7 +438,7 @@ class ImageGenerator:
     
     def generate_infographic(self,
                            data: Dict,
-                           personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                           personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                            title: str,
                            size: Tuple[int, int] = (1080, 1350),
                            format: str = 'png') -> Dict:
@@ -519,9 +519,9 @@ if __name__ == "__main__":
     
     # Test quote card for each personality
     quotes = {
-        'john_cleese': "The curious thing about pizza is that it's rather like the British railway system.",
-        'c3po': "Oh my! This pizza presents precisely 2,479 possible interpretations!",
-        'robin_williams': "So pizza walks into a bar... *laughs* This is comedy gold!"
+        'the_professor': "I've been studying this and what fascinates me is how it brings people together.",
+        'the_worrier': "Does anyone else worry about this? I just want everyone to be safe!",
+        'the_enthusiast': "This is absolutely AMAZING! I can't get enough of it!"
     }
     
     for personality, quote in quotes.items():

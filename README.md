@@ -1,44 +1,44 @@
-# 🎭 UMAJA WORLDTOUR - Autonomous Comedy System
+# 🌍 Daily Smile World Tour
 
-[![Build Status](https://github.com/harrie19/UMAJA-Core/workflows/CI/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/harrie19/UMAJA-Core/releases)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+**Mission**: Put a smile on faces worldwide through friendly AI personalities exploring cities.
 
-**3 AI Comedians Tour the World** - Complete autonomous multimedia content generation and monetization system featuring John Cleese, C-3PO, and Robin Williams creating comedy about cities worldwide.
+## What We Do
 
-🌍 **[View Live Demo](https://your-deployment.railway.app)** | 📖 **[Documentation](docs/)** | 🎬 **[See Examples](#examples)**
+3 friendly AI personalities travel the world (virtually), sharing:
+- 😊 Warm observations about cities
+- 🌆 Relatable travel experiences  
+- 💭 Innocent curiosity about local culture
+- 🤝 Community stories and connections
 
----
+**Not stand-up comedy. Not performance. Just... smiles.**
 
-## 🎯 What is UMAJA WORLDTOUR?
+## The Travelers
 
-A **fully autonomous multimedia comedy system** that:
-- 🎭 Generates text, audio, images, and videos in 3 distinct comedian personalities
-- 🌍 Creates city-specific comedy content for 50+ cities worldwide
-- 💰 Sells custom comedy packages with smart bundle pricing
-- 🤖 Runs 100% autonomously after initial setup
-- 💚 Donates 40% of profits to charity
-
-### The Personalities
-
-| 🎩 **John Cleese** | 🤖 **C-3PO** | 🎪 **Robin Williams** |
+| 🎓 The Professor | 😰 The Worrier | 🎉 The Enthusiast |
 |---|---|---|
-| Dry British wit | Anxious protocol droid | Energetic improv |
-| Monty Python style | Statistical obsession | Rapid-fire delivery |
-| Deep, sarcastic voice | Higher pitch, robotic | Dynamic, warm |
+| Curious academic | Lovably anxious | Eternally optimistic |
+| Asks innocent questions | Finds "dangers" everywhere | Sees joy in everything |
+| Warm, inquisitive | Cautious, considerate | Excited, positive |
+
+**No impersonations. Just friendly archetypes.**
 
 ---
 
 ## ✨ Key Features
 
 ### Content Generation
-- **Text Generation**: 3 distinct comedian personalities with unique styles
+- **Text Generation**: 3 distinct friendly personalities with unique styles
 - **Voice Synthesis**: Multi-backend TTS (ElevenLabs, Google TTS, offline)
 - **Image Generation**: AI images + personality-themed quote cards
 - **Video Creation**: Lyric-style videos with synced text and audio
-- **City Content**: 50+ cities with topics, stereotypes, fun facts
+- **City Content**: 50+ cities with topics, local culture, fun facts
+
+### Daily Smile Mission
+- **Micro Content**: 30-60 second friendly observations
+- **Community Engagement**: Every post includes a question for followers
+- **Personality Rotation**: Different archetype each day
+- **Warm Tone**: Friendly, inclusive, relatable content
+- **World Tour**: Visit every major city, one smile at a time
 
 ### Monetization
 - **8 Product Tiers**: From text-only (€1.50) to viral kit (€20)
@@ -69,32 +69,26 @@ A **fully autonomous multimedia comedy system** that:
 git clone https://github.com/harrie19/UMAJA-Core.git
 cd UMAJA-Core
 
-# 2. Run setup
-python scripts/setup_multimedia.py --quick
+# 2. Install dependencies
+pip install -r requirements.txt
 
-# 3. Start server
-python api/simple_server.py
+# 3. Generate a daily smile
+python scripts/generate_daily_smile.py
+
+# 4. Generate demo content
+python scripts/generate_demo_smiles.py
 ```
 
-Visit **http://localhost:5000** - You're live! 🎉
+Visit **output/demos/** to see your generated smiles! 🎉
 
-### Test Content Generation
+### Test Personality Engine
 
 ```bash
-# Generate comedy text
-curl -X POST http://localhost:5000/api/generate/text \
-  -H "Content-Type: application/json" \
-  -d '{"topic":"pizza","personality":"john_cleese","length":"short"}'
+# Test all three personalities
+python src/personality_engine.py
 
-# Create full multimedia package
-curl -X POST http://localhost:5000/api/create-multimedia-sale \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email":"test@example.com",
-    "topic":"New York pizza", 
-    "personality":"john_cleese",
-    "content_types":["text","audio","image"]
-  }'
+# Test worldtour manager
+python src/worldtour_manager.py
 ```
 
 ---
@@ -135,109 +129,63 @@ curl -X POST http://localhost:5000/api/create-multimedia-sale \
 ## 📦 Core Modules
 
 ### 1. Personality Engine (`src/personality_engine.py`)
-Generates text in comedian styles with personality markers and humor patterns.
+Generates text in friendly personality archetypes with warm, relatable styles.
 
 ```python
-from personality_engine import PersonalityEngine
+from src.personality_engine import PersonalityEngine
 
 engine = PersonalityEngine()
 result = engine.generate_text(
     topic="New York pizza",
-    personality="john_cleese",
+    personality="the_professor",
     length="medium",
     style_intensity=0.7
 )
 
 print(result['text'])
-# "Now, the curious thing about New York pizza..."
-```
+# "I've been studying New York pizza and what fascinates me..."
 
-### 2. Voice Synthesizer (`src/voice_synthesizer.py`)
-Multi-backend TTS with personality voices.
-
-```python
-from voice_synthesizer import VoiceSynthesizer
-
-synthesizer = VoiceSynthesizer()
-result = synthesizer.synthesize(
-    text="Hello world",
-    personality="c3po",
-    format="mp3"
-)
-# Generates: static/audio/c3po_abc123.mp3
-```
-
-### 3. Image Generator (`src/image_generator.py`)
-Quote cards and AI images with personality themes.
-
-```python
-from image_generator import ImageGenerator
-
-generator = ImageGenerator()
-result = generator.generate_quote_card(
-    quote="The curious thing about pizza...",
-    personality="john_cleese"
-)
-# Generates: static/images/quote_john_cleese_abc123.png
-```
-
-### 4. Video Generator (`src/video_generator.py`)
-Creates lyric-style videos and slideshows.
-
-```python
-from video_generator import VideoGenerator
-
-generator = VideoGenerator()
-result = generator.create_lyric_video(
-    text="Comedy text here...",
-    audio_path="audio.mp3",
-    personality="robin_williams"
-)
-# Generates: static/videos/lyric_robin_williams_abc123.mp4
-```
-
-### 5. Worldtour Generator (`src/worldtour_generator.py`)
-City-specific content for 50+ cities.
-
-```python
-from worldtour_generator import WorldtourGenerator
-
-generator = WorldtourGenerator()
-content = generator.generate_city_content(
-    city_id="new_york",
-    personality="john_cleese",
-    content_type="city_review"
+# Generate micro-content for daily smiles
+smile = engine.generate_smile_text(
+    city="Tokyo",
+    topic="sushi",
+    personality="the_enthusiast",
+    length="micro"
 )
 ```
 
-### 6. Bundle Builder (`src/bundle_builder.py`)
-Smart pricing with automatic discounts.
+### 2. Worldtour Manager (`src/worldtour_manager.py`)
+Manages cities, generates community questions, tracks progress.
 
 ```python
-from bundle_builder import BundleBuilder
+from src.worldtour_manager import WorldtourManager
 
-builder = BundleBuilder()
-pricing = builder.calculate_bundle_price(
-    items=['standard_bundle'],
-    extras=['commercial_license']
-)
-# Automatically applies volume discounts
+manager = WorldtourManager()
+
+# Get next city
+city = manager.get_next_city()
+
+# Generate community question
+question = manager.get_community_question(city)
+# "What's your favorite Tokyo memory?"
+
+# Override for testing
+manager.override_next('paris')
 ```
 
-### 7. Multimedia Seller (`src/multimedia_text_seller.py`)
-Complete purchase workflow with ZIP packaging.
+### 3. Daily Smile Generator (`scripts/generate_daily_smile.py`)
+Creates complete daily smile content with community engagement.
 
 ```python
-from multimedia_text_seller import MultimediaTextSeller
+from scripts.generate_daily_smile import DailySmileGenerator
 
-seller = MultimediaTextSeller()
-result = seller.create_multimedia_purchase(
-    email="customer@example.com",
-    topic="pizza",
-    personality="john_cleese",
-    content_types=['text', 'audio', 'image']
-)
-# Creates downloadable ZIP package
+generator = DailySmileGenerator()
+smile = generator.generate_daily_smile()
+
+print(smile['text'])
+# Includes: city intro, personality observation, community question
+print(smile['hashtags'])
+# ['#DailySmileFromTokyo', '#DailySmileWorldTour', '#TravelSmiles']
 ```
 
 ---
@@ -338,14 +286,14 @@ UMAJA-Core/
 
 ## 🎬 Examples
 
-### Generate John Cleese Text
+### Generate The Professor Text
 ```python
 from src.personality_engine import PersonalityEngine
 
 engine = PersonalityEngine()
 result = engine.generate_text(
     topic="British tea",
-    personality="john_cleese",
+    personality="the_professor",
     length="short"
 )
 
@@ -353,32 +301,31 @@ print(result['text'])
 ```
 
 **Output:**
-> "Now, the curious thing about British tea is that it's rather like a religion practiced exclusively by confused penguins. One observes that the average person's understanding of proper brewing technique rivals that of a medieval alchemist attempting to transmute biscuits into gold. Quite."
+> "I've been studying British tea and what fascinates me is how it brings people together. The wonderful thing about British tea is how welcoming it feels. It reminds me that everyday life is full of wonder."
 
-### Create C-3PO Audio
+### Generate The Worrier Audio
 ```python
 from src.voice_synthesizer import VoiceSynthesizer
 
 synth = VoiceSynthesizer()
 result = synth.synthesize(
-    text="Oh my! This presents 2,479 interpretations!",
-    personality="c3po"
+    text="Does anyone else get nervous about visiting new cities?",
+    personality="the_worrier"
 )
 ```
 
-### Generate Robin Williams Video
+### Generate The Enthusiast Daily Smile
 ```python
-from src.multimedia_text_seller import MultimediaTextSeller
+from scripts.generate_daily_smile import DailySmileGenerator
 
-seller = MultimediaTextSeller()
-result = seller.create_multimedia_purchase(
-    email="fan@example.com",
-    topic="Stand-up comedy",
-    personality="robin_williams",
-    content_types=['text', 'audio', 'video']
-)
+generator = DailySmileGenerator()
 
-print(f"Download: {result['download_url']}")
+# Override to specific city
+generator.worldtour.override_next('tokyo')
+smile = generator.generate_daily_smile()
+
+print(smile['text'])
+# Includes warm observation + community question
 ```
 
 ---
@@ -429,32 +376,32 @@ docker run -p 5000:5000 umaja-worldtour
 
 ## 🎯 Roadmap
 
-### Phase 1: Worldtour (Months 1-3) ✅
+### Phase 1: Daily Smile Mission (Current) ✅
+- [x] 3 friendly personality archetypes
 - [x] 50+ cities database
-- [x] 3 AI comedian personalities
-- [x] Text, audio, image, video generation
-- [x] Interactive world map
-- [x] Voting system
+- [x] Text generation with warm tone
+- [x] Daily smile generator
+- [x] Community engagement questions
+- [x] Demo content generation
+- [ ] Voice synthesis integration
+- [ ] Social media auto-posting
+- [ ] 10k+ followers goal
+
+### Phase 2: Community Growth (Month 2-3)
 - [ ] Daily auto-posting
-- [ ] Social media integration
-- [ ] 500k+ followers goal
+- [ ] Community response tracking
+- [ ] User-generated content features
+- [ ] City voting system
+- [ ] Smile analytics dashboard
+- [ ] 100k+ followers goal
 
-### Phase 2: Monetization (Month 4+)
-- [x] 8 product tiers
-- [x] Bundle builder UI
-- [x] Smart pricing engine
-- [x] Purchase workflow
-- [ ] PayPal integration
-- [ ] Email notifications
-- [ ] Affiliate program
-- [ ] €10k/month revenue goal
-
-### Phase 3: Scale (Month 6+)
+### Phase 3: Multimedia Expansion (Month 4+)
+- [ ] Image generation with quotes
+- [ ] Short-form video content
+- [ ] Community story highlights
+- [ ] Collaboration features
 - [ ] Mobile app
-- [ ] More personalities
-- [ ] Live comedy shows
-- [ ] API marketplace
-- [ ] White-label solution
+- [ ] 500k+ followers goal
 
 ---
 
@@ -511,30 +458,36 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Inspired by the legendary comedians: John Cleese, Robin Williams
-- Star Wars franchise for C-3PO
 - Open-source community for amazing tools
-- Everyone who makes the world laugh 🎭
+- Everyone who brings smiles to the world 😊
+- All the wonderful cities that inspire us 🌍
 
 ---
 
-## 📊 Stats
+## 📊 Success Metrics
 
-![GitHub stars](https://img.shields.io/github/stars/harrie19/UMAJA-Core?style=social)
-![GitHub forks](https://img.shields.io/github/forks/harrie19/UMAJA-Core?style=social)
-![GitHub issues](https://img.shields.io/github/issues/harrie19/UMAJA-Core)
-![Last commit](https://img.shields.io/github/last-commit/harrie19/UMAJA-Core)
+**Mission Success = Community Engagement**
+
+We measure success by:
+- ✅ Comments and shares
+- ✅ Friend tags and mentions  
+- ✅ Smile emoji reactions 😊
+- ✅ User stories shared
+- ✅ Community connections made
+
+**Not** by:
+- ❌ "Funniness" scores
+- ❌ Viral metrics alone
+- ❌ Comedian approval
 
 ---
 
 <div align="center">
 
-**Made with ❤️ and 😂 by the UMAJA Team**
+**Made with ❤️ and 😊 by the UMAJA Team**
 
-**40% of profits go to charity** 💚
+[Docs](docs/) • [Daily Smile Generator](scripts/generate_daily_smile.py) • [Worldtour](docs/WORLDTOUR.md)
 
-[Website](https://umaja-worldtour.com) • [Docs](docs/) • [API](docs/MULTIMEDIA_SYSTEM.md) • [Worldtour](docs/WORLDTOUR.md)
-
-*Let's make humanity laugh, one city at a time!* 🎭🌍
+*Let's put smiles on faces, one city at a time!* 😊🌍
 
 </div>

@@ -38,7 +38,7 @@ class VoiceSynthesizer:
     Supports ElevenLabs (premium), Google TTS (fallback), pyttsx3 (offline).
     """
     
-    PERSONALITIES = ['john_cleese', 'c3po', 'robin_williams']
+    PERSONALITIES = ['the_professor', 'the_worrier', 'the_enthusiast']
     
     def __init__(self, output_dir: str = "static/audio"):
         """
@@ -52,37 +52,37 @@ class VoiceSynthesizer:
         
         # Voice profiles for each personality
         self.voice_profiles = {
-            'john_cleese': {
-                'description': 'Deep, measured, sarcastic British voice',
-                'pitch': 0.8,  # Slightly lower
-                'speed': 0.9,  # Measured pace
-                'tone': 'dry',
+            'the_professor': {
+                'description': 'Warm, thoughtful, curious voice',
+                'pitch': 0.9,  # Slightly lower, thoughtful
+                'speed': 0.9,  # Measured, considered pace
+                'tone': 'warm',
                 'elevenlabs_voice': 'Antoni',  # Deep, sophisticated
                 'gtts_lang': 'en',
-                'gtts_tld': 'co.uk',  # British accent
+                'gtts_tld': 'com',
                 'pyttsx3_rate': 150,  # Words per minute
                 'pyttsx3_volume': 0.9
             },
-            'c3po': {
-                'description': 'Higher pitch, robotic, anxious',
-                'pitch': 1.3,  # Higher pitch
-                'speed': 1.1,  # Slightly faster, anxious
-                'tone': 'robotic',
+            'the_worrier': {
+                'description': 'Gentle, concerned, caring voice',
+                'pitch': 1.1,  # Slightly higher, anxious
+                'speed': 1.0,  # Normal but with pauses
+                'tone': 'caring',
                 'elevenlabs_voice': 'Arnold',  # Clear, formal
                 'gtts_lang': 'en',
                 'gtts_tld': 'com',
-                'pyttsx3_rate': 180,  # Faster speech
+                'pyttsx3_rate': 160,  # Slightly faster when worried
                 'pyttsx3_volume': 0.95
             },
-            'robin_williams': {
-                'description': 'Dynamic, varied pitch, energetic',
-                'pitch': 1.1,  # Varied, slightly higher
-                'speed': 1.2,  # Fast, energetic
-                'tone': 'warm',
+            'the_enthusiast': {
+                'description': 'Bright, energetic, joyful voice',
+                'pitch': 1.2,  # Higher, excited
+                'speed': 1.1,  # Faster, energetic
+                'tone': 'joyful',
                 'elevenlabs_voice': 'Adam',  # Warm, expressive
                 'gtts_lang': 'en',
                 'gtts_tld': 'com',
-                'pyttsx3_rate': 190,  # Fast-paced
+                'pyttsx3_rate': 180,  # Fast-paced
                 'pyttsx3_volume': 1.0
             }
         }
@@ -214,10 +214,10 @@ class VoiceSynthesizer:
             
             # Try to set voice based on personality
             voices_list = engine.getProperty('voices')
-            if personality == 'john_cleese' and len(voices_list) > 0:
-                # Try to find British voice or deep male voice
+            if personality == 'the_professor' and len(voices_list) > 0:
+                # Try to find a warm, thoughtful voice
                 for voice in voices_list:
-                    if 'english' in voice.name.lower() or 'british' in voice.name.lower():
+                    if 'english' in voice.name.lower():
                         engine.setProperty('voice', voice.id)
                         break
             
@@ -234,7 +234,7 @@ class VoiceSynthesizer:
     
     def synthesize(self, 
                    text: str,
-                   personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                   personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                    format: str = 'mp3',
                    use_cache: bool = True) -> Dict:
         """
@@ -314,7 +314,7 @@ class VoiceSynthesizer:
     
     def generate_preview(self,
                         text: str,
-                        personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                        personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                         duration: int = 30,
                         format: str = 'mp3') -> Dict:
         """
@@ -403,9 +403,9 @@ if __name__ == "__main__":
     
     # Test synthesis for each personality
     test_texts = {
-        'john_cleese': "Now, the curious thing about New York pizza is that it's rather like the British railway system - utterly incomprehensible to outsiders.",
-        'c3po': "Oh my! New York pizza presents precisely 2,479 possible topping combinations, which my circuits find most perplexing!",
-        'robin_williams': "So New York pizza walks into a bar... *laughs* No seriously, imagine if pizza was a Broadway musical!"
+        'the_professor': "I've been studying New York pizza and what fascinates me is how it brings people together in the most delightful way.",
+        'the_worrier': "Does anyone else get nervous about trying New York pizza? I want to make sure everyone enjoys it safely!",
+        'the_enthusiast': "Can we talk about how AMAZING New York pizza is?! It's absolutely the best thing ever!"
     }
     
     for personality, text in test_texts.items():

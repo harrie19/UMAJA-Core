@@ -1,6 +1,6 @@
 """
-UMAJA WORLDTOUR - Worldtour Generator
-City-specific comedy content generation system
+UMAJA WORLDTOUR - Worldtour Manager
+City-specific content generation and community engagement system
 """
 
 import json
@@ -14,10 +14,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class WorldtourGenerator:
+class WorldtourManager:
     """
-    City-specific comedy content generation.
-    Manages a database of cities and generates themed content.
+    City-specific content generation with community focus.
+    Manages a database of cities and generates friendly, engaging content.
     """
     
     CONTENT_TYPES = ['city_review', 'cultural_debate', 'language_lesson', 'tourist_trap', 'food_review']
@@ -25,7 +25,7 @@ class WorldtourGenerator:
     
     def __init__(self, cities_db_path: str = "data/worldtour_cities.json"):
         """
-        Initialize the worldtour generator.
+        Initialize the worldtour manager.
         
         Args:
             cities_db_path: Path to cities database JSON file
@@ -36,7 +36,14 @@ class WorldtourGenerator:
         # Load or initialize cities database
         self.cities = self._load_cities_db()
         
-        # Content type templates
+        # Track days elapsed for personality rotation
+        self.start_date = datetime.now()
+        self.days_elapsed = 0
+        
+        # Override for testing
+        self._override_city = None
+        
+        # Content type templates (updated for new personalities)
         self.content_templates = {
             'city_review': {
                 'the_professor': "I've been studying {city} and discovered that it's like {comparison}...",
@@ -257,11 +264,11 @@ class WorldtourGenerator:
                             content_type: Literal['city_review', 'cultural_debate', 
                                                 'language_lesson', 'tourist_trap', 'food_review']) -> Dict:
         """
-        Generate city-specific friendly content.
+        Generate city-specific comedy content.
         
         Args:
             city_id: City identifier
-            personality: Personality archetype
+            personality: Comedian personality
             content_type: Type of content to generate
             
         Returns:
@@ -359,6 +366,16 @@ class WorldtourGenerator:
     
     def get_next_city(self) -> Optional[Dict]:
         """Get the next unvisited city."""
+        # Check if override is set for testing
+        if self._override_city:
+            city_id = self._override_city
+            self._override_city = None  # Reset after use
+            if city_id in self.cities:
+                return {
+                    'id': city_id,
+                    **self.cities[city_id]
+                }
+        
         unvisited = [city for city_id, city in self.cities.items() 
                     if not city.get('visited', False)]
         
@@ -372,6 +389,41 @@ class WorldtourGenerator:
             }
         
         return None
+    
+    def override_next(self, city_id: str):
+        """
+        Override the next city selection for testing/demo purposes.
+        
+        Args:
+            city_id: City identifier to use next
+        """
+        if city_id in self.cities:
+            self._override_city = city_id
+            logger.info(f"Override next city set to: {city_id}")
+        else:
+            logger.warning(f"Cannot override - unknown city: {city_id}")
+    
+    def get_community_question(self, city: dict) -> str:
+        """
+        Generate community engagement question for a city.
+        
+        Args:
+            city: City dictionary
+            
+        Returns:
+            Community engagement question
+        """
+        templates = [
+            f"What's your favorite {city['name']} memory?",
+            f"Ever been to {city['name']}? Tell us!",
+            f"Tag someone who needs to visit {city['name']}!",
+            f"What surprised you most about {city['name']}?",
+            f"What's one thing you love about {city['name']}?",
+            f"Share your {city['name']} story! 👇",
+            f"Who wants to visit {city['name']} with you?",
+            f"What's on your {city['name']} bucket list?"
+        ]
+        return random.choice(templates)
     
     def create_content_queue(self, days: int = 7) -> List[Dict]:
         """
@@ -429,26 +481,32 @@ class WorldtourGenerator:
 
 # Example usage and testing
 if __name__ == "__main__":
-    generator = WorldtourGenerator()
+    manager = WorldtourManager()
     
-    print("Worldtour Generator Test")
+    print("Worldtour Manager Test")
     print("=" * 60)
     
     # Get stats
-    stats = generator.get_stats()
+    stats = manager.get_stats()
     print(f"\nWorldtour Stats:")
     print(f"  Total cities: {stats['total_cities']}")
     print(f"  Visited: {stats['visited_cities']}")
     print(f"  Remaining: {stats['remaining_cities']}")
     
-    # Generate content for a city
+    # Generate content for a city with new personalities
     print(f"\nGenerating content for New York...")
-    content = generator.generate_city_content('new_york', 'the_professor', 'city_review')
+    content = manager.generate_city_content('new_york', 'the_professor', 'city_review')
     print(f"  Topic: {content['topic']}")
     print(f"  Fun facts: {content['fun_facts']}")
     
+    # Test community question
+    city = manager.get_city('tokyo')
+    if city:
+        question = manager.get_community_question(city)
+        print(f"\nCommunity question for Tokyo: {question}")
+    
     # Create weekly queue
     print(f"\nCreating 7-day content queue...")
-    queue = generator.create_content_queue(7)
+    queue = manager.create_content_queue(7)
     for item in queue[:3]:
         print(f"  {item['date'][:10]}: {item['city_name']} - {item['personality']} - {item['content_type']}")
