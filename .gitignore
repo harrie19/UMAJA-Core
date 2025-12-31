@@ -60,6 +60,11 @@ htmlcov/
 data/request_queue.json
 data/processed_requests.json
 
+# Output directories
+output/daily_smiles/
+output/multilingual/
+output/multilingual_example/
+
 # ============================================
 # MULTIMEDIA SYSTEM EXCLUSIONS
 # ============================================

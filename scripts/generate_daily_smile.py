@@ -16,7 +16,7 @@ Examples:
 import argparse
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 # Add src to path
@@ -37,7 +37,7 @@ def generate_smile(archetype_name: str = None, output_format: str = "text") -> d
     """
     engine = PersonalityEngine()
     smile_data = engine.generate_daily_smile(archetype_name)
-    smile_data["timestamp"] = datetime.utcnow().isoformat()
+    smile_data["timestamp"] = datetime.now(timezone.utc).isoformat()
     
     return smile_data
 
@@ -125,6 +125,9 @@ def main():
   python scripts/generate_daily_smile.py --archetype professor
   python scripts/generate_daily_smile.py --count 3 --format json
   python scripts/generate_daily_smile.py --save
+  python scripts/generate_daily_smile.py --multilingual
+  python scripts/generate_daily_smile.py --language es
+  python scripts/generate_daily_smile.py --export-platform tiktok
         """
     )
     
@@ -159,8 +162,36 @@ def main():
         help="Specific output filename (implies --save)"
     )
     
+    parser.add_argument(
+        "--multilingual",
+        action="store_true",
+        help="Generate content in all supported languages"
+    )
+    
+    parser.add_argument(
+        "--language",
+        help="Generate content in specific language (e.g., 'es', 'hi', 'ar')"
+    )
+    
+    parser.add_argument(
+        "--export-platform",
+        choices=["tiktok", "instagram", "youtube"],
+        help="Export content for specific platform"
+    )
+    
     args = parser.parse_args()
     
+    # Handle multilingual or language-specific generation
+    if args.multilingual or args.language:
+        generate_multilingual(args)
+        return
+    
+    # Handle platform export
+    if args.export_platform:
+        generate_with_platform_export(args)
+        return
+    
+    # Standard generation (original behavior)
     # Generate smiles
     print(f"\n🌟 Generating {args.count} Daily Smile(s)...\n")
     
@@ -181,6 +212,100 @@ def main():
             print(f"\n✅ Saved to: {filepath}")
     
     print("\n😊 Mission accomplished: Putting smiles on faces!\n")
+
+
+def generate_multilingual(args):
+    """Generate content in multiple languages"""
+    from global_translator import GlobalTranslator
+    
+    engine = PersonalityEngine()
+    translator = GlobalTranslator()
+    
+    # Determine which languages to use
+    if args.language:
+        if not translator.is_language_supported(args.language):
+            print(f"❌ Error: Unsupported language '{args.language}'")
+            print(f"Supported: {', '.join(translator.supported_languages.keys())}")
+            return
+        languages = [args.language]
+    else:
+        languages = list(translator.supported_languages.keys())
+    
+    print(f"\n🌍 Generating multilingual content ({len(languages)} languages)...\n")
+    
+    # Generate original smile
+    smile_data = engine.generate_daily_smile(args.archetype)
+    
+    # Translate
+    translations = translator.translate_smile(smile_data, languages)
+    
+    # Display results
+    for lang, content in translations.items():
+        lang_name = translator.supported_languages[lang]
+        print(f"\n{'='*70}")
+        print(f"🌍 {lang_name} ({lang.upper()})")
+        print(f"{'='*70}\n")
+        print(content['text'])
+        if content.get('hashtags'):
+            print(f"\nHashtags: {' '.join(content['hashtags'])}")
+        print()
+    
+    print("\n😊 Mission accomplished: Putting smiles on faces worldwide!\n")
+
+
+def generate_with_platform_export(args):
+    """Generate content with platform-specific export"""
+    from global_translator import GlobalTranslator
+    from platform_exporter import PlatformExporter
+    
+    engine = PersonalityEngine()
+    translator = GlobalTranslator()
+    exporter = PlatformExporter()
+    
+    print(f"\n📱 Generating content for {args.export_platform.upper()}...\n")
+    
+    # Generate original smile
+    smile_data = engine.generate_daily_smile(args.archetype)
+    
+    # Get language
+    language = args.language if args.language else 'en'
+    
+    # Translate if needed
+    if language != 'en':
+        translations = translator.translate_smile(smile_data, [language])
+        content = translations[language]
+    else:
+        content = {
+            'text': smile_data['content'],
+            'hashtags': translator._extract_hashtags(smile_data['content']),
+            'metadata': {
+                'personality': smile_data['personality'],
+                'tone': smile_data['tone'],
+                'traits': smile_data['traits']
+            }
+        }
+    
+    # Export for platform
+    if args.export_platform == 'tiktok':
+        export = exporter.export_for_tiktok(content, language)
+    elif args.export_platform == 'instagram':
+        export = exporter.export_for_instagram(content, language)
+    elif args.export_platform == 'youtube':
+        export = exporter.export_for_youtube(content, language)
+    
+    # Display export
+    print(f"Platform: {export['platform']}")
+    print(f"Language: {export['language']}")
+    print(f"\nCaption:\n{'-'*70}")
+    print(export.get('caption') or export.get('description'))
+    print(f"{'-'*70}\n")
+    
+    if 'title' in export:
+        print(f"Title: {export['title']}\n")
+    
+    print(f"Video Specs: {export['video_specs']}\n")
+    
+    print("\n😊 Mission accomplished: Content ready for platform!\n")
 
 
 if __name__ == "__main__":
