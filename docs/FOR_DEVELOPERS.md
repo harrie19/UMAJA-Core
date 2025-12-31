@@ -67,10 +67,12 @@ Vector-based personality archetypes.
 ## Tech Stack
 
 ### Core ML/NLP
-- **sentence-transformers** (2.2.2) - Semantic embeddings
-- **PyTorch** (2.1.2) - Deep learning
-- **transformers** (4.36.0) - NLP models
-- **scikit-learn** (1.3.2) - ML utilities
+- **sentence-transformers** - Semantic embeddings
+- **PyTorch** - Deep learning
+- **transformers** - NLP models
+- **scikit-learn** - ML utilities
+
+See `requirements.txt` for specific version requirements.
 
 ### Text Processing
 - **deep-translator** - Multi-language support

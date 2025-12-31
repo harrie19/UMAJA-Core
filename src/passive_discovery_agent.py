@@ -183,7 +183,7 @@ class PassiveDiscoveryAgent:
                     "No division by race, religion, nationality, class."
                 ),
                 "open_source_free": (
-                    "All code public. All content free. " "All channels simultaneous."
+                    "All code public. All content free. All channels simultaneous."
                 ),
             },
             "contact": {
