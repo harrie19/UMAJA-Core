@@ -89,7 +89,9 @@ class EmailSender:
             
             # Connect to SMTP server and send
             with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
-                server.starttls()
+                # Use starttls with certificate verification
+                context = __import__('ssl').create_default_context()
+                server.starttls(context=context)
                 server.login(self.smtp_user, self.smtp_password)
                 server.send_message(msg)
             

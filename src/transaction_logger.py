@@ -162,15 +162,14 @@ class TransactionLogger:
             - transaction_count: Number of transactions
             - transactions: List of all transactions
         """
+        import calendar
+        
         # Format date range
         start_date = f"{year}-{month:02d}-01"
         
         # Calculate end date (last day of month)
-        if month == 12:
-            end_date = f"{year}-{month:02d}-31"
-        else:
-            next_month = month + 1
-            end_date = f"{year}-{month:02d}-31"
+        last_day = calendar.monthrange(year, month)[1]
+        end_date = f"{year}-{month:02d}-{last_day:02d}"
         
         transactions = self.get_transactions_by_date_range(start_date, end_date)
         

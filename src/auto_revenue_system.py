@@ -127,6 +127,9 @@ class AutoRevenueSystem:
                 }
             
             # Store text data temporarily (would typically use Redis or database)
+            # TODO: For production, use Redis with expiration or database storage
+            # Example: redis_client.setex(f"text_data:{text_id}", 3600, json.dumps(text_result))
+            # This ensures data survives server restarts and prevents memory issues
             # For now, we'll rely on transaction logger
             temp_transaction = {
                 'text_id': text_id,

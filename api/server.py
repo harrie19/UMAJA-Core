@@ -34,6 +34,9 @@ revenue_system = AutoRevenueSystem()
 webhook_handler = WebhookHandler()
 
 # Store payment sessions temporarily (in production, use Redis or database)
+# TODO: For production deployment, replace with Redis or database storage
+# Example: redis_client.setex(payment_id, 3600, json.dumps(session_data))
+# This in-memory storage is only suitable for development/testing
 payment_sessions = {}
 
 
@@ -288,14 +291,20 @@ def paypal_webhook():
         
         logger.info("Received PayPal webhook")
         
-        # Verify signature (if configured)
-        if webhook_handler.webhook_secret:
-            if not webhook_handler.verify_webhook_signature(payload, signature):
-                logger.warning("Invalid webhook signature")
-                return jsonify({
-                    'success': False,
-                    'error': 'Invalid signature'
-                }), 401
+        # Verify signature (required for security)
+        if not webhook_handler.webhook_secret:
+            logger.error("WEBHOOK_SECRET not configured - rejecting webhook")
+            return jsonify({
+                'success': False,
+                'error': 'Webhook verification not configured'
+            }), 500
+        
+        if not webhook_handler.verify_webhook_signature(payload, signature):
+            logger.warning("Invalid webhook signature - possible attack attempt")
+            return jsonify({
+                'success': False,
+                'error': 'Invalid signature'
+            }), 401
         
         # Parse and handle webhook
         webhook_data = request.get_json()
