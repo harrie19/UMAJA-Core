@@ -168,7 +168,7 @@ class PersonalityEngine:
         Load templates for a specific personality.
         
         Args:
-            personality: One of 'john_cleese', 'c3po', 'robin_williams'
+            personality: One of 'the_professor', 'the_worrier', 'the_enthusiast'
             
         Returns:
             Dictionary of templates and markers
