@@ -98,6 +98,16 @@ OUTPUT_DIR=output/daily_smiles
 OUTPUT_FORMAT=text
 ```
 
+### Run
+
+```bash
+# Local development
+python api/simple_server.py
+
+# Production / deployment (Railway, Heroku, etc.)
+gunicorn --bind 0.0.0.0:$PORT wsgi:app
+```
+
 ## 📌 Project Status
 
 Brief overview of what has been built, why progress paused, and whether anything is live: [docs/STATUS.md](docs/STATUS.md).
