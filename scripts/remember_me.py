@@ -11,10 +11,8 @@ Usage:
     python scripts/remember_me.py --platform copilot|chatgpt|claude
 """
 
-import os
 import sys
 from pathlib import Path
-from datetime import datetime
 
 def load_creator_context() -> str:
     """Load CREATOR.md and format for AI consumption"""
@@ -39,14 +37,16 @@ def get_recent_activity() -> str:
         commits = subprocess.run(
             ['git', 'log', '--oneline', '-3'],
             capture_output=True,
-            text=True
+            text=True,
+            check=False
         ).stdout
         
         # Get current branch
         branch = subprocess.run(
             ['git', 'branch', '--show-current'],
             capture_output=True,
-            text=True
+            text=True,
+            check=False
         ).stdout.strip()
         
         return f"""
@@ -59,7 +59,7 @@ def get_recent_activity() -> str:
 {commits}
 ```
 """
-    except:
+    except (subprocess.SubprocessError, FileNotFoundError, PermissionError):
         return ""
 
 def format_for_copilot(full_context: str, brief: bool = False) -> str:
@@ -108,13 +108,19 @@ What would you like to work on today?
 """
 
 def format_for_chatgpt(full_context: str, brief: bool = False) -> str:
-    """Format context for ChatGPT"""
-    # Similar to Copilot but with platform-specific adjustments
+    """Format context for ChatGPT
+    
+    Note: Currently identical to Copilot format. Platform-specific
+    optimizations can be added here in the future if needed.
+    """
     return format_for_copilot(full_context, brief)
 
 def format_for_claude(full_context: str, brief: bool = False) -> str:
-    """Format context for Claude"""
-    # Similar but optimized for Claude's style
+    """Format context for Claude
+    
+    Note: Currently identical to Copilot format. Platform-specific
+    optimizations can be added here in the future if needed.
+    """
     return format_for_copilot(full_context, brief)
 
 def main():
@@ -127,7 +133,14 @@ def main():
     if '--platform' in sys.argv:
         idx = sys.argv.index('--platform')
         if idx + 1 < len(sys.argv):
-            platform = sys.argv[idx + 1]
+            requested_platform = sys.argv[idx + 1]
+            # Validate platform
+            valid_platforms = ['copilot', 'chatgpt', 'claude']
+            if requested_platform in valid_platforms:
+                platform = requested_platform
+            else:
+                print(f"⚠️  Unknown platform '{requested_platform}'. Using 'copilot'.")
+                print(f"Valid platforms: {', '.join(valid_platforms)}")
     
     # Load context
     full_context = load_creator_context()
