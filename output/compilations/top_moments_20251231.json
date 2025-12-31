@@ -1,0 +1,26 @@
+{
+  "title": "\ud83c\udf1f Top 10 Smiles - Week of 2025-12-31",
+  "period_days": 7,
+  "clips_count": 2,
+  "duration_seconds": 90,
+  "format": "vertical_video",
+  "created_at": "2025-12-31T16:16:54.733199",
+  "clips": [
+    {
+      "rank": 1,
+      "city_id": "new_york",
+      "city_name": "New York",
+      "engagement_score": 1.05,
+      "duration": 8,
+      "text_overlay": "#1 - New York"
+    },
+    {
+      "rank": 2,
+      "city_id": "london",
+      "city_name": "London",
+      "engagement_score": 1.02,
+      "duration": 8,
+      "text_overlay": "#2 - London"
+    }
+  ]
+}

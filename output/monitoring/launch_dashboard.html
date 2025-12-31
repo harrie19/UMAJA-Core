@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 UMAJA World Tour - Launch Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .stat-value {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+        .timeline {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .timeline-time {
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 120px;
+        }
+        .timeline-city {
+            flex: 1;
+        }
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .status-scheduled { background: #fbbf24; color: #78350f; }
+        .status-live { background: #10b981; color: #064e3b; }
+        .status-complete { background: #3b82f6; color: #1e3a8a; }
+        .refresh-notice {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .metric-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 UMAJA World Tour Launch Dashboard</h1>
+        <p class="subtitle">Real-time monitoring of Global Smile Day</p>
+        
+        <div class="refresh-notice">
+            📡 Dashboard updates every 10 seconds • Last updated: <span id="last-update">16:16:54 UTC</span>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Posts</div>
+                <div class="stat-value">100</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cities</div>
+                <div class="stat-value">10</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Languages</div>
+                <div class="stat-value">5</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Platforms</div>
+                <div class="stat-value">2</div>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <h2>🚀 Live Timeline</h2>
+            <div id="timeline-content">
+                <div class="timeline-item">
+                    <span class="timeline-time">00:00 UTC</span>
+                    <span class="timeline-city">Launch begins...</span>
+                    <span class="status-badge status-scheduled">SCHEDULED</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">02:00 UTC</span>
+                    <span class="timeline-city">Tokyo • TikTok</span>
+                    <span class="status-badge status-scheduled">SCHEDULED</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-time">04:00 UTC</span>
+                    <span class="timeline-city">Sydney • Instagram</span>
+                    <span class="status-badge status-scheduled">SCHEDULED</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-title">📈 Total Engagement</div>
+                <div class="metric-value">0</div>
+                <p style="opacity: 0.7;">Views • Likes • Shares</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">🔥 Viral Posts</div>
+                <div class="metric-value">0</div>
+                <p style="opacity: 0.7;">Posts > 100k views</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">😊 Sentiment</div>
+                <div class="metric-value">95%</div>
+                <p style="opacity: 0.7;">Positive comments</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh every 10 seconds
+        setInterval(function() {
+            document.getElementById('last-update').textContent = new Date().toUTCString();
+            // In production, this would fetch real data
+        }, 10000);
+    </script>
+</body>
+</html>

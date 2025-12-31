@@ -1,0 +1,37 @@
+{
+  "title": "\ud83c\udf0d UMAJA World Tour - 2 Cities in 24 Hours",
+  "date": "2026-01-01",
+  "duration_seconds": 60,
+  "cities_count": 2,
+  "cities": [
+    "new_york",
+    "london"
+  ],
+  "format": "vertical_video",
+  "resolution": "1080x1920",
+  "music": "upbeat_instrumental",
+  "created_at": "2025-12-31T16:16:54.732906",
+  "clips": [
+    {
+      "city_id": "new_york",
+      "city_name": "New York",
+      "start_time": 0.0,
+      "duration": 30.0,
+      "transition": null,
+      "text_overlay": "NEW YORK"
+    },
+    {
+      "city_id": "london",
+      "city_name": "London",
+      "start_time": 30.0,
+      "duration": 30.0,
+      "transition": "fade",
+      "text_overlay": "LONDON"
+    }
+  ],
+  "outro": {
+    "text": "Thank You for Smiling With Us! \ud83d\ude0a",
+    "duration": 3,
+    "background": "gradient"
+  }
+}

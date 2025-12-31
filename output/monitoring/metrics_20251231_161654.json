@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-12-31T16:16:54.732308",
+  "total_reach": 0,
+  "total_engagement": 0,
+  "viral_posts": 0,
+  "sentiment": {
+    "positive": 0,
+    "neutral": 0,
+    "negative": 0
+  },
+  "by_platform": {
+    "tiktok": {
+      "views": 0,
+      "likes": 0,
+      "shares": 0
+    },
+    "instagram": {
+      "views": 0,
+      "likes": 0,
+      "shares": 0
+    },
+    "youtube": {
+      "views": 0,
+      "likes": 0,
+      "shares": 0
+    }
+  },
+  "by_language": {},
+  "trending_hashtags": [],
+  "top_performing_cities": []
+}
