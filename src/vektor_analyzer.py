@@ -5,7 +5,7 @@ Using Sentence Transformers for semantic similarity analysis
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -248,7 +248,7 @@ class VektorAnalyzer:
         
         return pairs[:top_k]
     
-    def analyze_coherence(self, text: str, theme: str) -> Dict[str, any]:
+    def analyze_coherence(self, text: str, theme: str) -> Dict[str, Any]:
         """
         Analyze the coherence of text with respect to a theme.
         

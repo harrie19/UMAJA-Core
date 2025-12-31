@@ -48,15 +48,34 @@ jobs:
           python << 'PYTHON_SCRIPT'
           import sys
           import json
+          import re
           sys.path.insert(0, '.')
           
           from src.rauschen_generator import RauschenGenerator
           from src.vektor_analyzer import VektorAnalyzer
           
-          # Get inputs
+          # Get inputs with validation
           topic = "${{ github.event.inputs.topic }}"
           length = "${{ github.event.inputs.length }}"
-          noise_level = float("${{ github.event.inputs.noise_level }}")
+          noise_level_str = "${{ github.event.inputs.noise_level }}"
+          
+          # Validate inputs
+          if not topic or len(topic) > 200:
+              print("❌ Error: Topic must be between 1 and 200 characters")
+              sys.exit(1)
+          
+          if length not in ['short', 'long']:
+              print("❌ Error: Length must be 'short' or 'long'")
+              sys.exit(1)
+          
+          try:
+              noise_level = float(noise_level_str)
+              if noise_level < 0.0 or noise_level > 1.0:
+                  print("❌ Error: Noise level must be between 0.0 and 1.0")
+                  sys.exit(1)
+          except ValueError:
+              print("❌ Error: Noise level must be a valid number")
+              sys.exit(1)
           
           print("="*80)
           print("🎨 UMAJA-Core Text Generation")
