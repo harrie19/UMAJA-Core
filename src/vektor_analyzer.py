@@ -310,39 +310,27 @@ class VektorAnalyzer:
         sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z])', text)
         sentences = [s.strip() for s in sentences if s.strip()]
         
+        # Calculate theme similarity (common for both branches)
+        embeddings = self.encode_texts([theme, text])
+        theme_similarity = self._clamp_to_unit_range(
+            self.cosine_similarity(embeddings[0], embeddings[1])
+        )
+        
         # Edge case: single sentence
         if len(sentences) == 1:
-            # Calculate theme similarity
-            embeddings = self.encode_texts([theme, text])
-            theme_similarity = self._clamp_to_unit_range(
-                self.cosine_similarity(embeddings[0], embeddings[1])
-            )
-            
             # For single sentence, treat inter-sentence coherence as perfect
             avg_inter_sentence_coherence = 1.0
-            
-            # Calculate weighted score
-            overall_score = self._calculate_overall_score(
-                theme_similarity, avg_inter_sentence_coherence
-            )
-            
         else:
-            # Calculate theme similarity
-            embeddings = self.encode_texts([theme, text])
-            theme_similarity = self._clamp_to_unit_range(
-                self.cosine_similarity(embeddings[0], embeddings[1])
-            )
-            
             # Calculate inter-sentence coherence
             coherence_metrics = self.semantic_coherence_score(sentences)
             avg_inter_sentence_coherence = self._clamp_to_unit_range(
                 coherence_metrics['mean_similarity']
             )
-            
-            # Calculate weighted score
-            overall_score = self._calculate_overall_score(
-                theme_similarity, avg_inter_sentence_coherence
-            )
+        
+        # Calculate weighted score
+        overall_score = self._calculate_overall_score(
+            theme_similarity, avg_inter_sentence_coherence
+        )
         
         # Assign quality rating based on thresholds
         if overall_score >= 0.7:
