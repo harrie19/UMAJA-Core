@@ -37,7 +37,7 @@ class VideoGenerator:
     Supports lyric-style videos and avatar videos with lip-sync.
     """
     
-    PERSONALITIES = ['john_cleese', 'c3po', 'robin_williams']
+    PERSONALITIES = ['the_professor', 'the_worrier', 'the_enthusiast']
     
     def __init__(self, output_dir: str = "static/videos"):
         """
@@ -51,26 +51,26 @@ class VideoGenerator:
         
         # Personality-themed backgrounds and styles
         self.video_themes = {
-            'john_cleese': {
-                'bg_color': (45, 52, 54),
+            'the_professor': {
+                'bg_color': (52, 73, 94),  # Scholarly blue-gray
                 'text_color': (236, 240, 241),
-                'accent_color': (231, 76, 60),
-                'font': 'Arial',
-                'font_size': 60,
-                'animation_style': 'subtle'
-            },
-            'c3po': {
-                'bg_color': (44, 62, 80),
-                'text_color': (241, 196, 15),
                 'accent_color': (52, 152, 219),
                 'font': 'Arial',
                 'font_size': 60,
-                'animation_style': 'technical'
+                'animation_style': 'thoughtful'
             },
-            'robin_williams': {
-                'bg_color': (230, 126, 34),
-                'text_color': (255, 255, 255),
-                'accent_color': (155, 89, 182),
+            'the_worrier': {
+                'bg_color': (149, 165, 166),  # Gentle gray
+                'text_color': (44, 62, 80),
+                'accent_color': (127, 140, 141),
+                'font': 'Arial',
+                'font_size': 58,
+                'animation_style': 'gentle'
+            },
+            'the_enthusiast': {
+                'bg_color': (241, 196, 15),  # Bright yellow
+                'text_color': (44, 62, 80),
+                'accent_color': (230, 126, 34),
                 'font': 'Arial',
                 'font_size': 65,
                 'animation_style': 'energetic'
@@ -227,7 +227,7 @@ class VideoGenerator:
     def create_lyric_video(self,
                           text: str,
                           audio_path: str,
-                          personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                          personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                           background_image: Optional[str] = None) -> Dict:
         """
         Create lyric-style video with text synced to audio.
@@ -296,7 +296,7 @@ class VideoGenerator:
     def create_avatar_video(self,
                            text: str,
                            audio_path: str,
-                           personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                           personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                            avatar_image: Optional[str] = None) -> Dict:
         """
         Create avatar video with lip-sync (requires Wav2Lip model).
@@ -322,7 +322,7 @@ class VideoGenerator:
     def create_slideshow_video(self,
                               images: List[str],
                               audio_path: str,
-                              personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                              personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                               transition_duration: float = 1.0) -> Dict:
         """
         Create slideshow video from multiple images with audio.
