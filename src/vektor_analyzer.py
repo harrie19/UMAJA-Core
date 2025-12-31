@@ -249,6 +249,18 @@ class VektorAnalyzer:
         
         return pairs[:top_k]
     
+    def _clamp_to_unit_range(self, value: float) -> float:
+        """
+        Clamp a value to the range [0.0, 1.0].
+        
+        Args:
+            value: Value to clamp
+            
+        Returns:
+            Clamped value between 0.0 and 1.0
+        """
+        return max(0.0, min(1.0, float(value)))
+    
     def analyze_coherence(self, text: str, theme: str) -> Dict[str, Any]:
         """
         Analyze text coherence with respect to a theme.
@@ -274,14 +286,18 @@ class VektorAnalyzer:
             }
         
         # Split text into sentences using regex
-        sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
+        # Use pattern that handles common abbreviations and decimals better
+        # Split on sentence-ending punctuation followed by whitespace and capital letter
+        sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z])', text)
+        sentences = [s.strip() for s in sentences if s.strip()]
         
         # Edge case: single sentence
         if len(sentences) == 1:
             # Calculate theme similarity
             embeddings = self.encode_texts([theme, text])
-            theme_similarity = float(self.cosine_similarity(embeddings[0], embeddings[1]))
-            theme_similarity = max(0.0, min(1.0, theme_similarity))  # Clamp to [0, 1]
+            theme_similarity = self._clamp_to_unit_range(
+                self.cosine_similarity(embeddings[0], embeddings[1])
+            )
             
             # For single sentence, treat inter-sentence coherence as perfect
             avg_inter_sentence_coherence = 1.0
@@ -292,13 +308,15 @@ class VektorAnalyzer:
         else:
             # Calculate theme similarity
             embeddings = self.encode_texts([theme, text])
-            theme_similarity = float(self.cosine_similarity(embeddings[0], embeddings[1]))
-            theme_similarity = max(0.0, min(1.0, theme_similarity))  # Clamp to [0, 1]
+            theme_similarity = self._clamp_to_unit_range(
+                self.cosine_similarity(embeddings[0], embeddings[1])
+            )
             
             # Calculate inter-sentence coherence
             coherence_metrics = self.semantic_coherence_score(sentences)
-            avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
-            avg_inter_sentence_coherence = max(0.0, min(1.0, avg_inter_sentence_coherence))  # Clamp to [0, 1]
+            avg_inter_sentence_coherence = self._clamp_to_unit_range(
+                coherence_metrics['mean_similarity']
+            )
             
             # Calculate weighted score
             overall_score = theme_similarity * 0.6 + avg_inter_sentence_coherence * 0.4
@@ -338,9 +356,7 @@ class VektorAnalyzer:
         similarity = self.cosine_similarity(embeddings[0], embeddings[1])
         
         # Clamp to [0, 1]
-        similarity = max(0.0, min(1.0, float(similarity)))
-        
-        return similarity
+        return self._clamp_to_unit_range(similarity)
 
 
 def main():

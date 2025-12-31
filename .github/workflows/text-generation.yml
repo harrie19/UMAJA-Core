@@ -15,7 +15,6 @@ on:
         type: choice
         options:
           - short
-          - medium
           - long
       noise_level:
         description: 'Noise level (0.0-1.0) for text variation'
@@ -68,8 +67,8 @@ jobs:
           print(f"✅ Topic length: {len(topic)} chars")
           
           # Validate length choice
-          if length not in ['short', 'medium', 'long']:
-              print(f"❌ Invalid length: {length} (must be short, medium, or long)")
+          if length not in ['short', 'long']:
+              print(f"❌ Invalid length: {length} (must be short or long)")
               sys.exit(1)
           print(f"✅ Length: {length}")
           
@@ -106,10 +105,6 @@ jobs:
           topic = os.environ.get('INPUT_TOPIC', 'artificial intelligence')
           length = os.environ.get('INPUT_LENGTH', 'short')
           noise_level = float(os.environ.get('INPUT_NOISE_LEVEL', '0.3'))
-          
-          # Map medium to short (RauschenGenerator only supports short/long)
-          if length == 'medium':
-              length = 'short'
           
           print("="*60)
           print("🎨 Generating Text")
