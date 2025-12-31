@@ -27,6 +27,10 @@ jobs:
     name: Generate Daily Worldtour Content
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      actions: write
+    
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
@@ -124,6 +128,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: generate-content
     if: always()
+    
+    permissions:
+      contents: read
     
     steps:
       - name: 📢 Success notification
