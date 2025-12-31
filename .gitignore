@@ -87,3 +87,15 @@ temp_generation/
 # City database (if contains sensitive data)
 data/sales.json
 data/analytics.json
+
+# ============================================
+# WORLD TOUR AUTOMATION OUTPUT
+# ============================================
+
+# Generated output files
+output/world_tour/
+output/monitoring/
+output/safety/
+output/cache/
+output/compilations/
+output/daily_smiles/

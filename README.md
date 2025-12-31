@@ -4,6 +4,29 @@
 
 UMAJA-Core is a friendly personality engine designed to create warm, engaging content that brings joy to communities. Using friendly archetypes instead of impersonations, we focus on authentic connection and spreading smiles through relatable moments and genuine warmth.
 
+## 🌍 NEW: World Tour Automation
+
+**One command to launch 1200+ posts across 50 cities, 8 languages, and 3 platforms!**
+
+```bash
+# Test with dry run
+python scripts/launch_world_tour.py --dry-run
+
+# Full global launch
+python scripts/launch_world_tour.py --go-live --monitor
+```
+
+**Features:**
+- ⚡ **10× Faster** - Parallel processing for rapid generation
+- 🌐 **8 Languages** - Automatic translation and cultural adaptation
+- 📱 **3 Platforms** - TikTok, Instagram, YouTube optimized
+- 🕐 **Smart Scheduling** - Timezone-aware optimal posting times
+- ✅ **Quality Assurance** - Automated content validation
+- 📊 **Real-Time Monitoring** - Live dashboard and metrics
+- 🔒 **Safety First** - Dry-run mode, confirmations, emergency stop
+
+See [docs/WORLD_TOUR_AUTOMATION.md](docs/WORLD_TOUR_AUTOMATION.md) for complete guide.
+
 ## 🌟 Our Friendly Archetypes
 
 We've moved away from impersonating real people to create original, friendly personality archetypes:
