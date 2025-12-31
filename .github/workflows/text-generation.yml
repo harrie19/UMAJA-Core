@@ -1,0 +1,174 @@
+name: Text Generation Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic for text generation'
+        required: true
+        type: string
+        default: 'artificial intelligence'
+      length:
+        description: 'Length of generated text'
+        required: true
+        type: choice
+        options:
+          - short
+          - long
+        default: 'short'
+      noise_level:
+        description: 'Noise level (0.0 to 1.0)'
+        required: true
+        type: string
+        default: '0.3'
+
+jobs:
+  generate-text:
+    name: Generate Text with Quality Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🎨 Generate Text
+        id: generate
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import json
+          sys.path.insert(0, '.')
+          
+          from src.rauschen_generator import RauschenGenerator
+          from src.vektor_analyzer import VektorAnalyzer
+          
+          # Get inputs
+          topic = "${{ github.event.inputs.topic }}"
+          length = "${{ github.event.inputs.length }}"
+          noise_level = float("${{ github.event.inputs.noise_level }}")
+          
+          print("="*80)
+          print("🎨 UMAJA-Core Text Generation")
+          print("="*80)
+          print(f"Topic: {topic}")
+          print(f"Length: {length}")
+          print(f"Noise Level: {noise_level}")
+          print("="*80)
+          print()
+          
+          # Generate text
+          print("📝 Generating text...")
+          generator = RauschenGenerator()
+          result = generator.generate_reflection(topic, length, noise_level)
+          
+          print(f"✅ Generated {result['word_count']} words")
+          print()
+          
+          # Analyze quality
+          print("🔍 Analyzing quality...")
+          analyzer = VektorAnalyzer()
+          analysis = analyzer.analyze_coherence(result['text'], topic)
+          
+          print(f"✅ Quality: {analysis['quality']}")
+          print(f"   - Theme Similarity: {analysis['theme_similarity']:.3f}")
+          print(f"   - Inter-sentence Coherence: {analysis['avg_inter_sentence_coherence']:.3f}")
+          print(f"   - Overall Score: {analysis['overall_score']:.3f}")
+          print()
+          
+          # Save results to file
+          print("💾 Saving results...")
+          
+          output = {
+              'generation': {
+                  'topic': topic,
+                  'length': length,
+                  'noise_level': noise_level,
+                  'text_id': result['text_id'],
+                  'word_count': result['word_count'],
+                  'price': result['price'],
+                  'timestamp': result['timestamp']
+              },
+              'quality_analysis': analysis,
+              'generated_text': result['text']
+          }
+          
+          # Write to output file
+          with open('generated_text_output.json', 'w') as f:
+              json.dump(output, f, indent=2)
+          
+          # Write text to separate file for easy reading
+          with open('generated_text.txt', 'w') as f:
+              f.write(f"Topic: {topic}\n")
+              f.write(f"Length: {length} ({result['word_count']} words)\n")
+              f.write(f"Noise Level: {noise_level}\n")
+              f.write(f"Quality: {analysis['quality']} (score: {analysis['overall_score']:.3f})\n")
+              f.write(f"Text ID: {result['text_id']}\n")
+              f.write(f"Timestamp: {result['timestamp']}\n")
+              f.write(f"Price: ${result['price']:.2f}\n")
+              f.write("="*80 + "\n\n")
+              f.write(result['text'])
+              f.write("\n\n" + "="*80 + "\n")
+              f.write(f"\nQuality Analysis:\n")
+              f.write(f"  - Quality Rating: {analysis['quality']}\n")
+              f.write(f"  - Theme Similarity: {analysis['theme_similarity']:.3f}\n")
+              f.write(f"  - Inter-sentence Coherence: {analysis['avg_inter_sentence_coherence']:.3f}\n")
+              f.write(f"  - Overall Score: {analysis['overall_score']:.3f}\n")
+          
+          print("✅ Results saved to:")
+          print("   - generated_text_output.json (structured data)")
+          print("   - generated_text.txt (human-readable)")
+          print()
+          
+          # Print the generated text
+          print("="*80)
+          print("📖 GENERATED TEXT")
+          print("="*80)
+          print()
+          print(result['text'])
+          print()
+          print("="*80)
+          print(f"✅ Generation Complete!")
+          print(f"   Quality: {analysis['quality']} | Score: {analysis['overall_score']:.3f}")
+          print("="*80)
+          PYTHON_SCRIPT
+      
+      - name: 📊 Display Results Summary
+        run: |
+          echo "==================================="
+          echo "📊 TEXT GENERATION SUMMARY"
+          echo "==================================="
+          echo ""
+          cat generated_text.txt
+          echo ""
+          echo "==================================="
+      
+      - name: 📦 Upload Generated Text Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-text-${{ github.run_number }}
+          path: |
+            generated_text.txt
+            generated_text_output.json
+          retention-days: 30
+      
+      - name: ✅ Generation Complete
+        run: |
+          echo "🎉 Text generation workflow completed successfully!"
+          echo ""
+          echo "📥 Download the generated text from the Artifacts section above"
+          echo ""
+          echo "Details:"
+          echo "  - Topic: ${{ github.event.inputs.topic }}"
+          echo "  - Length: ${{ github.event.inputs.length }}"
+          echo "  - Noise Level: ${{ github.event.inputs.noise_level }}"
