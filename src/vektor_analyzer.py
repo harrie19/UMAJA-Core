@@ -4,8 +4,9 @@ Using Sentence Transformers for semantic similarity analysis
 """
 
 import numpy as np
+import re
 from sentence_transformers import SentenceTransformer
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Union
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -248,7 +249,7 @@ class VektorAnalyzer:
         
         return pairs[:top_k]
     
-    def analyze_coherence(self, text: str, theme: str) -> Dict[str, float]:
+    def analyze_coherence(self, text: str, theme: str) -> Dict[str, Union[str, float]]:
         """
         Analyze the coherence of text relative to a theme.
         
@@ -272,7 +273,6 @@ class VektorAnalyzer:
             }
         
         # Split text into sentences (simple split by period, exclamation, question mark)
-        import re
         sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
         
         if not sentences:
@@ -345,8 +345,9 @@ class VektorAnalyzer:
         # Calculate cosine similarity
         similarity = self.cosine_similarity(embeddings[0], embeddings[1])
         
-        # Ensure result is in [0, 1] range (cosine similarity can be [-1, 1])
-        # In practice, sentence-transformers embeddings give [0, 1] range
+        # Clamp result to [0, 1] range. While sentence-transformers typically produce
+        # embeddings that result in positive cosine similarity values, we ensure the
+        # range for safety and consistency with the expected return type.
         similarity = max(0.0, min(1.0, float(similarity)))
         
         return similarity
