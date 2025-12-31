@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bundle Builder - UMAJA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 { color: #667eea; text-align: center; margin-bottom: 2rem; }
+        .step { margin-bottom: 2rem; padding: 1.5rem; background: #f5f7fa; border-radius: 10px; }
+        .step h2 { color: #667eea; margin-bottom: 1rem; }
+        .personality-grid, .content-grid, .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .option {
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .option.selected { border-color: #667eea; background: #f0f4ff; }
+        .option .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+        .price-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .price-display h2 { margin-bottom: 1rem; }
+        .price-display .total { font-size: 3rem; font-weight: bold; }
+        .price-display .savings { color: #4ade80; font-size: 1.2rem; margin-top: 0.5rem; }
+        .create-button {
+            width: 100%;
+            background: #ff6b6b;
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .create-button:hover { background: #ee5a5a; transform: translateY(-2px); }
+        label { display: block; margin: 0.5rem 0; cursor: pointer; }
+        input[type="checkbox"], input[type="radio"] { margin-right: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Create Your Custom Comedy Package</h1>
+        
+        <!-- Step 1: Personality -->
+        <div class="step">
+            <h2>Step 1: Choose Your Comedian</h2>
+            <div class="personality-grid">
+                <div class="option" onclick="selectPersonality('john_cleese')">
+                    <div class="emoji">🎩</div>
+                    <strong>John Cleese</strong>
+                    <p>Dry British wit</p>
+                </div>
+                <div class="option" onclick="selectPersonality('c3po')">
+                    <div class="emoji">🤖</div>
+                    <strong>C-3PO</strong>
+                    <p>Protocol droid</p>
+                </div>
+                <div class="option" onclick="selectPersonality('robin_williams')">
+                    <div class="emoji">🎪</div>
+                    <strong>Robin Williams</strong>
+                    <p>Energetic improv</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Content Types -->
+        <div class="step">
+            <h2>Step 2: Choose Content Types</h2>
+            <div class="content-grid">
+                <label class="option">
+                    <input type="checkbox" name="content" value="text" onchange="updatePrice()">
+                    <div class="emoji">📝</div>
+                    <strong>Text</strong>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="content" value="audio" onchange="updatePrice()">
+                    <div class="emoji">🎙️</div>
+                    <strong>Audio</strong>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="content" value="image" onchange="updatePrice()">
+                    <div class="emoji">🖼️</div>
+                    <strong>Image</strong>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="content" value="video" onchange="updatePrice()">
+                    <div class="emoji">🎬</div>
+                    <strong>Video</strong>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Step 3: Extras -->
+        <div class="step">
+            <h2>Step 3: Add Extras (Optional)</h2>
+            <div class="extras-grid">
+                <label class="option">
+                    <input type="checkbox" name="extra" value="commercial_license" onchange="updatePrice()">
+                    <strong>Commercial License</strong>
+                    <p>+€10</p>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="extra" value="rush_delivery" onchange="updatePrice()">
+                    <strong>Rush Delivery</strong>
+                    <p>+€8</p>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="extra" value="branding" onchange="updatePrice()">
+                    <strong>Custom Branding</strong>
+                    <p>+€5</p>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Price Display -->
+        <div class="price-display">
+            <h2>Your Total</h2>
+            <div class="total" id="total-price">€0.00</div>
+            <div class="savings" id="savings-message"></div>
+            <p style="margin-top: 1rem; opacity: 0.9;">40% of profits go to charity 💚</p>
+        </div>
+        
+        <button class="create-button" onclick="createPurchase()">Create My Comedy Package 🎭</button>
+        
+        <div id="result-message" style="margin-top: 1rem; text-align: center; font-size: 1.1rem;"></div>
+    </div>
+
+    <script>
+        let selectedPersonality = null;
+        
+        function selectPersonality(personality) {
+            selectedPersonality = personality;
+            document.querySelectorAll('.personality-grid .option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.closest('.option').classList.add('selected');
+            updatePrice();
+        }
+        
+        async function updatePrice() {
+            if (!selectedPersonality) return;
+            
+            const contentTypes = Array.from(document.querySelectorAll('input[name="content"]:checked'))
+                .map(cb => cb.value);
+            const extras = Array.from(document.querySelectorAll('input[name="extra"]:checked'))
+                .map(cb => cb.value);
+            
+            if (contentTypes.length === 0) {
+                document.getElementById('total-price').textContent = '€0.00';
+                document.getElementById('savings-message').textContent = '';
+                return;
+            }
+            
+            // Map content types to bundle tiers
+            let items = [];
+            if (contentTypes.length === 1 && contentTypes[0] === 'text') {
+                items = ['text_only'];
+            } else if (contentTypes.length === 1 && contentTypes[0] === 'audio') {
+                items = ['audio_only'];
+            } else if (contentTypes.length === 2 && contentTypes.includes('text') && contentTypes.includes('audio')) {
+                items = ['text_audio'];
+            } else if (contentTypes.length >= 3) {
+                items = ['standard_bundle'];
+            } else {
+                items = ['text_only'];
+            }
+            
+            try {
+                const response = await fetch('/api/bundle/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items, extras })
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('total-price').textContent = `€${data.total.toFixed(2)}`;
+                
+                if (data.savings_message) {
+                    document.getElementById('savings-message').textContent = data.savings_message;
+                } else {
+                    document.getElementById('savings-message').textContent = '';
+                }
+                
+            } catch (error) {
+                console.error('Price calculation failed:', error);
+            }
+        }
+        
+        async function createPurchase() {
+            const messageDiv = document.getElementById('result-message');
+            
+            if (!selectedPersonality) {
+                messageDiv.textContent = '⚠️ Please select a comedian';
+                messageDiv.style.color = '#ff6b6b';
+                return;
+            }
+            
+            const contentTypes = Array.from(document.querySelectorAll('input[name="content"]:checked'))
+                .map(cb => cb.value);
+            
+            if (contentTypes.length === 0) {
+                messageDiv.textContent = '⚠️ Please select at least one content type';
+                messageDiv.style.color = '#ff6b6b';
+                return;
+            }
+            
+            const email = prompt('Enter your email address:');
+            if (!email) return;
+            
+            const topic = prompt('What topic would you like comedy about?');
+            if (!topic) return;
+            
+            messageDiv.textContent = '⏳ Creating your package... This may take a minute...';
+            messageDiv.style.color = '#667eea';
+            
+            const extras = Array.from(document.querySelectorAll('input[name="extra"]:checked'))
+                .map(cb => cb.value);
+            
+            try {
+                const response = await fetch('/api/create-multimedia-sale', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        topic,
+                        personality: selectedPersonality,
+                        content_types: contentTypes,
+                        extras,
+                        length: 'medium',
+                        style_intensity: 0.7
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.innerHTML = `✅ Package created!<br><a href="${data.download_url}" style="color: #667eea;">Download here</a>`;
+                    messageDiv.style.color = '#28a745';
+                } else {
+                    messageDiv.textContent = '❌ Creation failed: ' + (data.errors?.[0] || 'Unknown error');
+                    messageDiv.style.color = '#ff6b6b';
+                }
+                
+            } catch (error) {
+                console.error('Purchase failed:', error);
+                messageDiv.textContent = '❌ Creation failed: ' + error.message;
+                messageDiv.style.color = '#ff6b6b';
+            }
+        }
+    </script>
+</body>
+</html>
