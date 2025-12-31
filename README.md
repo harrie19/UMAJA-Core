@@ -126,6 +126,21 @@ python scripts/generate_daily_smile.py --count 3 --save
 python scripts/generate_daily_smile.py --output my_smile.txt
 ```
 
+## ⚙️ GitHub Actions Workflows
+
+### 🎨 On-Demand Text Generation (`text-generation.yml`)
+Generate text directly from GitHub's Actions tab!
+
+- **Trigger**: Manual workflow_dispatch
+- **Inputs**: topic, length (short/long), noise_level (0.0-1.0)
+- **Output**: Generated text with quality analysis as downloadable artifact
+
+**To use:**
+1. Go to Actions → Text Generation Workflow
+2. Click "Run workflow"
+3. Enter your parameters
+4. Download the generated text from Artifacts
+
 ## 🎯 Design Philosophy
 
 ### Why Archetypes Instead of Impersonations?

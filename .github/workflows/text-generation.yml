@@ -1,0 +1,312 @@
+name: Text Generation Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic for text generation'
+        required: true
+        default: 'artificial intelligence'
+        type: string
+      length:
+        description: 'Length of generated text'
+        required: true
+        default: 'short'
+        type: choice
+        options:
+          - short
+          - long
+      noise_level:
+        description: 'Noise level (0.0-1.0)'
+        required: true
+        default: '0.3'
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  generate-text:
+    name: Generate Text with Quality Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: ✅ Validate inputs
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          
+          topic = "${{ github.event.inputs.topic }}"
+          noise_level = "${{ github.event.inputs.noise_level }}"
+          
+          # Validate topic length (1-200 chars)
+          if len(topic) < 1 or len(topic) > 200:
+              print(f"❌ Error: Topic length must be between 1-200 characters (got {len(topic)})")
+              sys.exit(1)
+          
+          print(f"✅ Topic length valid: {len(topic)} characters")
+          
+          # Validate noise_level (0.0-1.0)
+          try:
+              noise = float(noise_level)
+              if noise < 0.0 or noise > 1.0:
+                  print(f"❌ Error: Noise level must be between 0.0-1.0 (got {noise})")
+                  sys.exit(1)
+              print(f"✅ Noise level valid: {noise}")
+          except ValueError:
+              print(f"❌ Error: Noise level must be a number (got '{noise_level}')")
+              sys.exit(1)
+          
+          print()
+          print("="*60)
+          print("📋 Generation Parameters")
+          print("="*60)
+          print(f"Topic: {topic}")
+          print(f"Length: ${{ github.event.inputs.length }}")
+          print(f"Noise Level: {noise}")
+          print("="*60)
+          print()
+          PYTHON_SCRIPT
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 📁 Create output directory
+        run: |
+          mkdir -p output/text_generation
+      
+      - name: 🎨 Generate text using RauschenGenerator
+        id: generate
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import json
+          sys.path.insert(0, '.')
+          
+          from src.rauschen_generator import RauschenGenerator
+          
+          print("="*60)
+          print("🎨 Generating Text with RauschenGenerator")
+          print("="*60)
+          print()
+          
+          # Parse inputs
+          topic = "${{ github.event.inputs.topic }}"
+          length = "${{ github.event.inputs.length }}"
+          noise_level = float("${{ github.event.inputs.noise_level }}")
+          
+          # Initialize generator
+          print("Initializing RauschenGenerator...")
+          generator = RauschenGenerator()
+          print("✅ Generator initialized")
+          print()
+          
+          # Generate text
+          print(f"Generating {length} text about: {topic}")
+          print(f"Noise level: {noise_level}")
+          print()
+          
+          result = generator.generate_reflection(
+              topic=topic,
+              length=length,
+              noise_level=noise_level
+          )
+          
+          print("✅ Text generation complete!")
+          print()
+          print(f"📊 Generation Stats:")
+          print(f"   - Text ID: {result['text_id']}")
+          print(f"   - Word Count: {result['word_count']}")
+          print(f"   - Price: ${result['price']}")
+          print(f"   - Coherence Score: {result['metadata']['coherence_score']}")
+          print(f"   - Timestamp: {result['timestamp']}")
+          print()
+          
+          # Save result for next step
+          with open('output/text_generation/generation_result.json', 'w') as f:
+              json.dump(result, f, indent=2)
+          
+          print("✅ Result saved to generation_result.json")
+          print()
+          PYTHON_SCRIPT
+      
+      - name: 🔍 Analyze quality using VektorAnalyzer
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import json
+          sys.path.insert(0, '.')
+          
+          from src.vektor_analyzer import VektorAnalyzer
+          
+          print("="*60)
+          print("🔍 Analyzing Text Quality")
+          print("="*60)
+          print()
+          
+          # Load generation result
+          with open('output/text_generation/generation_result.json', 'r') as f:
+              result = json.load(f)
+          
+          # Initialize analyzer
+          print("Initializing VektorAnalyzer...")
+          analyzer = VektorAnalyzer()
+          print("✅ Analyzer initialized")
+          print()
+          
+          # Analyze coherence
+          topic = "${{ github.event.inputs.topic }}"
+          text = result['text']
+          
+          print(f"Analyzing coherence with theme: {topic}")
+          analysis = analyzer.analyze_coherence(text, topic)
+          
+          print()
+          print("📊 Quality Analysis Results:")
+          print(f"   - Quality Rating: {analysis['quality']}")
+          print(f"   - Theme Similarity: {analysis['theme_similarity']:.3f}")
+          print(f"   - Inter-sentence Coherence: {analysis['avg_inter_sentence_coherence']:.3f}")
+          print(f"   - Overall Score: {analysis['overall_score']:.3f}")
+          print()
+          
+          # Add analysis to result
+          result['quality_analysis'] = analysis
+          
+          # Save updated result
+          with open('output/text_generation/generation_result.json', 'w') as f:
+              json.dump(result, f, indent=2)
+          
+          print("✅ Quality analysis complete!")
+          print()
+          PYTHON_SCRIPT
+      
+      - name: 💾 Save results to files
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import json
+          sys.path.insert(0, '.')
+          
+          print("="*60)
+          print("💾 Saving Results")
+          print("="*60)
+          print()
+          
+          # Load result
+          with open('output/text_generation/generation_result.json', 'r') as f:
+              result = json.load(f)
+          
+          # Save JSON output
+          with open('output/text_generation/generated_text_output.json', 'w') as f:
+              json.dump(result, f, indent=2)
+          print("✅ Saved: generated_text_output.json")
+          
+          # Save text-only output
+          with open('output/text_generation/generated_text.txt', 'w') as f:
+              f.write("="*60 + "\n")
+              f.write("UMAJA-Core Generated Text\n")
+              f.write("="*60 + "\n\n")
+              f.write(f"Topic: ${{ github.event.inputs.topic }}\n")
+              f.write(f"Length: ${{ github.event.inputs.length }}\n")
+              f.write(f"Noise Level: ${{ github.event.inputs.noise_level }}\n")
+              f.write(f"Word Count: {result['word_count']}\n")
+              f.write(f"Quality: {result['quality_analysis']['quality']}\n")
+              f.write(f"Overall Score: {result['quality_analysis']['overall_score']:.3f}\n")
+              f.write("\n" + "="*60 + "\n")
+              f.write("GENERATED TEXT\n")
+              f.write("="*60 + "\n\n")
+              f.write(result['text'])
+              f.write("\n\n" + "="*60 + "\n")
+              f.write("METADATA\n")
+              f.write("="*60 + "\n\n")
+              f.write(f"Text ID: {result['text_id']}\n")
+              f.write(f"Timestamp: {result['timestamp']}\n")
+              f.write(f"Price: ${result['price']}\n")
+              f.write(f"Coherence Score: {result['metadata']['coherence_score']}\n")
+              f.write(f"Theme Similarity: {result['quality_analysis']['theme_similarity']:.3f}\n")
+              f.write(f"Inter-sentence Coherence: {result['quality_analysis']['avg_inter_sentence_coherence']:.3f}\n")
+          
+          print("✅ Saved: generated_text.txt")
+          print()
+          PYTHON_SCRIPT
+      
+      - name: 📊 Display results summary
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import json
+          
+          # Load result
+          with open('output/text_generation/generation_result.json', 'r') as f:
+              result = json.load(f)
+          
+          print()
+          print("="*60)
+          print("📊 GENERATION SUMMARY")
+          print("="*60)
+          print()
+          print(f"Topic: ${{ github.event.inputs.topic }}")
+          print(f"Length: ${{ github.event.inputs.length }}")
+          print(f"Noise Level: ${{ github.event.inputs.noise_level }}")
+          print()
+          print("Generated Text Stats:")
+          print(f"  📝 Word Count: {result['word_count']}")
+          print(f"  💰 Price: ${result['price']}")
+          print(f"  🆔 Text ID: {result['text_id']}")
+          print()
+          print("Quality Analysis:")
+          print(f"  🎯 Quality Rating: {result['quality_analysis']['quality']}")
+          print(f"  📊 Overall Score: {result['quality_analysis']['overall_score']:.3f}")
+          print(f"  🎨 Theme Similarity: {result['quality_analysis']['theme_similarity']:.3f}")
+          print(f"  🔗 Inter-sentence Coherence: {result['quality_analysis']['avg_inter_sentence_coherence']:.3f}")
+          print()
+          print("="*60)
+          print()
+          print("Preview (first 200 characters):")
+          print("-" * 60)
+          preview = result['text'][:200]
+          print(preview + ("..." if len(result['text']) > 200 else ""))
+          print("-" * 60)
+          print()
+          print("✅ Text generation and analysis complete!")
+          print("📦 Download artifacts to view full results")
+          print()
+          PYTHON_SCRIPT
+      
+      - name: 📦 Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: generated-text-${{ github.run_number }}
+          path: |
+            output/text_generation/generated_text_output.json
+            output/text_generation/generated_text.txt
+          retention-days: 30
+      
+      - name: ✅ Workflow complete
+        if: success()
+        run: |
+          echo "🎉 Text generation workflow completed successfully!"
+          echo ""
+          echo "📦 Artifacts have been uploaded and will be retained for 30 days."
+          echo ""
+          echo "To download the results:"
+          echo "1. Go to the 'Summary' tab of this workflow run"
+          echo "2. Find 'Artifacts' section at the bottom"
+          echo "3. Download 'generated-text-${{ github.run_number }}'"
+          echo ""
+          echo "Files included:"
+          echo "  - generated_text_output.json (full metadata and analysis)"
+          echo "  - generated_text.txt (human-readable format)"
