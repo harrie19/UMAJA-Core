@@ -1095,7 +1095,9 @@
       "Hello"
     ],
     "language": "Local",
-    "visited": false
+    "visited": true,
+    "visit_date": "2025-12-31T17:42:14.963694",
+    "video_views": 0
   },
   "tel_aviv": {
     "name": "Tel Aviv",
