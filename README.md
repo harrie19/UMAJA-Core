@@ -385,18 +385,48 @@ print(f"Download: {result['download_url']}")
 
 ## 🚢 Deployment
 
-### Railway (Recommended)
+### Railway GitHub Integration (Recommended - Easiest!) 🌟
+
+**Deploy in 3 clicks - no CLI, no tokens, no secrets!**
+
+1. **Go to [Railway.app](https://railway.app)** → Sign in with GitHub
+2. **New Project** → "Deploy from GitHub repo" → Select `harrie19/UMAJA-Core`
+3. **Add Variables** → Copy from `.env.example` (MINIMAL SETUP section)
+4. **Deploy!** → Get your public URL automatically 🎉
+
+**✅ Benefits:**
+- No CLI installation needed
+- No GitHub Secrets or API tokens
+- Auto-deploy on every git push
+- Free HTTPS/SSL certificates
+- Built-in logs and monitoring
+
+**📖 [Complete Railway Auto-Deploy Guide →](docs/RAILWAY_AUTO_DEPLOY.md)**
+
+---
+
+### Alternative: Railway CLI
+
+If you prefer command-line deployment:
+
 ```bash
 # Install Railway CLI
 npm install -g @railway/cli
 
-# Deploy
+# Login and deploy
 railway login
 railway init
 railway up
+
+# Set environment variables
+railway variables set ENVIRONMENT=production
+railway variables set WORLDTOUR_MODE=true
 ```
 
-### Heroku
+---
+
+### Heroku (Traditional)
+
 ```bash
 # Create app
 heroku create umaja-worldtour
@@ -406,15 +436,33 @@ git push heroku main
 
 # Set environment
 heroku config:set ENVIRONMENT=production
+heroku config:set WORLDTOUR_MODE=true
 ```
 
+---
+
 ### Docker (Coming Soon)
+
 ```bash
 docker build -t umaja-worldtour .
 docker run -p 5000:5000 umaja-worldtour
 ```
 
-**[Full Deployment Guide →](docs/DEPLOYMENT.md)**
+---
+
+### Before Deploying - Run Validation Check ✓
+
+```bash
+python scripts/railway_deploy_check.py
+```
+
+This checks:
+- ✅ Python version
+- ✅ All dependencies installed
+- ✅ Core modules working
+- ✅ Configuration files present
+
+**[Full Deployment Guide →](docs/DEPLOYMENT.md)** | **[Railway Auto-Deploy Guide →](docs/RAILWAY_AUTO_DEPLOY.md)**
 
 ---
 
