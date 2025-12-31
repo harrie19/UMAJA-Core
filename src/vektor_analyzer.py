@@ -247,6 +247,109 @@ class VektorAnalyzer:
         pairs.sort(key=lambda x: x[2], reverse=True)
         
         return pairs[:top_k]
+    
+    def analyze_coherence(self, text: str, theme: str) -> Dict[str, float]:
+        """
+        Analyze the coherence of text relative to a theme.
+        
+        Args:
+            text: The text to analyze
+            theme: The theme to compare against
+            
+        Returns:
+            Dictionary containing:
+            - quality: Quality label ('excellent', 'good', 'acceptable', 'poor')
+            - theme_similarity: Similarity between text and theme (0-1)
+            - avg_inter_sentence_coherence: Average coherence between sentences (0-1)
+            - overall_score: Weighted combination of metrics (0-1)
+        """
+        if not text or not text.strip():
+            return {
+                'quality': 'poor',
+                'theme_similarity': 0.0,
+                'avg_inter_sentence_coherence': 0.0,
+                'overall_score': 0.0
+            }
+        
+        # Split text into sentences (simple split by period, exclamation, question mark)
+        import re
+        sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
+        
+        if not sentences:
+            return {
+                'quality': 'poor',
+                'theme_similarity': 0.0,
+                'avg_inter_sentence_coherence': 0.0,
+                'overall_score': 0.0
+            }
+        
+        # Calculate theme similarity
+        # Encode theme and entire text, then calculate similarity
+        theme_text_embeddings = self.encode_texts([theme, text])
+        if len(theme_text_embeddings) == 2:
+            theme_similarity = float(self.cosine_similarity(
+                theme_text_embeddings[0], 
+                theme_text_embeddings[1]
+            ))
+        else:
+            theme_similarity = 0.0
+        
+        # Calculate inter-sentence coherence
+        if len(sentences) >= 2:
+            coherence_metrics = self.semantic_coherence_score(sentences)
+            avg_inter_sentence_coherence = coherence_metrics['mean_similarity']
+        else:
+            # Single sentence - high coherence by default
+            avg_inter_sentence_coherence = 1.0
+        
+        # Compute overall score as weighted average
+        overall_score = (theme_similarity * 0.6) + (avg_inter_sentence_coherence * 0.4)
+        
+        # Determine quality label
+        if overall_score >= 0.8:
+            quality = 'excellent'
+        elif overall_score >= 0.6:
+            quality = 'good'
+        elif overall_score >= 0.4:
+            quality = 'acceptable'
+        else:
+            quality = 'poor'
+        
+        return {
+            'quality': quality,
+            'theme_similarity': float(theme_similarity),
+            'avg_inter_sentence_coherence': float(avg_inter_sentence_coherence),
+            'overall_score': float(overall_score)
+        }
+    
+    def compare_texts(self, text1: str, text2: str) -> float:
+        """
+        Compare semantic similarity between two texts.
+        
+        Args:
+            text1: First text
+            text2: Second text
+            
+        Returns:
+            Cosine similarity score between 0 and 1
+        """
+        if not text1 or not text1.strip() or not text2 or not text2.strip():
+            return 0.0
+        
+        # Encode both texts
+        embeddings = self.encode_texts([text1, text2])
+        
+        if len(embeddings) != 2:
+            return 0.0
+        
+        # Calculate cosine similarity
+        similarity = self.cosine_similarity(embeddings[0], embeddings[1])
+        
+        # Ensure result is in [0, 1] range (cosine similarity can be [-1, 1])
+        # In practice, sentence-transformers embeddings give [0, 1] range
+        similarity = max(0.0, min(1.0, float(similarity)))
+        
+        return similarity
 
 
 def main():
