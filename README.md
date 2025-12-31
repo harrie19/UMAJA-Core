@@ -1,27 +1,32 @@
-# 🎭 UMAJA WORLDTOUR - Autonomous Comedy System
+# 🎭 UMAJA WORLDTOUR - 3 AI Comedians on World Tour
 
 [![Build Status](https://github.com/harrie19/UMAJA-Core/workflows/CI/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions)
+[![Shop Coming Soon](https://img.shields.io/badge/shop-coming%20soon-orange.svg)](README.md#shop-coming-soon)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/harrie19/UMAJA-Core/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
-**3 AI Comedians Tour the World** - Complete autonomous multimedia content generation and monetization system featuring John Cleese, C-3PO, and Robin Williams creating comedy about cities worldwide.
+**Follow 3 AI Comedians as They Tour 50+ Cities Worldwide** 🌍
 
-🌍 **[View Live Demo](https://your-deployment.railway.app)** | 📖 **[Documentation](docs/)** | 🎬 **[See Examples](#examples)**
+John Cleese, C-3PO, and Robin Williams are embarking on an epic comedy world tour, creating hilarious content about cities worldwide. Join the journey!
+
+🌍 **[Follow the Tour](https://your-deployment.railway.app)** | 📖 **[Documentation](docs/)** | 🎬 **[See Examples](#examples)** | 🛍️ **[Shop Coming Soon](#shop-coming-soon)**
 
 ---
 
 ## 🎯 What is UMAJA WORLDTOUR?
 
-A **fully autonomous multimedia comedy system** that:
-- 🎭 Generates text, audio, images, and videos in 3 distinct comedian personalities
-- 🌍 Creates city-specific comedy content for 50+ cities worldwide
-- 💰 Sells custom comedy packages with smart bundle pricing
-- 🤖 Runs 100% autonomously after initial setup
-- 💚 Donates 40% of profits to charity
+**Join the world's first AI comedy world tour!** Three legendary AI comedians are visiting 50+ cities worldwide, creating unique comedy content about each destination.
 
-### The Personalities
+### 🌍 The Worldtour
+
+- **Daily Content**: New city, new jokes, every single day
+- **50+ Cities**: From New York to Tokyo, London to Rio
+- **Community Driven**: Vote for the next destination
+- **100% Free**: Follow the journey, enjoy the comedy
+
+### The Comedians
 
 | 🎩 **John Cleese** | 🤖 **C-3PO** | 🎪 **Robin Williams** |
 |---|---|---|
@@ -31,36 +36,74 @@ A **fully autonomous multimedia comedy system** that:
 
 ---
 
+## 🚀 Follow the Journey
+
+### Social Media
+
+Join us on social media for daily comedy content:
+
+- 🎵 **TikTok**: [@umajaWorldtour](https://tiktok.com/@umajaworldtour) - Daily 60-second videos
+- 📺 **YouTube**: [UMAJA Worldtour](https://youtube.com/@umajaworldtour) - Shorts & full episodes
+- 📸 **Instagram**: [@umaja.worldtour](https://instagram.com/umaja.worldtour) - Reels & behind-the-scenes
+- 🐦 **Twitter/X**: [@UMAJAtour](https://twitter.com/umajatour) - Daily updates & polls
+
+**Vote for the next city!** 🗳️ Participate in our daily Twitter polls to decide where the comedians go next.
+
+---
+
+## 🛍️ Shop Coming Soon
+
+Love the content? Want custom comedy about your favorite topics?
+
+**Our shop is launching soon!** After we build an amazing community through the Worldtour, we'll offer:
+
+- 🎭 Custom comedy text in any personality
+- 🎙️ Personalized voice messages
+- 🖼️ Custom quote cards and images
+- 🎬 Full video packages
+- 💼 Commercial licenses
+
+**Sign up for early access**: [Get notified when we launch →](https://your-deployment.railway.app)
+
+Until then, enjoy the free Worldtour content! 🌍
+
+---
+
 ## ✨ Key Features
 
-### Content Generation
+### 🌍 Worldtour Campaign (Active Now!)
+- **Daily Posts**: New comedy content every day at 12:00 UTC
+- **50+ Cities**: Major destinations worldwide with unique cultural humor
+- **Interactive Map**: Track where the comedians have been
+- **Community Voting**: Help choose the next destination
+- **Progress Tracking**: Follow the journey in real-time
+
+### Content Generation (Free During Worldtour)
 - **Text Generation**: 3 distinct comedian personalities with unique styles
-- **Voice Synthesis**: Multi-backend TTS (ElevenLabs, Google TTS, offline)
+- **Voice Synthesis**: Multi-backend TTS (works offline, no API keys required!)
 - **Image Generation**: AI images + personality-themed quote cards
 - **Video Creation**: Lyric-style videos with synced text and audio
 - **City Content**: 50+ cities with topics, stereotypes, fun facts
 
-### Monetization
-- **8 Product Tiers**: From text-only (€1.50) to viral kit (€20)
+### Future Features (Coming with Shop Launch)
+- **8 Product Tiers**: From text-only to full viral kits
 - **Smart Bundling**: Automatic discounts (10-20% off)
 - **Upsell Engine**: Intelligent recommendations
 - **One-Click Purchase**: Automated ZIP package delivery
+- **40% to Charity**: Supporting good causes with every purchase 💚
 
-### Worldtour
-- **Interactive Map**: Leaflet.js-powered city tracking
-- **Voting System**: Community-driven city selection
-- **Content Queue**: Automated 7-day scheduling
-- **Analytics Dashboard**: Real-time stats and insights
-
-### Deployment Ready
+### Technical Features
 - **One-Command Setup**: `python scripts/setup_multimedia.py --quick`
 - **Railway/Heroku**: Pre-configured deployment files
+- **Worldtour Mode**: Works without payment system or API keys
 - **Environment Templates**: Complete `.env.example`
 - **20+ API Endpoints**: RESTful API with full documentation
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (For Developers)
+
+Want to run the Worldtour system locally or contribute?
 
 ### 5-Minute Setup
 
@@ -78,15 +121,35 @@ python api/simple_server.py
 
 Visit **http://localhost:5000** - You're live! 🎉
 
-### Test Content Generation
+### Generate Demo Content
+
+Create sample videos to see the system in action:
 
 ```bash
-# Generate comedy text
+# Generate 5 demo videos (one per personality)
+python scripts/generate_demo_content.py --count 5
+
+# Check output in output/demos/
+```
+
+### Generate Daily Worldtour Content
+
+```bash
+# Generate today's worldtour content
+python scripts/daily_worldtour_post.py
+
+# Content will be in output/worldtour/
+```
+
+### Test API Endpoints
+
+```bash
+# Generate comedy text (free, always available)
 curl -X POST http://localhost:5000/api/generate/text \
   -H "Content-Type: application/json" \
   -d '{"topic":"pizza","personality":"john_cleese","length":"short"}'
 
-# Create full multimedia package
+# Try to purchase (will return 403 during Worldtour mode)
 curl -X POST http://localhost:5000/api/create-multimedia-sale \
   -H "Content-Type: application/json" \
   -d '{
@@ -95,6 +158,7 @@ curl -X POST http://localhost:5000/api/create-multimedia-sale \
     "personality":"john_cleese",
     "content_types":["text","audio","image"]
   }'
+# Response: {"error": "Shop coming soon! Follow our Worldtour 🌍"}
 ```
 
 ---
@@ -264,14 +328,18 @@ result = seller.create_multimedia_purchase(
 - `GET /download/:purchase_id` - Download package
 
 ### Analytics
-- `GET /api/analytics/sales` - Sales statistics
+- `GET /api/analytics/sales` - Sales statistics (disabled during Worldtour)
 - `GET /api/analytics/worldtour` - Tour statistics
+
+**Note:** Purchase endpoints return HTTP 403 during Worldtour mode with message: "Shop coming soon! Follow our Worldtour 🌍"
 
 **[Full API Documentation →](docs/MULTIMEDIA_SYSTEM.md)**
 
 ---
 
-## 💰 Product Tiers & Pricing
+## 💰 Future Product Tiers (Coming Soon)
+
+When the shop launches, we'll offer:
 
 | Tier | Price | Includes | Discount |
 |------|-------|----------|----------|
@@ -314,8 +382,8 @@ UMAJA-Core/
 │   └── gallery.html            # Content gallery
 ├── scripts/
 │   ├── setup_multimedia.py     # One-command setup
-│   ├── daily_worldtour_post.py # Auto-posting (planned)
-│   └── generate_marketing_content.py  # Marketing (planned)
+│   ├── daily_worldtour_post.py # Daily content automation
+│   └── generate_demo_content.py  # Quick demo generation
 ├── docs/
 │   ├── MULTIMEDIA_SYSTEM.md    # Complete API reference
 │   ├── WORLDTOUR.md            # Strategy guide
@@ -429,24 +497,24 @@ docker run -p 5000:5000 umaja-worldtour
 
 ## 🎯 Roadmap
 
-### Phase 1: Worldtour (Months 1-3) ✅
+### Phase 1: Worldtour (Active Now! Months 1-3) ✅
 - [x] 50+ cities database
 - [x] 3 AI comedian personalities
 - [x] Text, audio, image, video generation
 - [x] Interactive world map
 - [x] Voting system
-- [ ] Daily auto-posting
-- [ ] Social media integration
+- [x] Daily auto-generation scripts
+- [ ] Social media automation
 - [ ] 500k+ followers goal
 
-### Phase 2: Monetization (Month 4+)
-- [x] 8 product tiers
+### Phase 2: Shop Launch (Month 4+)
+- [x] 8 product tiers designed
 - [x] Bundle builder UI
 - [x] Smart pricing engine
 - [x] Purchase workflow
-- [ ] PayPal integration
+- [ ] Enable payment system (PayPal integration)
 - [ ] Email notifications
-- [ ] Affiliate program
+- [ ] Launch marketing campaign
 - [ ] €10k/month revenue goal
 
 ### Phase 3: Scale (Month 6+)
@@ -454,6 +522,7 @@ docker run -p 5000:5000 umaja-worldtour
 - [ ] More personalities
 - [ ] Live comedy shows
 - [ ] API marketplace
+- [ ] Affiliate program
 - [ ] White-label solution
 
 ---
@@ -531,7 +600,11 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Made with ❤️ and 😂 by the UMAJA Team**
 
-**40% of profits go to charity** 💚
+**Follow the Worldtour** 🌍
+
+[TikTok](https://tiktok.com/@umajaworldtour) • [YouTube](https://youtube.com/@umajaworldtour) • [Instagram](https://instagram.com/umaja.worldtour) • [Twitter](https://twitter.com/umajatour)
+
+**40% of future profits go to charity** 💚
 
 [Website](https://umaja-worldtour.com) • [Docs](docs/) • [API](docs/MULTIMEDIA_SYSTEM.md) • [Worldtour](docs/WORLDTOUR.md)
 

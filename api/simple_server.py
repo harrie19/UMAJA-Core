@@ -41,6 +41,25 @@ multimedia_seller = MultimediaTextSeller()
 
 
 # ============================================
+# HELPER FUNCTIONS
+# ============================================
+
+def check_sales_enabled():
+    """
+    Check if sales/payment functionality is enabled.
+    Returns 403 error response if disabled.
+    """
+    if os.getenv('SALES_ENABLED', 'false').lower() != 'true':
+        return jsonify({
+            'error': 'Shop coming soon! Follow our Worldtour 🌍',
+            'message': 'Payment system is currently disabled. We are building our audience through the Worldtour campaign.',
+            'worldtour_active': True,
+            'status': 'disabled'
+        }), 403
+    return None
+
+
+# ============================================
 # HEALTH & INFO ENDPOINTS
 # ============================================
 
@@ -258,6 +277,11 @@ def generate_city_content():
 @app.route('/api/create-multimedia-sale', methods=['POST'])
 def create_multimedia_sale():
     """Create multimedia purchase with all requested content types."""
+    # Check if sales are enabled
+    error_response = check_sales_enabled()
+    if error_response:
+        return error_response
+    
     data = request.json
     
     try:
@@ -279,6 +303,11 @@ def create_multimedia_sale():
 @app.route('/api/bundle/calculate', methods=['POST'])
 def calculate_bundle():
     """Calculate bundle pricing."""
+    # Check if sales are enabled
+    error_response = check_sales_enabled()
+    if error_response:
+        return error_response
+    
     data = request.json
     
     try:
@@ -297,6 +326,11 @@ def calculate_bundle():
 @app.route('/api/bundle/recommend', methods=['POST'])
 def recommend_bundle():
     """Get bundle recommendations and upsells."""
+    # Check if sales are enabled
+    error_response = check_sales_enabled()
+    if error_response:
+        return error_response
+    
     data = request.json
     
     try:
