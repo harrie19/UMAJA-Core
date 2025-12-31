@@ -1,845 +1,540 @@
-# UMAJA-Core
+# 🎭 UMAJA WORLDTOUR - Autonomous Comedy System
 
 [![Build Status](https://github.com/harrie19/UMAJA-Core/workflows/CI/badge.svg)](https://github.com/harrie19/UMAJA-Core/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/harrie19/UMAJA-Core/releases)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/harrie19/UMAJA-Core/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/harrie19/UMAJA-Core/graphs/commit-activity)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
-**UMAJA-Core** is a robust, scalable core framework designed to provide essential building blocks for modern applications. Built with performance, extensibility, and developer experience in mind.
+**3 AI Comedians Tour the World** - Complete autonomous multimedia content generation and monetization system featuring John Cleese, C-3PO, and Robin Williams creating comedy about cities worldwide.
 
----
-
-## 📋 Table of Contents
-
-- [Features](#-features)
-- [Quick Start](#-quick-start)
-- [Architecture](#-architecture)
-- [Component Documentation](#-component-documentation)
-- [API Examples](#-api-examples)
-- [Use Cases](#-use-cases)
-- [Benchmarks](#-benchmarks)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Support](#-support)
+🌍 **[View Live Demo](https://your-deployment.railway.app)** | 📖 **[Documentation](docs/)** | 🎬 **[See Examples](#examples)**
 
 ---
 
-## ✨ Features
+## 🎯 What is UMAJA WORLDTOUR?
 
-- **High Performance**: Optimized for speed and efficiency
-- **Modular Architecture**: Clean separation of concerns with pluggable components
-- **Type-Safe**: Full TypeScript support with comprehensive type definitions
-- **Extensible**: Easy to extend with custom plugins and middleware
-- **Well-Tested**: Comprehensive test coverage with unit and integration tests
-- **Developer Friendly**: Intuitive API with extensive documentation
-- **Production Ready**: Battle-tested in production environments
-- **Cloud Native**: Designed for containerized and serverless deployments
+A **fully autonomous multimedia comedy system** that:
+- 🎭 Generates text, audio, images, and videos in 3 distinct comedian personalities
+- 🌍 Creates city-specific comedy content for 50+ cities worldwide
+- 💰 Sells custom comedy packages with smart bundle pricing
+- 🤖 Runs 100% autonomously after initial setup
+- 💚 Donates 40% of profits to charity
+
+### The Personalities
+
+| 🎩 **John Cleese** | 🤖 **C-3PO** | 🎪 **Robin Williams** |
+|---|---|---|
+| Dry British wit | Anxious protocol droid | Energetic improv |
+| Monty Python style | Statistical obsession | Rapid-fire delivery |
+| Deep, sarcastic voice | Higher pitch, robotic | Dynamic, warm |
+
+---
+
+## ✨ Key Features
+
+### Content Generation
+- **Text Generation**: 3 distinct comedian personalities with unique styles
+- **Voice Synthesis**: Multi-backend TTS (ElevenLabs, Google TTS, offline)
+- **Image Generation**: AI images + personality-themed quote cards
+- **Video Creation**: Lyric-style videos with synced text and audio
+- **City Content**: 50+ cities with topics, stereotypes, fun facts
+
+### Monetization
+- **8 Product Tiers**: From text-only (€1.50) to viral kit (€20)
+- **Smart Bundling**: Automatic discounts (10-20% off)
+- **Upsell Engine**: Intelligent recommendations
+- **One-Click Purchase**: Automated ZIP package delivery
+
+### Worldtour
+- **Interactive Map**: Leaflet.js-powered city tracking
+- **Voting System**: Community-driven city selection
+- **Content Queue**: Automated 7-day scheduling
+- **Analytics Dashboard**: Real-time stats and insights
+
+### Deployment Ready
+- **One-Command Setup**: `python scripts/setup_multimedia.py --quick`
+- **Railway/Heroku**: Pre-configured deployment files
+- **Environment Templates**: Complete `.env.example`
+- **20+ API Endpoints**: RESTful API with full documentation
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js >= 16.x
-- npm >= 8.x or yarn >= 1.22.x
-- Git
-
-### Installation
+### 5-Minute Setup
 
 ```bash
-# Clone the repository
+# 1. Clone repository
 git clone https://github.com/harrie19/UMAJA-Core.git
 cd UMAJA-Core
 
-# Install dependencies
-npm install
+# 2. Run setup
+python scripts/setup_multimedia.py --quick
 
-# or using yarn
-yarn install
+# 3. Start server
+python api/simple_server.py
 ```
 
-### Basic Usage
+Visit **http://localhost:5000** - You're live! 🎉
 
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-// Initialize the core
-const core = new UMAJACore({
-  environment: 'development',
-  logLevel: 'info',
-  plugins: []
-});
-
-// Start the core
-await core.initialize();
-
-// Your application logic here
-core.on('ready', () => {
-  console.log('UMAJA-Core is ready!');
-});
-```
-
-### Running Examples
+### Test Content Generation
 
 ```bash
-# Run the basic example
-npm run example:basic
+# Generate comedy text
+curl -X POST http://localhost:5000/api/generate/text \
+  -H "Content-Type: application/json" \
+  -d '{"topic":"pizza","personality":"john_cleese","length":"short"}'
 
-# Run the advanced example
-npm run example:advanced
-
-# Run all examples
-npm run examples
-```
-
-### Development Setup
-
-```bash
-# Run in development mode with hot reload
-npm run dev
-
-# Run tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Lint code
-npm run lint
-
-# Build for production
-npm run build
+# Create full multimedia package
+curl -X POST http://localhost:5000/api/create-multimedia-sale \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email":"test@example.com",
+    "topic":"New York pizza", 
+    "personality":"john_cleese",
+    "content_types":["text","audio","image"]
+  }'
 ```
 
 ---
 
-## 🏗️ Architecture
-
-UMAJA-Core follows a layered architecture pattern designed for scalability and maintainability.
+## 🏗️ System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Application Layer                     │
-│              (Your Business Logic & APIs)                │
+│                   Web Interface Layer                    │
+│          (Landing, Map, Bundle Builder, Gallery)         │
 └───────────────────────────┬─────────────────────────────┘
                             │
 ┌───────────────────────────▼─────────────────────────────┐
-│                   Plugin System Layer                    │
-│         (Extensibility & Custom Functionality)           │
+│                    Flask API Server                      │
+│             (20+ Endpoints, RESTful API)                 │
 └───────────────────────────┬─────────────────────────────┘
                             │
 ┌───────────────────────────▼─────────────────────────────┐
-│                     Core Services Layer                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐│
-│  │ Event    │  │ Config   │  │ Logger   │  │ State   ││
-│  │ Manager  │  │ Manager  │  │ Service  │  │ Manager ││
-│  └──────────┘  └──────────┘  └──────────┘  └─────────┘│
-└──────────────────────────��┬─────────────────────────────┘
+│                   Core Engine Layer                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
+│  │ Personality  │  │    Voice     │  │    Image     │ │
+│  │   Engine     │  │ Synthesizer  │  │  Generator   │ │
+│  └──────────────┘  └──────────────┘  └──────────────┘ │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
+│  │    Video     │  │  Worldtour   │  │    Bundle    │ │
+│  │  Generator   │  │  Generator   │  │   Builder    │ │
+│  └──────────────┘  └──────────────┘  └──────────────┘ │
+└───────────────────────────┬─────────────────────────────┘
                             │
 ┌───────────────────────────▼─────────────────────────────┐
-│                   Infrastructure Layer                   │
-│        (Networking, Storage, External Services)          │
+│                  External Services Layer                 │
+│  (ElevenLabs, Stable Diffusion, Social Media APIs)      │
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Key Architectural Principles
-
-1. **Separation of Concerns**: Each layer has a distinct responsibility
-2. **Dependency Injection**: Loose coupling between components
-3. **Event-Driven**: Asynchronous communication via event bus
-4. **Plugin Architecture**: Extend functionality without modifying core
-5. **Configuration-Driven**: Behavior controlled via configuration files
-
 ---
 
-## 📦 Component Documentation
+## 📦 Core Modules
 
-### Core Module
+### 1. Personality Engine (`src/personality_engine.py`)
+Generates text in comedian styles with personality markers and humor patterns.
 
-The heart of the framework, managing initialization and lifecycle.
+```python
+from personality_engine import PersonalityEngine
 
-```javascript
-const core = new UMAJACore({
-  environment: 'production',
-  logLevel: 'warn',
-  maxRetries: 3,
-  timeout: 5000
-});
+engine = PersonalityEngine()
+result = engine.generate_text(
+    topic="New York pizza",
+    personality="john_cleese",
+    length="medium",
+    style_intensity=0.7
+)
+
+print(result['text'])
+# "Now, the curious thing about New York pizza..."
 ```
 
-**Options:**
-- `environment` (string): Environment mode ('development', 'production', 'test')
-- `logLevel` (string): Logging level ('debug', 'info', 'warn', 'error')
-- `maxRetries` (number): Maximum retry attempts for operations
-- `timeout` (number): Default timeout in milliseconds
+### 2. Voice Synthesizer (`src/voice_synthesizer.py`)
+Multi-backend TTS with personality voices.
 
-### Event Manager
+```python
+from voice_synthesizer import VoiceSynthesizer
 
-Handles application-wide event emission and subscription.
-
-```javascript
-// Subscribe to events
-core.events.on('user:created', (data) => {
-  console.log('New user created:', data);
-});
-
-// Emit events
-core.events.emit('user:created', {
-  id: '123',
-  username: 'john_doe'
-});
-
-// One-time listeners
-core.events.once('app:shutdown', () => {
-  console.log('Application shutting down...');
-});
+synthesizer = VoiceSynthesizer()
+result = synthesizer.synthesize(
+    text="Hello world",
+    personality="c3po",
+    format="mp3"
+)
+# Generates: static/audio/c3po_abc123.mp3
 ```
 
-### Configuration Manager
+### 3. Image Generator (`src/image_generator.py`)
+Quote cards and AI images with personality themes.
 
-Centralized configuration management with environment support.
+```python
+from image_generator import ImageGenerator
 
-```javascript
-// Get configuration values
-const dbHost = core.config.get('database.host');
-const dbPort = core.config.get('database.port', 5432); // with default
-
-// Set configuration
-core.config.set('feature.enabled', true);
-
-// Check if key exists
-if (core.config.has('api.key')) {
-  // Use API key
-}
+generator = ImageGenerator()
+result = generator.generate_quote_card(
+    quote="The curious thing about pizza...",
+    personality="john_cleese"
+)
+# Generates: static/images/quote_john_cleese_abc123.png
 ```
 
-### Logger Service
+### 4. Video Generator (`src/video_generator.py`)
+Creates lyric-style videos and slideshows.
 
-Structured logging with multiple transports and log levels.
+```python
+from video_generator import VideoGenerator
 
-```javascript
-// Log at different levels
-core.logger.debug('Debug information', { userId: '123' });
-core.logger.info('Application started');
-core.logger.warn('Deprecated API usage detected');
-core.logger.error('Database connection failed', { error });
-
-// Create child logger with context
-const childLogger = core.logger.child({ module: 'auth' });
-childLogger.info('User authentication successful');
+generator = VideoGenerator()
+result = generator.create_lyric_video(
+    text="Comedy text here...",
+    audio_path="audio.mp3",
+    personality="robin_williams"
+)
+# Generates: static/videos/lyric_robin_williams_abc123.mp4
 ```
 
-### State Manager
+### 5. Worldtour Generator (`src/worldtour_generator.py`)
+City-specific content for 50+ cities.
 
-Global state management with reactive updates.
+```python
+from worldtour_generator import WorldtourGenerator
 
-```javascript
-// Set state
-core.state.set('user.isAuthenticated', true);
-
-// Get state
-const isAuth = core.state.get('user.isAuthenticated');
-
-// Subscribe to state changes
-core.state.subscribe('user', (newState, oldState) => {
-  console.log('User state changed:', newState);
-});
-
-// Batch updates
-core.state.batch(() => {
-  core.state.set('user.name', 'John');
-  core.state.set('user.email', 'john@example.com');
-});
+generator = WorldtourGenerator()
+content = generator.generate_city_content(
+    city_id="new_york",
+    personality="john_cleese",
+    content_type="city_review"
+)
 ```
 
-### Plugin System
+### 6. Bundle Builder (`src/bundle_builder.py`)
+Smart pricing with automatic discounts.
 
-Extend functionality with custom plugins.
+```python
+from bundle_builder import BundleBuilder
 
-```javascript
-// Define a plugin
-class CustomPlugin {
-  constructor(core) {
-    this.core = core;
-  }
+builder = BundleBuilder()
+pricing = builder.calculate_bundle_price(
+    items=['standard_bundle'],
+    extras=['commercial_license']
+)
+# Automatically applies volume discounts
+```
 
-  async initialize() {
-    this.core.logger.info('Custom plugin initialized');
-    this.core.events.on('custom:event', this.handleEvent.bind(this));
-  }
+### 7. Multimedia Seller (`src/multimedia_text_seller.py`)
+Complete purchase workflow with ZIP packaging.
 
-  handleEvent(data) {
-    // Plugin logic here
-  }
+```python
+from multimedia_text_seller import MultimediaTextSeller
 
-  async shutdown() {
-    // Cleanup logic
-  }
-}
-
-// Register plugin
-core.registerPlugin('custom', CustomPlugin);
+seller = MultimediaTextSeller()
+result = seller.create_multimedia_purchase(
+    email="customer@example.com",
+    topic="pizza",
+    personality="john_cleese",
+    content_types=['text', 'audio', 'image']
+)
+# Creates downloadable ZIP package
 ```
 
 ---
 
-## 💻 API Examples
+## 🌐 API Endpoints
 
-### Example 1: Basic Application Setup
+### Content Generation
+- `POST /api/generate/text` - Generate comedy text
+- `POST /api/generate/audio` - Synthesize voice
+- `POST /api/generate/image` - Create images
+- `POST /api/generate/video` - Generate videos
+- `POST /api/generate/city-content` - City-specific content
 
-```javascript
-const { UMAJACore } = require('umaja-core');
+### Worldtour
+- `GET /api/worldtour/cities` - List all cities
+- `GET /api/worldtour/next` - Get next city
+- `GET /api/worldtour/queue?days=7` - Content queue
+- `POST /api/worldtour/vote` - Vote for city
 
-async function main() {
-  const core = new UMAJACore({
-    environment: process.env.NODE_ENV || 'development',
-    logLevel: 'info'
-  });
+### Purchases
+- `POST /api/create-multimedia-sale` - Create purchase
+- `POST /api/bundle/calculate` - Calculate pricing
+- `POST /api/bundle/recommend` - Get recommendations
+- `GET /download/:purchase_id` - Download package
 
-  await core.initialize();
+### Analytics
+- `GET /api/analytics/sales` - Sales statistics
+- `GET /api/analytics/worldtour` - Tour statistics
 
-  core.logger.info('Application started successfully');
+**[Full API Documentation →](docs/MULTIMEDIA_SYSTEM.md)**
 
-  // Graceful shutdown
-  process.on('SIGTERM', async () => {
-    await core.shutdown();
-    process.exit(0);
-  });
-}
+---
 
-main().catch(console.error);
+## 💰 Product Tiers & Pricing
+
+| Tier | Price | Includes | Discount |
+|------|-------|----------|----------|
+| Text Only | €1.50 | Comedy text | - |
+| Audio Only | €2.50 | Voice synthesis | - |
+| Text + Audio | €3.50 | Both formats | Save €0.50 |
+| Image | €3.00 | Quote card/AI image | - |
+| **Standard Bundle** | €5.00 | Text + Audio + Image | Save €2.00 |
+| Worldtour Bundle | €8.00 | Standard + City theme | Save €3.00 |
+| Deluxe Video | €12.00 | All + Video | Save €7.00 |
+| Viral Kit | €20.00 | Everything + Optimization | Save €15.00 |
+
+**Volume Discounts:**
+- 2 items: 10% off
+- 3 items: 15% off
+- 4+ items: 20% off
+
+**40% of all profits go to charity** 💚
+
+---
+
+## 📊 Project Structure
+
 ```
-
-### Example 2: Event-Driven Workflow
-
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-async function setupEventWorkflow() {
-  const core = new UMAJACore();
-  await core.initialize();
-
-  // Define event handlers
-  core.events.on('order:created', async (order) => {
-    core.logger.info('Processing new order', { orderId: order.id });
-    
-    // Emit follow-up events
-    core.events.emit('payment:process', {
-      orderId: order.id,
-      amount: order.total
-    });
-  });
-
-  core.events.on('payment:process', async (payment) => {
-    core.logger.info('Processing payment', payment);
-    
-    // Simulate payment processing
-    await processPayment(payment);
-    
-    core.events.emit('order:completed', {
-      orderId: payment.orderId
-    });
-  });
-
-  core.events.on('order:completed', (order) => {
-    core.logger.info('Order completed', order);
-  });
-
-  // Trigger workflow
-  core.events.emit('order:created', {
-    id: 'ORD-001',
-    total: 99.99
-  });
-}
-
-setupEventWorkflow();
-```
-
-### Example 3: Plugin Development
-
-```javascript
-class DatabasePlugin {
-  constructor(core) {
-    this.core = core;
-    this.connection = null;
-  }
-
-  async initialize() {
-    const host = this.core.config.get('database.host');
-    const port = this.core.config.get('database.port');
-    
-    this.connection = await this.connect(host, port);
-    this.core.logger.info('Database connected');
-    
-    // Make connection available globally
-    this.core.state.set('db.connection', this.connection);
-  }
-
-  async connect(host, port) {
-    // Database connection logic
-    return { host, port, connected: true };
-  }
-
-  async query(sql, params) {
-    this.core.logger.debug('Executing query', { sql, params });
-    // Execute query logic
-  }
-
-  async shutdown() {
-    if (this.connection) {
-      await this.connection.close();
-      this.core.logger.info('Database connection closed');
-    }
-  }
-}
-
-// Usage
-const core = new UMAJACore();
-core.registerPlugin('database', DatabasePlugin);
-await core.initialize();
-```
-
-### Example 4: Configuration Management
-
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-// config/default.json
-{
-  "app": {
-    "name": "My Application",
-    "port": 3000
-  },
-  "database": {
-    "host": "localhost",
-    "port": 5432
-  }
-}
-
-// config/production.json
-{
-  "database": {
-    "host": "prod-db.example.com"
-  }
-}
-
-const core = new UMAJACore({
-  configPath: './config',
-  environment: 'production'
-});
-
-await core.initialize();
-
-// Access merged configuration
-console.log(core.config.get('app.name')); // "My Application"
-console.log(core.config.get('database.host')); // "prod-db.example.com"
-```
-
-### Example 5: Advanced State Management
-
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-const core = new UMAJACore();
-await core.initialize();
-
-// Define initial state
-core.state.set('app', {
-  users: [],
-  activeCount: 0
-});
-
-// Subscribe to specific state changes
-const unsubscribe = core.state.subscribe('app.activeCount', (count) => {
-  core.logger.info(`Active users: ${count}`);
-  
-  if (count > 100) {
-    core.events.emit('alert:high-load');
-  }
-});
-
-// Update state
-function addUser(user) {
-  const users = core.state.get('app.users');
-  users.push(user);
-  
-  core.state.batch(() => {
-    core.state.set('app.users', users);
-    core.state.set('app.activeCount', users.length);
-  });
-}
-
-// Cleanup
-// unsubscribe();
+UMAJA-Core/
+├── api/
+│   └── simple_server.py        # Flask API server (20+ endpoints)
+├── src/
+│   ├── personality_engine.py   # Text generation
+│   ├── voice_synthesizer.py    # TTS with multiple backends
+│   ├── image_generator.py      # Images and quote cards
+│   ├── video_generator.py      # Video creation
+│   ├── worldtour_generator.py  # City content (50+ cities)
+│   ├── bundle_builder.py       # Pricing engine
+│   └── multimedia_text_seller.py  # Purchase system
+├── templates/
+│   ├── worldtour_landing.html  # Hero landing page
+│   ├── worldtour_map.html      # Interactive map (Leaflet.js)
+│   ├── bundle_builder.html     # Bundle configurator
+│   └── gallery.html            # Content gallery
+├── scripts/
+│   ├── setup_multimedia.py     # One-command setup
+│   ├── daily_worldtour_post.py # Auto-posting (planned)
+│   └── generate_marketing_content.py  # Marketing (planned)
+├── docs/
+│   ├── MULTIMEDIA_SYSTEM.md    # Complete API reference
+│   ├── WORLDTOUR.md            # Strategy guide
+│   ├── PERSONALITY_GUIDE.md    # Comedian styles
+│   └── DEPLOYMENT.md           # Deploy to Railway/Heroku
+├── data/
+│   └── worldtour_cities.json   # 50+ cities database
+├── static/
+│   ├── audio/                  # Generated audio files
+│   ├── images/                 # Generated images
+│   ├── videos/                 # Generated videos
+│   └── purchases/              # Customer packages
+├── requirements.txt            # Python dependencies
+├── .env.example                # Environment template
+├── Procfile                    # Heroku config
+└── railway.json                # Railway config
 ```
 
 ---
 
-## 🎯 Use Cases
+## 🎬 Examples
 
-### 1. Microservices Architecture
+### Generate John Cleese Text
+```python
+from src.personality_engine import PersonalityEngine
 
-UMAJA-Core provides an excellent foundation for building microservices with consistent patterns.
+engine = PersonalityEngine()
+result = engine.generate_text(
+    topic="British tea",
+    personality="john_cleese",
+    length="short"
+)
 
-```javascript
-// service-a/index.js
-const { UMAJACore } = require('umaja-core');
-const express = require('express');
-
-const core = new UMAJACore();
-await core.initialize();
-
-const app = express();
-
-app.get('/api/users', async (req, res) => {
-  core.logger.info('Fetching users');
-  core.events.emit('analytics:request', { endpoint: '/api/users' });
-  
-  // Business logic
-  res.json({ users: [] });
-});
-
-app.listen(3001);
+print(result['text'])
 ```
 
-### 2. Background Job Processing
+**Output:**
+> "Now, the curious thing about British tea is that it's rather like a religion practiced exclusively by confused penguins. One observes that the average person's understanding of proper brewing technique rivals that of a medieval alchemist attempting to transmute biscuits into gold. Quite."
 
-Leverage the event system for async job processing.
+### Create C-3PO Audio
+```python
+from src.voice_synthesizer import VoiceSynthesizer
 
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-const core = new UMAJACore();
-await core.initialize();
-
-// Job processor
-core.events.on('job:email', async (job) => {
-  core.logger.info('Processing email job', { jobId: job.id });
-  await sendEmail(job.to, job.subject, job.body);
-  core.events.emit('job:completed', { jobId: job.id });
-});
-
-// Job scheduler
-setInterval(() => {
-  core.events.emit('job:email', {
-    id: Date.now(),
-    to: 'user@example.com',
-    subject: 'Daily Report',
-    body: 'Here is your daily report...'
-  });
-}, 24 * 60 * 60 * 1000); // Daily
+synth = VoiceSynthesizer()
+result = synth.synthesize(
+    text="Oh my! This presents 2,479 interpretations!",
+    personality="c3po"
+)
 ```
 
-### 3. Real-time Data Pipeline
+### Generate Robin Williams Video
+```python
+from src.multimedia_text_seller import MultimediaTextSeller
 
-Build data processing pipelines with composable event handlers.
+seller = MultimediaTextSeller()
+result = seller.create_multimedia_purchase(
+    email="fan@example.com",
+    topic="Stand-up comedy",
+    personality="robin_williams",
+    content_types=['text', 'audio', 'video']
+)
 
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-const core = new UMAJACore();
-await core.initialize();
-
-// Pipeline stages
-core.events.on('data:incoming', (data) => {
-  core.events.emit('data:validate', data);
-});
-
-core.events.on('data:validate', (data) => {
-  if (isValid(data)) {
-    core.events.emit('data:transform', data);
-  }
-});
-
-core.events.on('data:transform', (data) => {
-  const transformed = transform(data);
-  core.events.emit('data:store', transformed);
-});
-
-core.events.on('data:store', async (data) => {
-  await database.save(data);
-  core.logger.info('Data stored successfully');
-});
-```
-
-### 4. Serverless Functions
-
-Perfect for AWS Lambda, Azure Functions, or Google Cloud Functions.
-
-```javascript
-const { UMAJACore } = require('umaja-core');
-
-let core;
-
-// Lambda handler
-exports.handler = async (event, context) => {
-  if (!core) {
-    core = new UMAJACore({
-      environment: 'production',
-      logLevel: 'info'
-    });
-    await core.initialize();
-  }
-
-  core.logger.info('Processing request', { requestId: context.requestId });
-
-  try {
-    // Your business logic
-    const result = await processEvent(event);
-    
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result)
-    };
-  } catch (error) {
-    core.logger.error('Error processing request', { error });
-    
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Internal Server Error' })
-    };
-  }
-};
+print(f"Download: {result['download_url']}")
 ```
 
 ---
 
-## 📊 Benchmarks
+## 🚢 Deployment
 
-Performance benchmarks run on: Node.js v18.x, 16GB RAM, Intel Core i7
+### Railway (Recommended)
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
 
-### Initialization Performance
+# Deploy
+railway login
+railway init
+railway up
+```
 
-| Scenario | Time | Memory |
-|----------|------|--------|
-| Basic initialization | 12ms | 15MB |
-| With 5 plugins | 45ms | 28MB |
-| With 10 plugins | 82ms | 42MB |
-| Cold start (serverless) | 180ms | 55MB |
+### Heroku
+```bash
+# Create app
+heroku create umaja-worldtour
 
-### Event Throughput
+# Deploy
+git push heroku main
 
-| Operation | Operations/sec | Latency (p95) |
-|-----------|---------------|---------------|
-| Event emission | 1,200,000 | 0.05ms |
-| Event subscription | 850,000 | 0.08ms |
-| Event with 10 listeners | 180,000 | 0.12ms |
+# Set environment
+heroku config:set ENVIRONMENT=production
+```
 
-### State Management
+### Docker (Coming Soon)
+```bash
+docker build -t umaja-worldtour .
+docker run -p 5000:5000 umaja-worldtour
+```
 
-| Operation | Operations/sec | Memory Overhead |
-|-----------|---------------|-----------------|
-| State get | 2,500,000 | Negligible |
-| State set | 1,800,000 | ~1KB per 100 ops |
-| State subscribe | 950,000 | ~2KB per sub |
+**[Full Deployment Guide →](docs/DEPLOYMENT.md)**
 
-### Configuration Access
+---
 
-| Operation | Operations/sec | Notes |
-|-----------|---------------|-------|
-| Config get (cached) | 3,000,000 | O(1) lookup |
-| Config get (nested) | 2,200,000 | 5 levels deep |
-| Config set | 1,500,000 | With validation |
+## 📚 Documentation
 
-### Logger Performance
+- **[Complete API Reference](docs/MULTIMEDIA_SYSTEM.md)** - All 20+ endpoints documented
+- **[Worldtour Strategy Guide](docs/WORLDTOUR.md)** - Viral marketing playbook
+- **[Personality Guide](docs/PERSONALITY_GUIDE.md)** - Master the 3 comedians
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Railway, Heroku, Docker
 
-| Log Level | Logs/sec | Disk I/O Impact |
-|-----------|----------|-----------------|
-| Debug (console) | 180,000 | N/A |
-| Info (file) | 120,000 | Async batched |
-| Error (file) | 150,000 | Immediate flush |
+---
 
-**Notes:**
-- Benchmarks are indicative and may vary based on hardware and Node.js version
-- Run `npm run benchmark` to execute benchmarks on your system
-- Production deployments typically show 10-15% better performance with V8 optimizations
+## 🎯 Roadmap
+
+### Phase 1: Worldtour (Months 1-3) ✅
+- [x] 50+ cities database
+- [x] 3 AI comedian personalities
+- [x] Text, audio, image, video generation
+- [x] Interactive world map
+- [x] Voting system
+- [ ] Daily auto-posting
+- [ ] Social media integration
+- [ ] 500k+ followers goal
+
+### Phase 2: Monetization (Month 4+)
+- [x] 8 product tiers
+- [x] Bundle builder UI
+- [x] Smart pricing engine
+- [x] Purchase workflow
+- [ ] PayPal integration
+- [ ] Email notifications
+- [ ] Affiliate program
+- [ ] €10k/month revenue goal
+
+### Phase 3: Scale (Month 6+)
+- [ ] Mobile app
+- [ ] More personalities
+- [ ] Live comedy shows
+- [ ] API marketplace
+- [ ] White-label solution
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Here's how you can help:
+We welcome contributions! Here's how:
 
-### Getting Started
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
 
-1. **Fork the repository**
-   ```bash
-   gh repo fork harrie19/UMAJA-Core
-   ```
+**Development Setup:**
+```bash
+# Install dev dependencies
+pip install -r requirements.txt
+pip install pytest black flake8
 
-2. **Clone your fork**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/UMAJA-Core.git
-   cd UMAJA-Core
-   ```
+# Run tests
+pytest tests/
 
-3. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
+# Format code
+black src/ api/
 
-4. **Make your changes**
-   - Write clean, documented code
-   - Follow the existing code style
-   - Add tests for new features
-   - Update documentation as needed
-
-5. **Run tests**
-   ```bash
-   npm test
-   npm run lint
-   ```
-
-6. **Commit your changes**
-   ```bash
-   git commit -m "feat: add amazing feature"
-   ```
-   
-   We follow [Conventional Commits](https://www.conventionalcommits.org/):
-   - `feat:` New feature
-   - `fix:` Bug fix
-   - `docs:` Documentation changes
-   - `test:` Test additions/changes
-   - `refactor:` Code refactoring
-   - `chore:` Maintenance tasks
-
-7. **Push to your fork**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-8. **Open a Pull Request**
-   - Provide a clear description of the changes
-   - Reference any related issues
-   - Ensure CI checks pass
-
-### Development Guidelines
-
-- **Code Style**: Follow the ESLint configuration
-- **Testing**: Maintain >80% code coverage
-- **Documentation**: Document all public APIs
-- **Performance**: Consider performance implications
-- **Backward Compatibility**: Don't break existing APIs without discussion
-
-### Reporting Issues
-
-Found a bug or have a feature request?
-
-1. Check if the issue already exists
-2. Create a new issue with:
-   - Clear title and description
-   - Steps to reproduce (for bugs)
-   - Expected vs actual behavior
-   - System information (OS, Node.js version)
-
-### Code of Conduct
-
-We are committed to providing a welcoming and inspiring community for all. Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+# Lint
+flake8 src/ api/
+```
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
-```
-MIT License
-
-Copyright (c) 2025 harrie19
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+**Commercial use allowed** - Build your own comedy empire! 🎭
 
 ---
 
 ## 💬 Support
 
-Need help? Here are some ways to get support:
-
-- 📖 **Documentation**: Check our [Wiki](https://github.com/harrie19/UMAJA-Core/wiki)
-- 💡 **Discussions**: Join [GitHub Discussions](https://github.com/harrie19/UMAJA-Core/discussions)
-- 🐛 **Issues**: Report bugs via [GitHub Issues](https://github.com/harrie19/UMAJA-Core/issues)
-- 💬 **Chat**: Join our [Discord community](https://discord.gg/umaja-core) (if applicable)
-- 📧 **Email**: Contact the maintainers at support@umaja-core.dev (if applicable)
-
-### Community
-
-- [Twitter](https://twitter.com/umaja_core) - Follow for updates
-- [Blog](https://blog.umaja-core.dev) - Technical articles and tutorials
-- [YouTube](https://youtube.com/umaja-core) - Video tutorials and demos
+- 📖 **Documentation**: `/docs` folder
+- 💡 **GitHub Discussions**: Ask questions, share ideas
+- 🐛 **Issues**: Report bugs via GitHub Issues
+- 📧 **Email**: (if applicable)
 
 ---
 
-## 🗺️ Roadmap
+## 🌟 Success Stories
 
-### Current Release (v1.0.0)
-- ✅ Core framework with plugin system
-- ✅ Event management
-- ✅ Configuration management
-- ✅ Logging service
-- ✅ State management
-- ✅ Comprehensive documentation
-
-### Upcoming (v1.1.0)
-- 🔄 Enhanced plugin marketplace
-- 🔄 Performance monitoring dashboard
-- 🔄 GraphQL integration plugin
-- 🔄 WebSocket support
-- 🔄 CLI tool for scaffolding
-
-### Future (v2.0.0)
-- 📋 Distributed tracing
-- 📋 Service mesh integration
-- 📋 Advanced caching strategies
-- 📋 Multi-language support
-- 📋 AI/ML integration helpers
+*Coming soon - Be the first to create amazing comedy content!*
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Thanks to all [contributors](https://github.com/harrie19/UMAJA-Core/graphs/contributors) who have helped shape UMAJA-Core
-- Inspired by best practices from Node.js, Express, and NestJS communities
-- Built with ❤️ by the open-source community
+- Inspired by the legendary comedians: John Cleese, Robin Williams
+- Star Wars franchise for C-3PO
+- Open-source community for amazing tools
+- Everyone who makes the world laugh 🎭
 
 ---
 
-## 📈 Stats
+## 📊 Stats
 
 ![GitHub stars](https://img.shields.io/github/stars/harrie19/UMAJA-Core?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/harrie19/UMAJA-Core?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/harrie19/UMAJA-Core?style=social)
-![GitHub last commit](https://img.shields.io/github/last-commit/harrie19/UMAJA-Core)
 ![GitHub issues](https://img.shields.io/github/issues/harrie19/UMAJA-Core)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/harrie19/UMAJA-Core)
+![Last commit](https://img.shields.io/github/last-commit/harrie19/UMAJA-Core)
 
 ---
 
 <div align="center">
 
-**[Website](https://umaja-core.dev)** • 
-**[Documentation](https://docs.umaja-core.dev)** • 
-**[Examples](./examples)** • 
-**[Changelog](CHANGELOG.md)**
+**Made with ❤️ and 😂 by the UMAJA Team**
 
-Made with ❤️ by [harrie19](https://github.com/harrie19) and [contributors](https://github.com/harrie19/UMAJA-Core/graphs/contributors)
+**40% of profits go to charity** 💚
+
+[Website](https://umaja-worldtour.com) • [Docs](docs/) • [API](docs/MULTIMEDIA_SYSTEM.md) • [Worldtour](docs/WORLDTOUR.md)
+
+*Let's make humanity laugh, one city at a time!* 🎭🌍
 
 </div>
