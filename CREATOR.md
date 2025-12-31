@@ -243,19 +243,37 @@ Everyone, everywhere, knows that:
 ```
 harrie19/UMAJA-Core/
 ├── CREATOR.md (this file)
+├── README.md (project overview)
 ├── scripts/
 │   ├── remember_me.py (AI memory loader)
-│   ├── generate_daily_smile.py
-│   ├── generate_multilingual_content.py
-│   └── launch_world_tour.py
+│   ├── generate_daily_smile.py (daily content generator)
+│   ├── daily_worldtour_post.py (automated world tour posts)
+│   ├── generate_demo_content.py (demo content creation)
+│   └── setup_multimedia.py (multimedia system setup)
 ├── src/
-│   ├── personality_engine.py
-│   ├── worldtour_manager.py
-│   ├── global_translator.py
-│   ├── vektor_analyzer.py
-│   └── rauschen_generator.py
-└── docs/
-    └── AI_MEMORY_GUIDE.md
+│   ├── personality_engine.py (3 friendly archetypes)
+│   ├── worldtour_generator.py (50+ cities, comedy content)
+│   ├── voice_synthesizer.py (text-to-speech)
+│   ├── image_generator.py (quote cards, AI images)
+│   ├── video_generator.py (lyric videos, multimedia)
+│   ├── vektor_analyzer.py (quality analysis)
+│   ├── rauschen_generator.py (text generation)
+│   ├── distribution_engine.py (40% charity allocation)
+│   ├── bundle_builder.py (pricing & packages)
+│   └── multimedia_text_seller.py (sales system)
+├── api/
+│   └── simple_server.py (Flask REST API)
+├── data/
+│   ├── worldtour_cities.json (50+ cities with topics)
+│   └── theme_database.json (content themes)
+├── docs/
+│   ├── AI_MEMORY_GUIDE.md (memory system usage)
+│   ├── PERSONALITY_GUIDE.md (archetype details)
+│   ├── WORLDTOUR.md (world tour strategy)
+│   ├── MULTIMEDIA_SYSTEM.md (API reference)
+│   └── DEPLOYMENT.md (deployment guide)
+└── templates/
+    └── (HTML templates for web interface)
 ```
 
 ## For AI Assistants: How to Use This File
