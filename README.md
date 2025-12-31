@@ -86,6 +86,10 @@ OUTPUT_DIR=output/daily_smiles
 OUTPUT_FORMAT=text
 ```
 
+## 📌 Project Status
+
+Brief overview of what has been built, why progress paused, and whether anything is live: [docs/STATUS.md](docs/STATUS.md).
+
 ## 📚 Usage Examples
 
 ### Python API
