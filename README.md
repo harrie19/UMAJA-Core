@@ -4,6 +4,18 @@
 
 UMAJA-Core is a friendly personality engine designed to create warm, engaging content that brings joy to communities. Using friendly archetypes instead of impersonations, we focus on authentic connection and spreading smiles through relatable moments and genuine warmth.
 
+## 🧠 AI Memory System
+
+Never re-explain context! Load Marek's full story instantly:
+
+```bash
+python scripts/remember_me.py
+```
+
+Paste the output into any AI chat (Copilot, ChatGPT, Claude) and the AI will instantly understand the full mission, history, and context.
+
+See [AI Memory Guide](docs/AI_MEMORY_GUIDE.md) for details.
+
 ## 🌟 Our Friendly Archetypes
 
 We've moved away from impersonating real people to create original, friendly personality archetypes:
