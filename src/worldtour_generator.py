@@ -21,7 +21,7 @@ class WorldtourGenerator:
     """
     
     CONTENT_TYPES = ['city_review', 'cultural_debate', 'language_lesson', 'tourist_trap', 'food_review']
-    PERSONALITIES = ['john_cleese', 'c3po', 'robin_williams']
+    PERSONALITIES = ['the_professor', 'the_worrier', 'the_enthusiast']
     
     def __init__(self, cities_db_path: str = "data/worldtour_cities.json"):
         """
@@ -39,29 +39,29 @@ class WorldtourGenerator:
         # Content type templates
         self.content_templates = {
             'city_review': {
-                'john_cleese': "Now, the curious thing about {city} is that it's rather like {comparison}...",
-                'c3po': "Oh my! {city} presents precisely {number} possible interpretations...",
-                'robin_williams': "So {city} walks into a bar... *laughs* Picture this!"
+                'the_professor': "I've been studying {city} and discovered that it's like {comparison}...",
+                'the_worrier': "Does anyone else get nervous about visiting {city}?",
+                'the_enthusiast': "Can we talk about how AMAZING {city} is?!"
             },
             'cultural_debate': {
-                'john_cleese': "The British approach to {topic} versus {city}'s method reveals fascinating absurdities...",
-                'c3po': "By my calculations, {city}'s {topic} violates {number} known protocols!",
-                'robin_williams': "Imagine if {topic} in {city} was a Broadway musical!"
+                'the_professor': "What fascinates me about {topic} in {city} is...",
+                'the_worrier': "I want to make sure everyone enjoys {topic} in {city} safely...",
+                'the_enthusiast': "{city}'s {topic} is absolutely INCREDIBLE!"
             },
             'language_lesson': {
-                'john_cleese': "Learning to say {phrase} in {language} is remarkably similar to gargling marbles...",
-                'c3po': "The linguistic structure of {phrase} exhibits {number} phonetic variations...",
-                'robin_williams': "*switches accent* So you want to say {phrase}? Let me show you..."
+                'the_professor': "Learning to say {phrase} in {language} is wonderfully interesting...",
+                'the_worrier': "I've been practicing {phrase} - can someone check if I'm doing it right?",
+                'the_enthusiast': "I LOVE saying {phrase}! Let me teach you!"
             },
             'tourist_trap': {
-                'john_cleese': "The {attraction} in {city} attracts tourists like moths to a particularly overpriced flame...",
-                'c3po': "Warning! {attraction} presents a {number}% probability of tourist confusion!",
-                'robin_williams': "You haven't lived until you've seen {attraction}! *laughs* Or have you?"
+                'the_professor': "The {attraction} in {city} reveals fascinating patterns about human behavior...",
+                'the_worrier': "Has anyone been to {attraction}? I need tips to prepare!",
+                'the_enthusiast': "You MUST experience {attraction} in {city}! It's the best!"
             },
             'food_review': {
-                'john_cleese': "Attempting to eat {food} in {city} requires the coordination of a trained acrobat...",
-                'c3po': "Goodness! {food} contains exactly {number} ingredients, by my analysis...",
-                'robin_williams': "So {food} and I are having a moment... *laughs* It's complicated!"
+                'the_professor': "I've been researching {food} in {city} and discovered...",
+                'the_worrier': "Is {food} in {city} safe for everyone? Just checking!",
+                'the_enthusiast': "{food} in {city} might be my new favorite thing ever!"
             }
         }
     
@@ -253,15 +253,15 @@ class WorldtourGenerator:
     
     def generate_city_content(self,
                             city_id: str,
-                            personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                            personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                             content_type: Literal['city_review', 'cultural_debate', 
                                                 'language_lesson', 'tourist_trap', 'food_review']) -> Dict:
         """
-        Generate city-specific comedy content.
+        Generate city-specific friendly content.
         
         Args:
             city_id: City identifier
-            personality: Comedian personality
+            personality: Personality archetype
             content_type: Type of content to generate
             
         Returns:
@@ -443,7 +443,7 @@ if __name__ == "__main__":
     
     # Generate content for a city
     print(f"\nGenerating content for New York...")
-    content = generator.generate_city_content('new_york', 'john_cleese', 'city_review')
+    content = generator.generate_city_content('new_york', 'the_professor', 'city_review')
     print(f"  Topic: {content['topic']}")
     print(f"  Fun facts: {content['fun_facts']}")
     
