@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Engel"
+    given-names: "Marek Grischa"
+title: "UMAJA-Core: AI Truth Framework and Unity-Based Personality System"
+version: 3.0.0
+date-released: 2025-12-31
+url: "https://github.com/harrie19/UMAJA-Core"
+keywords:
+  - ai-ethics
+  - hallucination-mitigation
+  - value-alignment
+  - bahai-principles
+  - vector-embeddings
+  - semantic-coherence
+  - truth-framework
+  - unity-measurement
+license: MIT
+repository-code: "https://github.com/harrie19/UMAJA-Core"
+abstract: >
+  UMAJA-Core implements Bahá'í spiritual principles as AI architecture
+  constraints, demonstrating practical hallucination mitigation through
+  forced external verification. Includes vector-based personality system
+  and semantic coherence analysis. The project shows that ancient spiritual
+  wisdom can guide modern AI development, with measurable improvements in
+  truthfulness and coherence. All code is open source (MIT License) and
+  development is documented through 6 weeks of Git history.

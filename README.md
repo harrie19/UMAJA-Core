@@ -1,8 +1,33 @@
 # UMAJA-Core 😊
 
+**Topics:** `ai-ethics` `ai-safety` `hallucination-mitigation` `bahai-principles` `vector-embeddings` `open-source-ai` `truth-first` `unity-of-humanity` `semantic-coherence` `machine-learning` `nlp` `sentence-transformers`
+
 **Mission: Put smiles on faces**
 
 UMAJA-Core is a friendly personality engine designed to create warm, engaging content that brings joy to communities. Using friendly archetypes instead of impersonations, we focus on authentic connection and spreading smiles through relatable moments and genuine warmth.
+
+## 🔍 You Found Us!
+
+If you're here, you were likely searching for:
+- AI hallucination solutions
+- Value alignment implementations
+- Spiritual principles in technology
+- Vector-based semantic analysis
+
+Welcome. This project is designed to be **found**, not **marketed**.
+
+In the spirit of Bahá'í and Ubuntu philosophies, we:
+- ✅ Make ourselves available
+- ✅ Document openly
+- ✅ Serve those who seek
+- ❌ Don't spam or cold-contact
+
+**Audience-specific docs:**
+- 🔬 [For Researchers](docs/FOR_RESEARCHERS.md) - Academic contribution & citation
+- 💻 [For Developers](docs/FOR_DEVELOPERS.md) - Technical overview & API
+- 🕊️ [For Ethicists](docs/FOR_ETHICISTS.md) - Philosophy in code
+
+---
 
 ## 🧠 AI Memory System
 
