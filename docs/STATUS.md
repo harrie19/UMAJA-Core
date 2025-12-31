@@ -1,21 +1,21 @@
-# 📌 Projektstatus (Stand: 2025-12-31)
+# 📌 Project Status (as of 2025-12-31)
 
-## Was wurde gebaut?
-- **Personality Engine** mit drei warmen Archetypen (Professor, Worrier, Enthusiast) für Daily-Smiles-Content (`src/personality_engine.py`).
-- **Multimedia-Weltreise** mit Stadt-Datenbank, Content-Vorlagen und API-Endpunkten für Text, Audio, Bild, Video (`src/worldtour_generator.py`, `api/simple_server.py`).
-- **Shop-/Bundle-Skelett** inklusive Preisberechnung und Kauf-Flow, aber mit deaktiviertem Verkauf (`multimedia_text_seller.py`, `bundle_builder.py`).
-- **Deployment-Guides** und Startbefehle für Railway/Heroku (`docs/DEPLOYMENT.md`, `Procfile`, `railway.json`).
+## What we built
+- **Personality Engine** with three warm archetypes (Professor, Worrier, Enthusiast) for Daily Smiles content (`src/personality_engine.py`).
+- **Multimedia World Tour** with city database, content templates, and API endpoints for text, audio, image, video (`src/worldtour_generator.py`, `api/simple_server.py`).
+- **Shop / bundle skeleton** including pricing and purchase flow, but sales are disabled (`multimedia_text_seller.py`, `bundle_builder.py`).
+- **Deployment guides** and start commands for Railway/Heroku (`docs/DEPLOYMENT.md`, `Procfile`, `railway.json`).
 
-## Warum sind wir stehen geblieben?
-- Verkauf ist bewusst deaktiviert: `/api/create-multimedia-sale` & Bundle-Endpunkte prüfen `SALES_ENABLED` und liefern "Shop coming soon" (`api/simple_server.py`).
-- Externe Schlüssel (Stimme/Bild) sind optional und fehlen in `.env.example`, daher läuft das System primär mit lokalen Fallbacks.
-- Keine produktive Datenbank oder persistente Speicherung konfiguriert; JSON-Dateien dienen nur als Demo (`data/worldtour_cities.json`).
+## Why progress paused
+- Sales are intentionally off: `/api/create-multimedia-sale` and bundle endpoints check `SALES_ENABLED` and return “Shop coming soon” (`api/simple_server.py`).
+- External keys (voice/image) are optional and absent in `.env.example`, so the system runs primarily with local fallbacks (gTTS/pyttsx3 for TTS, PIL quote cards instead of hosted AI image services).
+- No production database or persistent storage configured; JSON files act as demo data (`data/worldtour_cities.json`).
 
-## Ist es live?
-- Kein produktiver Endpunkt/Domain im Repo hinterlegt; Deploy-Dateien existieren, aber keine live-URL oder Statushinweise.
-- Standard-Start ist lokal (`python api/simple_server.py`), Railway/Heroku werden nur als Anleitung beschrieben.
-- Somit: **nicht live** im aktuellen Stand; muss aktiv deployt und konfiguriert werden.
+## Is it live?
+- No production endpoint/domain is referenced in the repo; deploy files exist but no live URL or status note.
+- Default start is local (`python api/simple_server.py`); Railway/Heroku are only provided as guides.
+- So: **not live** in the current state; it needs an explicit deploy and configuration.
 
-## Wie weiter?
-- Zum Live-Gang: Environment setzen (`ENVIRONMENT=production`, `SALES_ENABLED=true`), API-Keys hinterlegen, einen Railway/Heroku-Deploy durchführen.
-- Optional: Persistenz (z. B. Postgres/Redis) ergänzen, bevor Automatisierung und Verkauf eingeschaltet werden.
+## Next steps
+- For go-live: set environment (`ENVIRONMENT=production`, `SALES_ENABLED=true`), supply API keys, and perform a Railway/Heroku deployment.
+- Optional before automation/sales: add persistence (e.g., Postgres/Redis).

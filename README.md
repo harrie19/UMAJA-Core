@@ -86,9 +86,9 @@ OUTPUT_DIR=output/daily_smiles
 OUTPUT_FORMAT=text
 ```
 
-## 📌 Projektstatus
+## 📌 Project Status
 
-Kurze Übersicht, was bereits gebaut wurde, warum der Stand eingefroren ist und ob ein Live-Betrieb existiert: [docs/STATUS.md](docs/STATUS.md).
+Brief overview of what has been built, why progress paused, and whether anything is live: [docs/STATUS.md](docs/STATUS.md).
 
 ## 📚 Usage Examples
 
