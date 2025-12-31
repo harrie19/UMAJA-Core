@@ -10,6 +10,10 @@ from langdetect import detect
 import pycountry
 import time
 import re
+import logging
+
+# Setup logger
+logger = logging.getLogger(__name__)
 
 
 class GlobalTranslator:
@@ -33,13 +37,14 @@ class GlobalTranslator:
         
         # Country to language mapping
         self.country_language_map = {
-            'US': 'en', 'GB': 'en', 'CA': 'en', 'AU': 'en', 'NZ': 'en', 'IE': 'en',
+            'US': 'en', 'GB': 'en', 'AU': 'en', 'NZ': 'en', 'IE': 'en',
             'ES': 'es', 'MX': 'es', 'AR': 'es', 'CO': 'es', 'CL': 'es', 'PE': 'es',
             'IN': 'hi',
             'SA': 'ar', 'EG': 'ar', 'AE': 'ar', 'IQ': 'ar', 'JO': 'ar', 'LB': 'ar',
             'CN': 'zh', 'TW': 'zh', 'HK': 'zh', 'SG': 'zh',
             'BR': 'pt', 'PT': 'pt', 'AO': 'pt', 'MZ': 'pt',
-            'FR': 'fr', 'BE': 'fr', 'CH': 'fr', 'CA': 'fr', 'DZ': 'fr', 'MA': 'fr',
+            'FR': 'fr', 'BE': 'fr', 'CH': 'fr', 'DZ': 'fr', 'MA': 'fr',
+            'CA': 'en',  # Default to English for Canada (consider using region for fr-CA)
             'RU': 'ru', 'BY': 'ru', 'KZ': 'ru', 'UA': 'ru'
         }
     
@@ -95,8 +100,9 @@ class GlobalTranslator:
             return '\n'.join(translated_sentences)
         
         except Exception as e:
-            print(f"Translation error for {target_language}: {e}")
-            return text  # Return original text on error
+            logger.warning(f"Translation error for {target_language}: {e}")
+            # Return original text on error for graceful degradation
+            return text
     
     def translate_smile(self, smile_content: Dict, target_languages: List[str] = None) -> Dict:
         """Translate Daily Smile content to multiple languages
@@ -141,7 +147,7 @@ class GlobalTranslator:
             if lang == 'en':
                 continue
             
-            print(f"Translating to {self.supported_languages[lang]}...")
+            logger.info(f"Translating to {self.supported_languages[lang]}...")
             
             translated_text = self.translate_text(
                 smile_content.get('content', ''),

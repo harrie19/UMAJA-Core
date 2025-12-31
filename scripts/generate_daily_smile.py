@@ -16,7 +16,7 @@ Examples:
 import argparse
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 # Add src to path
@@ -37,7 +37,7 @@ def generate_smile(archetype_name: str = None, output_format: str = "text") -> d
     """
     engine = PersonalityEngine()
     smile_data = engine.generate_daily_smile(archetype_name)
-    smile_data["timestamp"] = datetime.utcnow().isoformat()
+    smile_data["timestamp"] = datetime.now(timezone.utc).isoformat()
     
     return smile_data
 

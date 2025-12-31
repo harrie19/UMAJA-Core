@@ -13,7 +13,7 @@ Usage:
 import argparse
 import sys
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 # Add src to path
@@ -162,7 +162,7 @@ def main():
     
     if args.format == "json":
         output_data = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'original': smile_data,
             'translations': translations,
             'platform_exports': platform_exports if platform_exports else None
@@ -188,7 +188,7 @@ def main():
         output_dir = Path("output/multilingual")
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         
         # Save translations
         for lang, content in translations.items():
@@ -198,7 +198,7 @@ def main():
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(f"Language: {translator.supported_languages[lang]}\n")
                 f.write(f"Personality: {content['metadata']['personality']}\n")
-                f.write(f"Timestamp: {datetime.utcnow().isoformat()}\n")
+                f.write(f"Timestamp: {datetime.now(timezone.utc).isoformat()}\n")
                 f.write("\n" + "="*70 + "\n\n")
                 f.write(content['text'])
                 f.write("\n\n")
