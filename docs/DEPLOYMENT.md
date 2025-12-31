@@ -33,8 +33,11 @@ cd UMAJA-Core
 # Run setup
 python scripts/setup_multimedia.py --quick
 
-# Start server
+# Start server (development)
 python api/simple_server.py
+
+# Production-ready start (WSGI)
+gunicorn --bind 0.0.0.0:$PORT wsgi:app
 ```
 
 Visit http://localhost:5000
@@ -56,8 +59,11 @@ python scripts/setup_multimedia.py
 cp .env.example .env
 # Edit .env with your API keys
 
-# Run server
+# Run server (development)
 python api/simple_server.py
+
+# Production WSGI server
+gunicorn --bind 0.0.0.0:$PORT wsgi:app
 ```
 
 ### Development Server
@@ -140,7 +146,7 @@ The `railway.json` file is already configured:
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "python api/simple_server.py",
+    "startCommand": "gunicorn --bind 0.0.0.0:$PORT wsgi:app",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
@@ -219,7 +225,7 @@ USE_LOCAL_STABLE_DIFFUSION=false
 The `Procfile` is already configured:
 
 ```
-web: python api/simple_server.py
+web: gunicorn --bind 0.0.0.0:$PORT wsgi:app
 ```
 
 ### Heroku Add-ons (Optional)
@@ -552,7 +558,7 @@ pip install -r requirements.txt
 **Issue: Port already in use**
 ```bash
 # Solution: Use different port
-PORT=8000 python api/simple_server.py
+PORT=8000 gunicorn --bind 0.0.0.0:$PORT wsgi:app
 ```
 
 **Issue: TTS not working**
