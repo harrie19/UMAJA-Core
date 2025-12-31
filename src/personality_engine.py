@@ -1,6 +1,6 @@
 """
 UMAJA WORLDTOUR - Personality Engine
-Generates text in specific comedian styles (John Cleese, C-3PO, Robin Williams)
+Generates friendly, warm content in distinct personality archetypes
 """
 
 import random
@@ -10,126 +10,147 @@ import numpy as np
 
 class PersonalityEngine:
     """
-    Generates text in specific comedian styles with personality markers,
-    catchphrases, and humor patterns.
+    Generates text in friendly personality archetypes designed to bring smiles.
+    No impersonations - just warm, relatable characters.
     """
     
-    PERSONALITIES = ['john_cleese', 'c3po', 'robin_williams']
+    PERSONALITIES = ['the_professor', 'the_worrier', 'the_enthusiast']
     
     def __init__(self):
         """Initialize the personality engine with templates and markers."""
         self.personality_templates = {
-            'john_cleese': {
-                'style': 'Dry British wit, Monty Python humor',
-                'voice_desc': 'Deep, measured, sarcastic',
+            'the_professor': {
+                'name': 'The Professor',
+                'description': 'Curious academic who studies everyday life',
+                'tone': 'Friendly, inquisitive, slightly naive',
+                'style': 'Asks innocent questions, finds wonder in mundane',
+                'voice_desc': 'Warm, thoughtful, curious',
                 'opening_templates': [
-                    "Now, the curious thing about {}...",
-                    "Rather like the British railway system, {}...",
-                    "You see, what most people don't realize about {} is...",
-                    "If I may be so bold as to observe, {}...",
-                    "In my considerable experience with {}, I've found...",
-                    "It's rather peculiar how {}...",
-                    "One might reasonably argue that {}...",
-                    "The essential absurdity of {} becomes clear when..."
+                    "I've been studying {} for exactly 3 days now...",
+                    "According to my research, {} is fascinating because...",
+                    "You know what surprises me about {}?",
+                    "In my observations of {}, I've noticed...",
+                    "The interesting thing about {} that nobody mentions...",
+                    "After careful consideration, {} turns out to be...",
+                    "My field notes on {} reveal something wonderful...",
+                    "Here's what I learned about {} this week..."
                 ],
                 'continuation_phrases': [
-                    "which is, of course, perfectly ridiculous",
-                    "much like a confused penguin at a tea party",
-                    "rather reminiscent of a Ministry meeting",
-                    "not unlike the Spanish Inquisition",
-                    "which nobody expects, naturally",
-                    "in the most British way possible",
-                    "with all the subtlety of a Flying Circus",
-                    "as sensible as arguing with a parrot"
+                    "which made me wonder about everyday life",
+                    "and that's what makes it so charming",
+                    "in the most delightful way",
+                    "which brings a smile to my face",
+                    "and I find that genuinely fascinating",
+                    "which teaches us something about ourselves",
+                    "in ways I never expected",
+                    "and that's the beauty of it"
                 ],
                 'catchphrases': [
-                    "Quite.",
-                    "How perfectly absurd.",
-                    "I see.",
-                    "Splendid.",
-                    "Marvelous.",
-                    "How frightfully odd."
+                    "Fascinating!",
+                    "How wonderful!",
+                    "That's curious!",
+                    "I wonder...",
+                    "How delightful!",
+                    "That's amazing!"
                 ],
                 'humor_markers': [
-                    "ironic understatement",
-                    "deadpan delivery",
-                    "absurdist comparisons"
+                    "innocent curiosity",
+                    "warm observations",
+                    "finding wonder in mundane"
                 ]
             },
-            'c3po': {
-                'style': 'Overly polite protocol droid, statistical obsession',
-                'voice_desc': 'Higher pitch, robotic cadence, anxious',
+            'the_worrier': {
+                'name': 'The Worrier',
+                'description': 'Lovably anxious overthinker',
+                'tone': 'Cautious, considerate, endearingly paranoid',
+                'style': 'Finds "concerns" everywhere, but charming about it',
+                'voice_desc': 'Gentle, concerned, caring',
                 'opening_templates': [
-                    "Oh my! {} presents precisely 2,479 possible interpretations...",
-                    "By my calculations, {} exhibits {} probability factors...",
-                    "Goodness gracious! According to my programming, {}...",
-                    "I must inform you that {} has approximately {} variations...",
-                    "Begging your pardon, but {} suggests {} outcomes...",
-                    "How remarkable! My databanks indicate that {}...",
-                    "Oh dear, oh dear! {} shows {} distinct patterns...",
-                    "If I may be so presumptuous, {} registers {} on my sensors..."
+                    "Okay but what if {} is actually dangerous?",
+                    "I've been worrying about {} for hours...",
+                    "Does anyone else get nervous about {}?",
+                    "Can we talk about the risks of {}?",
+                    "I'm probably overthinking {}, but...",
+                    "Something about {} keeps me up at night...",
+                    "Is it just me, or is {} concerning?",
+                    "I need to share my concerns about {}..."
                 ],
                 'continuation_phrases': [
-                    "which corresponds to protocol section 7.2.4",
-                    "according to my extensive linguistic databases",
-                    "as documented in 6 million forms of communication",
-                    "which my circuits find most perplexing",
-                    "resulting in a 97.3% probability of confusion",
-                    "creating exactly 1,458 potential misunderstandings",
-                    "violating approximately 42 known protocols",
-                    "causing my probability matrix to fluctuate wildly"
+                    "but in a caring way",
+                    "because I want everyone to be safe",
+                    "though I might be overthinking it",
+                    "but that's what friends do, right?",
+                    "because preparation is important",
+                    "though hopefully I'm wrong",
+                    "but better safe than sorry",
+                    "and I just want people to be aware"
                 ],
                 'catchphrases': [
-                    "Oh my!",
-                    "We're doomed!",
-                    "How rude!",
-                    "I should be most grateful...",
-                    "Goodness gracious!",
-                    "Thank the Maker!"
+                    "Just to be safe...",
+                    "I worry about this...",
+                    "We should be careful...",
+                    "Does that concern anyone else?",
+                    "Maybe I'm paranoid, but...",
+                    "Let's think this through..."
                 ],
                 'humor_markers': [
-                    "excessive politeness",
-                    "unnecessary statistics",
-                    "anxious observations"
+                    "lovable anxiety",
+                    "caring overthinking",
+                    "endearing caution"
                 ]
             },
-            'robin_williams': {
-                'style': 'Energetic improv, rapid topic changes, warm',
-                'voice_desc': 'Dynamic, varied pitch, lots of laughs',
+            'the_enthusiast': {
+                'name': 'The Enthusiast',
+                'description': 'Eternally optimistic cheerleader',
+                'tone': 'Warm, excited, unconditionally positive',
+                'style': 'Finds joy in everything, infectious positivity',
+                'voice_desc': 'Bright, energetic, joyful',
                 'opening_templates': [
-                    "So {} walks into a bar... *laughs*",
-                    "Imagine if {} was a Broadway musical!",
-                    "You know what's crazy about {}? *voice changes*",
-                    "Picture this: {} meets {}! *laughs*",
-                    "So I'm thinking about {}, right? And suddenly...",
-                    "Wait, wait, wait... {} is like if {} had a baby with {}!",
-                    "Here's the thing about {}: *switches accent*",
-                    "You ever notice how {}? *laughs* No? Just me?"
+                    "Can we talk about how AMAZING {} is?!",
+                    "{} might just be the best thing ever!",
+                    "Okay so {} just made my entire day!",
+                    "I'm SO excited to tell you about {}!",
+                    "{} brings me pure joy and here's why...",
+                    "You know what's absolutely wonderful? {}!",
+                    "I can't stop thinking about how great {} is!",
+                    "Let me share why {} is fantastic..."
                 ],
                 'continuation_phrases': [
-                    "*laughs* But seriously though...",
-                    "*voice change* And then you've got...",
-                    "*wild gesture* Picture this!",
-                    "*sudden whisper* But here's the secret...",
-                    "*explosive energy* Oh! Oh! And another thing!",
-                    "*different accent* Now imagine...",
-                    "*tender moment* But you know what's beautiful?",
-                    "*back to comedy* BOOM! Plot twist!"
+                    "and that makes life beautiful",
+                    "which fills my heart with joy",
+                    "and I just love that so much",
+                    "which is why I'm smiling right now",
+                    "and that's the best part",
+                    "which makes everything better",
+                    "and I'm so grateful for it",
+                    "which is simply wonderful"
                 ],
                 'catchphrases': [
-                    "*laughs*",
-                    "Nanu nanu!",
-                    "Good morning, Vietnam!",
-                    "*switches voice*",
-                    "Carpe diem!",
-                    "*wild improvisation*"
+                    "How amazing!",
+                    "I love it!",
+                    "That's wonderful!",
+                    "So exciting!",
+                    "Best thing ever!",
+                    "Pure joy!"
                 ],
                 'humor_markers': [
-                    "rapid-fire delivery",
-                    "voice changes",
-                    "warm humanity",
-                    "improvisation"
+                    "infectious positivity",
+                    "genuine enthusiasm",
+                    "finding joy everywhere"
                 ]
+            }
+        }
+        
+        # Add smile templates for community-focused content
+        self.SMILE_TEMPLATES = {
+            'the_professor': {
+                'opening': lambda topic: f"I've been studying {topic} for exactly 3 days now..."
+            },
+            'the_worrier': {
+                'opening': lambda topic: f"Okay but what if {topic} is actually dangerous?"
+            },
+            'the_enthusiast': {
+                'opening': lambda topic: f"Can we talk about how AMAZING {topic} is?!"
             }
         }
         
@@ -197,24 +218,24 @@ class PersonalityEngine:
         
         return result
     
-    def _generate_cleese_text(self, topic: str, length: int, intensity: float) -> str:
-        """Generate text in John Cleese style."""
-        templates = self.personality_templates['john_cleese']
+    def _generate_professor_text(self, topic: str, length: int, intensity: float) -> str:
+        """Generate text in The Professor style."""
+        templates = self.personality_templates['the_professor']
         
         # Opening
         opening = random.choice(templates['opening_templates']).format(topic)
         
-        # Build paragraphs with dry wit
+        # Build paragraphs with curious observations
         paragraphs = [opening]
         current_length = len(opening.split())
         
         observations = [
-            f"One observes that {topic} exhibits all the charm of a wet Sunday in Basingstoke",
-            f"The average person's understanding of {topic} rivals that of a confused hamster",
-            f"If {topic} were a person, it would definitely wear a bowler hat. Badly",
-            f"The Ministry of Silly Walks has officially classified {topic} as 'moderately absurd'",
-            f"In my extensive research, {topic} proves to be as logical as a Monty Python sketch",
-            f"The British approach to {topic} involves tea, queuing, and mild disappointment"
+            f"What strikes me most about {topic} is how universal it feels",
+            f"Every time I explore {topic}, I discover something new and charming",
+            f"The lovely thing about {topic} is how it connects people",
+            f"In studying {topic}, I've found so many reasons to smile",
+            f"There's something wonderfully human about {topic}",
+            f"The beauty of {topic} lies in its everyday magic"
         ]
         
         while current_length < length:
@@ -223,38 +244,31 @@ class PersonalityEngine:
                 continuation = random.choice(templates['continuation_phrases'])
                 sentence = f"{obs}, {continuation}."
             else:
-                sentence = f"Furthermore, one might observe that {topic} demonstrates remarkable similarities to other forms of organized chaos."
+                sentence = f"The more I learn about {topic}, the more I appreciate its simple joys."
             
             paragraphs.append(sentence)
             current_length += len(sentence.split())
         
         text = ' '.join(paragraphs)
-        return self.inject_personality_markers(text, 'john_cleese', intensity)
+        return self.inject_personality_markers(text, 'the_professor', intensity)
     
-    def _generate_c3po_text(self, topic: str, length: int, intensity: float) -> str:
-        """Generate text in C-3PO style."""
-        templates = self.personality_templates['c3po']
+    def _generate_worrier_text(self, topic: str, length: int, intensity: float) -> str:
+        """Generate text in The Worrier style."""
+        templates = self.personality_templates['the_worrier']
         
-        # Generate random statistics
-        def random_stat():
-            return random.randint(100, 9999)
-        
-        # Opening with statistics
-        opening = random.choice(templates['opening_templates']).format(
-            topic, 
-            random_stat()
-        )
+        # Opening
+        opening = random.choice(templates['opening_templates']).format(topic)
         
         paragraphs = [opening]
         current_length = len(opening.split())
         
         observations = [
-            f"My databanks reveal {random_stat()} entries related to {topic}, oh my!",
-            f"According to protocol {random.randint(1,9)}.{random.randint(1,9)}.{random.randint(1,9)}, {topic} requires {random_stat()} steps",
-            f"I calculate a {random.randint(60,99)}.{random.randint(1,9)}% probability that {topic} will cause confusion",
-            f"Goodness! {topic} violates approximately {random_stat()} known communication protocols",
-            f"My circuits indicate that {topic} presents {random_stat()} unique challenges, how distressing!",
-            f"If I may be so bold, {topic} exhibits {random_stat()} characteristics worthy of analysis"
+            f"I just want everyone to enjoy {topic} safely",
+            f"Has anyone else thought deeply about {topic}? Just checking!",
+            f"Maybe I'm overthinking {topic}, but I care about the details",
+            f"I've prepared a mental checklist for {topic}, in case it helps",
+            f"The thing about {topic} is we should approach it thoughtfully",
+            f"I know I worry too much about {topic}, but that's who I am"
         ]
         
         while current_length < length:
@@ -263,74 +277,59 @@ class PersonalityEngine:
                 continuation = random.choice(templates['continuation_phrases'])
                 sentence = f"{obs}, {continuation}."
             else:
-                sentence = f"Additionally, my programming suggests that {topic} warrants further computational analysis with {random_stat()} variables."
+                sentence = f"Just want to make sure everyone's thinking about {topic} carefully!"
             
             paragraphs.append(sentence)
             current_length += len(sentence.split())
         
         text = ' '.join(paragraphs)
-        return self.inject_personality_markers(text, 'c3po', intensity)
+        return self.inject_personality_markers(text, 'the_worrier', intensity)
     
-    def _generate_williams_text(self, topic: str, length: int, intensity: float) -> str:
-        """Generate text in Robin Williams style."""
-        templates = self.personality_templates['robin_williams']
-        
-        # Random combination topics for improvisation
-        random_topics = ['Shakespeare', 'a food truck', 'your grandmother', 'a tech startup', 
-                        'reality TV', 'a yoga class', 'quantum physics', 'a disco ball']
+    def _generate_enthusiast_text(self, topic: str, length: int, intensity: float) -> str:
+        """Generate text in The Enthusiast style."""
+        templates = self.personality_templates['the_enthusiast']
         
         # Opening with energy
-        opening_template = random.choice(templates['opening_templates'])
-        if '{}' in opening_template:
-            # Count placeholders
-            count = opening_template.count('{}')
-            if count == 1:
-                opening = opening_template.format(topic)
-            elif count == 2:
-                opening = opening_template.format(topic, random.choice(random_topics))
-            else:
-                opening = opening_template.format(topic, random.choice(random_topics), random.choice(random_topics))
-        else:
-            opening = opening_template.replace('{}', topic)
+        opening = random.choice(templates['opening_templates']).format(topic)
         
         paragraphs = [opening]
         current_length = len(opening.split())
         
-        # High-energy improvisations
-        improvisations = [
-            f"*laughs* So {topic} is sitting there, right? And I'm thinking, this is EXACTLY like {random.choice(random_topics)}!",
-            f"*voice changes* Now, if {topic} was a movie, it would star {random.choice(['Marlon Brando', 'Meryl Streep', 'a confused llama'])}",
-            f"Picture this: {topic} meets {random.choice(random_topics)} at a party. *dramatic pause* CHAOS! Beautiful chaos!",
-            f"*switches accent* You know what {topic} reminds me of? *laughs* Everything! And nothing! That's the beauty!",
-            f"BOOM! *explosive energy* {topic} just became the most interesting thing since {random.choice(random_topics)} invented {random.choice(['sliced bread', 'the internet', 'confusion'])}!",
-            f"*tender moment* But here's the thing about {topic}... *pause* ...it's human. It's beautiful. It's us."
+        # Enthusiastic observations
+        observations = [
+            f"Every single thing about {topic} brings me happiness!",
+            f"I could talk about {topic} for hours because it's just that wonderful!",
+            f"The world needs more {topic} - it's pure positivity!",
+            f"{topic} reminds me why life is so amazing!",
+            f"Honestly, {topic} is one of my favorite things ever!",
+            f"I get so excited just thinking about {topic}!"
         ]
         
         while current_length < length:
             if random.random() < intensity:
-                improv = random.choice(improvisations)
+                obs = random.choice(observations)
                 continuation = random.choice(templates['continuation_phrases'])
-                sentence = f"{improv} {continuation}"
+                sentence = f"{obs} {continuation}!"
             else:
-                sentence = f"And that's what makes {topic} so incredible - it's spontaneous, it's alive, it's *laughs* totally unpredictable!"
+                sentence = f"And that's what makes {topic} so incredibly special!"
             
             paragraphs.append(sentence)
             current_length += len(sentence.split())
         
         text = ' '.join(paragraphs)
-        return self.inject_personality_markers(text, 'robin_williams', intensity)
+        return self.inject_personality_markers(text, 'the_enthusiast', intensity)
     
     def generate_text(self, 
                      topic: str,
-                     personality: Literal['john_cleese', 'c3po', 'robin_williams'],
+                     personality: Literal['the_professor', 'the_worrier', 'the_enthusiast'],
                      length: Literal['short', 'medium', 'long'] = 'medium',
                      style_intensity: float = 0.7) -> Dict:
         """
-        Generate text in a specific comedian style.
+        Generate text in a specific friendly personality style.
         
         Args:
             topic: Topic to write about
-            personality: Comedian personality to use
+            personality: Personality archetype to use
             length: Text length - 'short' (50-100 words), 'medium' (150-250), 'long' (300-500)
             style_intensity: How strongly to apply personality (0.0 to 1.0)
             
@@ -361,12 +360,12 @@ class PersonalityEngine:
         target_words = random.randint(target_min, target_max)
         
         # Generate text based on personality
-        if personality == 'john_cleese':
-            text = self._generate_cleese_text(topic, target_words, style_intensity)
-        elif personality == 'c3po':
-            text = self._generate_c3po_text(topic, target_words, style_intensity)
-        else:  # robin_williams
-            text = self._generate_williams_text(topic, target_words, style_intensity)
+        if personality == 'the_professor':
+            text = self._generate_professor_text(topic, target_words, style_intensity)
+        elif personality == 'the_worrier':
+            text = self._generate_worrier_text(topic, target_words, style_intensity)
+        else:  # the_enthusiast
+            text = self._generate_enthusiast_text(topic, target_words, style_intensity)
         
         # Get humor markers
         templates = self.personality_templates[personality]
@@ -380,6 +379,111 @@ class PersonalityEngine:
             'humor_markers': templates['humor_markers'],
             'voice_description': templates['voice_desc']
         }
+    
+    def generate_smile_text(self, city: str, topic: str, 
+                           personality: str, length: str = 'micro') -> str:
+        """
+        Generate short, friendly, smile-inducing text
+        
+        Rules:
+        - 30-60 seconds when spoken (75-150 words for 'micro')
+        - Warm, not edgy
+        - Relatable, not performative
+        - Inclusive, not divisive
+        - Ends with community question
+        
+        Args:
+            city: City name
+            topic: Topic to discuss
+            personality: Personality to use
+            length: 'micro' (30-60 sec), 'short' (60-90 sec)
+            
+        Returns:
+            Smile-inducing text ready for posting
+        """
+        if personality not in self.PERSONALITIES:
+            raise ValueError(f"Unknown personality: {personality}")
+        
+        # Determine word count based on length
+        # 150 words per minute speaking rate = 2.5 words per second
+        # 30-60 seconds = 75-150 words
+        length_ranges = {
+            'micro': (75, 150),
+            'short': (150, 225)
+        }
+        target_min, target_max = length_ranges.get(length, (75, 150))
+        target_words = random.randint(target_min, target_max)
+        
+        # Use lower intensity for friendlier, less extreme content
+        intensity = 0.6
+        
+        # Generate observation
+        observation = self._generate_observation(city, topic, personality)
+        
+        # Generate relatable comparison
+        comparison = self._generate_comparison(topic, personality)
+        
+        # Get opening template
+        template = self.personality_templates[personality]
+        opening = random.choice(template['opening_templates']).format(topic)
+        
+        # Construct smile
+        smile = f"🌍 Daily Smile from {city}!\n\n{opening}\n\n{observation}\n\n{comparison}"
+        
+        # Trim if too long
+        words = smile.split()
+        if len(words) > target_max:
+            smile = ' '.join(words[:target_max]) + '...'
+        
+        return smile.strip()
+    
+    def _generate_observation(self, city: str, topic: str, personality: str) -> str:
+        """Generate a warm observation about a topic in a city."""
+        observations = {
+            'the_professor': [
+                f"What fascinates me about {topic} in {city} is how it brings people together.",
+                f"I've noticed that {topic} here has a unique charm that makes everyone smile.",
+                f"The wonderful thing about {city}'s {topic} is how welcoming it feels.",
+                f"After studying {topic} in {city}, I've discovered it's full of delightful surprises."
+            ],
+            'the_worrier': [
+                f"I want to make sure everyone experiences {topic} in {city} safely and happily!",
+                f"I've been thinking about the best way to enjoy {topic} here, and I have some tips!",
+                f"Does anyone else feel a bit overwhelmed by {city}'s {topic}? Let's help each other out!",
+                f"I care about everyone having a good time with {topic} in {city}."
+            ],
+            'the_enthusiast': [
+                f"{city}'s {topic} is absolutely INCREDIBLE and everyone needs to experience it!",
+                f"I'm so excited about {topic} here - it's pure happiness!",
+                f"The energy around {topic} in {city} is contagious and amazing!",
+                f"I can't get enough of {city}'s {topic} - it's the best thing ever!"
+            ]
+        }
+        return random.choice(observations[personality])
+    
+    def _generate_comparison(self, topic: str, personality: str) -> str:
+        """Generate a relatable comparison."""
+        comparisons = {
+            'the_professor': [
+                f"It reminds me that everyday life is full of wonder.",
+                f"It's like discovering a new favorite book - you just want to share it.",
+                f"Think of it as a small gift that brightens your day.",
+                f"It's proof that simple pleasures are often the best."
+            ],
+            'the_worrier': [
+                f"Just remember to take your time and enjoy it at your own pace!",
+                f"It's okay to feel a bit nervous - we're all in this together!",
+                f"I promise it's worth the initial worry - trust me on this!",
+                f"Take care of yourself while exploring - that's what matters most!"
+            ],
+            'the_enthusiast': [
+                f"It's like sunshine in everyday form - pure joy!",
+                f"This is what happiness looks like, friends!",
+                f"Life is too short not to celebrate wonderful things like this!",
+                f"This is the kind of positivity we all need more of!"
+            ]
+        }
+        return random.choice(comparisons[personality])
     
     def maintain_coherence(self, text: str, personality: str) -> str:
         """
@@ -414,7 +518,7 @@ if __name__ == "__main__":
     engine = PersonalityEngine()
     
     # Test each personality
-    for personality in ['john_cleese', 'c3po', 'robin_williams']:
+    for personality in ['the_professor', 'the_worrier', 'the_enthusiast']:
         print(f"\n{'='*60}")
         print(f"Testing {personality.upper().replace('_', ' ')}")
         print('='*60)
@@ -432,3 +536,18 @@ if __name__ == "__main__":
         print(f"Humor Markers: {', '.join(result['humor_markers'])}")
         print(f"\nGenerated Text:")
         print(result['text'])
+    
+    # Test smile generation
+    print(f"\n{'='*60}")
+    print("Testing Daily Smile Generation")
+    print('='*60)
+    
+    for personality in ['the_professor', 'the_worrier', 'the_enthusiast']:
+        smile = engine.generate_smile_text(
+            city="Tokyo",
+            topic="sushi",
+            personality=personality,
+            length='micro'
+        )
+        print(f"\n{personality}:")
+        print(smile)
