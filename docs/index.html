@@ -488,8 +488,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             checkBackendHealth();
             
-            // Recheck every 30 seconds
-            setInterval(checkBackendHealth, 30000);
+            // Recheck every 60 seconds (reduced from 30 for better battery life)
+            setInterval(checkBackendHealth, 60000);
         });
     </script>
 </body>

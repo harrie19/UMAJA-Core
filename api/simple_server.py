@@ -76,19 +76,20 @@ def generate_smile():
     """
     Generate custom smile with topic and archetype
     POST body: {"topic": "something", "archetype": "professor|worrier|enthusiast"}
+    Note: topic parameter accepted for future use but not yet implemented in v1
     """
     try:
         data = request.get_json() or {}
-        topic = data.get('topic', None)
+        topic = data.get('topic', None)  # Reserved for future enhancement
         archetype = data.get('archetype', None)
         
-        # Generate with specific archetype
+        # Generate with specific archetype (topic not yet supported in v1)
         result = personality_engine.generate_daily_smile(archetype)
         
         return jsonify({
             'success': True,
             'timestamp': datetime.utcnow().isoformat(),
-            'topic': topic,
+            'topic': topic,  # Echo back for future compatibility
             'smile': result,
             'message': 'Custom smile generated!'
         })

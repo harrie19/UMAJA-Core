@@ -53,7 +53,7 @@ def check_backend_health():
     print(f"   URL: {BACKEND_URL}/health")
     
     try:
-        response = requests.get(f"{BACKEND_URL}/health", timeout=30)
+        response = requests.get(f"{BACKEND_URL}/health", timeout=15)
         
         if response.status_code == 200:
             data = response.json()
@@ -81,7 +81,7 @@ def check_daily_smile():
     print(f"   URL: {BACKEND_URL}/api/daily-smile")
     
     try:
-        response = requests.get(f"{BACKEND_URL}/api/daily-smile", timeout=30)
+        response = requests.get(f"{BACKEND_URL}/api/daily-smile", timeout=15)
         
         if response.status_code == 200:
             data = response.json()
@@ -118,7 +118,7 @@ def check_generate_api():
         response = requests.post(
             f"{BACKEND_URL}/api/generate",
             json=payload,
-            timeout=30
+            timeout=15
         )
         
         if response.status_code == 200:

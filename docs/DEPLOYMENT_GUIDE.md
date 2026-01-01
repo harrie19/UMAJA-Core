@@ -25,7 +25,7 @@ After this PR is merged:
 Click the green "Merge pull request" button. This triggers:
 - ✅ Render auto-deployment from `render.yaml`
 - ✅ GitHub Actions deployment checks
-- ✅ Backend goes live at `umaja-core.onrender.com`
+- ✅ Backend goes live at `https://umaja-core.onrender.com`
 
 ### Step 2: Enable GitHub Pages
 
