@@ -8,6 +8,9 @@ on:
     # Run health checks every 6 hours
     - cron: '0 */6 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   verify-deployment:
     runs-on: ubuntu-latest
