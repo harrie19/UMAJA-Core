@@ -1,0 +1,214 @@
+name: 🎨 On-Demand Text Generation
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic for text generation'
+        required: true
+        default: 'artificial intelligence'
+        type: string
+      length:
+        description: 'Length of generated text'
+        required: true
+        default: 'short'
+        type: choice
+        options:
+          - short
+          - long
+      noise_level:
+        description: 'Noise level (0.0-1.0) for text variation'
+        required: true
+        default: '0.3'
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  generate-text:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: ✅ Validate inputs
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import os
+          
+          # Get inputs from environment variables (secure against injection)
+          topic = os.environ.get('INPUT_TOPIC', '')
+          length = os.environ.get('INPUT_LENGTH', '')
+          noise_level = os.environ.get('INPUT_NOISE_LEVEL', '')
+          
+          print("="*60)
+          print("📝 Input Validation")
+          print("="*60)
+          
+          # Validate topic length
+          if not topic or len(topic) < 1 or len(topic) > 200:
+              print(f"❌ Invalid topic length: {len(topic)} chars (must be 1-200)")
+              sys.exit(1)
+          print(f"✅ Topic length: {len(topic)} chars")
+          
+          # Validate length choice
+          if length not in ['short', 'long']:
+              print(f"❌ Invalid length: {length} (must be short or long)")
+              sys.exit(1)
+          print(f"✅ Length: {length}")
+          
+          # Validate noise level
+          try:
+              noise = float(noise_level)
+              if noise < 0.0 or noise > 1.0:
+                  print(f"❌ Noise level out of range: {noise} (must be 0.0-1.0)")
+                  sys.exit(1)
+              print(f"✅ Noise level: {noise}")
+          except ValueError:
+              print(f"❌ Invalid noise level: {noise_level} (must be a float)")
+              sys.exit(1)
+          
+          print()
+          print("✅ All inputs validated successfully!")
+          print()
+          PYTHON_SCRIPT
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
+      
+      - name: 🎨 Generate text with RauschenGenerator
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import sys
+          import json
+          import os
+          from datetime import datetime
+          
+          sys.path.insert(0, '.')
+          
+          from src.rauschen_generator import RauschenGenerator
+          from src.vektor_analyzer import VektorAnalyzer
+          
+          # Get inputs - use environment variables to prevent code injection
+          topic = os.environ.get('INPUT_TOPIC', 'artificial intelligence')
+          length = os.environ.get('INPUT_LENGTH', 'short')
+          noise_level = float(os.environ.get('INPUT_NOISE_LEVEL', '0.3'))
+          
+          print("="*60)
+          print("🎨 Generating Text")
+          print("="*60)
+          print(f"Topic: {topic}")
+          print(f"Length: {length}")
+          print(f"Noise Level: {noise_level}")
+          print()
+          
+          # Initialize generator
+          print("Initializing RauschenGenerator...")
+          generator = RauschenGenerator()
+          
+          # Generate text
+          print("Generating text...")
+          result = generator.generate_reflection(topic, length, noise_level)
+          print(f"✅ Generated {result['word_count']} words")
+          print()
+          
+          # Analyze quality
+          print("Analyzing quality with VektorAnalyzer...")
+          analyzer = VektorAnalyzer()
+          analysis = analyzer.analyze_coherence(result['text'], topic)
+          print(f"✅ Quality: {analysis['quality']}")
+          print(f"   - Theme similarity: {analysis['theme_similarity']:.3f}")
+          print(f"   - Inter-sentence coherence: {analysis['avg_inter_sentence_coherence']:.3f}")
+          print(f"   - Overall score: {analysis['overall_score']:.3f}")
+          print()
+          
+          # Create output structure
+          output = {
+              'topic': topic,
+              'generated_text': result['text'],
+              'quality_analysis': {
+                  'quality': analysis['quality'],
+                  'theme_similarity': analysis['theme_similarity'],
+                  'overall_score': analysis['overall_score']
+              },
+              'metadata': {
+                  'length': length,
+                  'noise_level': noise_level,
+                  'word_count': result['word_count'],
+                  'generated_at': datetime.utcnow().isoformat() + 'Z',
+                  'text_id': result['text_id'],
+                  'price': result['price']
+              }
+          }
+          
+          # Create output directory
+          os.makedirs('output', exist_ok=True)
+          
+          # Save JSON output
+          with open('output/generated_text_output.json', 'w') as f:
+              json.dump(output, f, indent=2)
+          print("✅ Saved: output/generated_text_output.json")
+          
+          # Save human-readable text
+          with open('output/generated_text.txt', 'w') as f:
+              f.write(f"UMAJA-Core Text Generation\n")
+              f.write(f"{'='*60}\n\n")
+              f.write(f"Topic: {topic}\n")
+              f.write(f"Length: {length}\n")
+              f.write(f"Noise Level: {noise_level}\n")
+              f.write(f"Word Count: {result['word_count']}\n")
+              f.write(f"Quality: {analysis['quality']}\n")
+              f.write(f"Overall Score: {analysis['overall_score']:.3f}\n")
+              f.write(f"Generated: {output['metadata']['generated_at']}\n")
+              f.write(f"\n{'='*60}\n\n")
+              f.write(result['text'])
+              f.write(f"\n\n{'='*60}\n")
+              f.write(f"\nQuality Analysis:\n")
+              f.write(f"  - Theme Similarity: {analysis['theme_similarity']:.3f}\n")
+              f.write(f"  - Inter-sentence Coherence: {analysis['avg_inter_sentence_coherence']:.3f}\n")
+              f.write(f"  - Overall Score: {analysis['overall_score']:.3f}\n")
+              f.write(f"  - Quality Rating: {analysis['quality']}\n")
+          print("✅ Saved: output/generated_text.txt")
+          print()
+          PYTHON_SCRIPT
+        env:
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_LENGTH: ${{ github.event.inputs.length }}
+          INPUT_NOISE_LEVEL: ${{ github.event.inputs.noise_level }}
+      
+      - name: 📊 Display results summary
+        run: |
+          echo "================================"
+          echo "📊 Generation Results"
+          echo "================================"
+          echo ""
+          cat output/generated_text.txt
+          echo ""
+          echo "================================"
+          echo "📦 Artifacts ready for download"
+          echo "================================"
+      
+      - name: 📤 Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-text-${{ github.run_number }}
+          path: |
+            output/generated_text_output.json
+            output/generated_text.txt
+          retention-days: 30
