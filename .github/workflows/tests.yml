@@ -1,231 +1,48 @@
-name:  UMAJA Core Tests
+name: Tests
 
 on:
-  push: 
-    branches: [ main ]
+  push:
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
-  workflow_dispatch: 
+    branches: [ main, develop ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     strategy:
       matrix:
-        python-version: ['3.11']
-    
+        python-version: [3.8, 3.9, '3.10']
+
     steps:
-      - name:  📥 Checkout repository
-        uses: actions/checkout@v4
-      
-      - name: 🐍 Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix. python-version }}
-          cache:  'pip'
-      
-      - name: 📦 Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements. txt
-      
-      - name:  🧪 Test RauschenGenerator
-        run:  |
-          python << 'PYTHON_SCRIPT'
-          import sys
-          sys. path.insert(0, '.')
-          
-          print("="*60)
-          print("🎨 Testing RauschenGenerator")
-          print("="*60)
-          
-          from src.rauschen_generator import RauschenGenerator
-          
-          print("1️⃣ Testing instantiation...")
-          generator = RauschenGenerator()
-          print("   ✅ RauschenGenerator created successfully")
-          
-          print("2️⃣ Testing short text generation...")
-          result_short = generator.generate_reflection('test topic', 'short', 0.3)
-          assert result_short['text'], "Short text is empty"
-          assert result_short['word_count'] > 0, "Word count is zero"
-          assert 50 <= result_short['word_count'] <= 150, f"Word count {result_short['word_count']} out of range"
-          print(f"   ✅ Generated {result_short['word_count']} words (short)")
-          
-          print("3️⃣ Testing long text generation...")
-          result_long = generator.generate_reflection('test topic', 'long', 0.3)
-          assert result_long['text'], "Long text is empty"
-          assert 200 <= result_long['word_count'] <= 500, f"Word count {result_long['word_count']} out of range"
-          print(f"   ✅ Generated {result_long['word_count']} words (long)")
-          
-          print("4️⃣ Testing different noise levels...")
-          for noise in [0.0, 0.5, 1.0]: 
-              result = generator.generate_reflection('test', 'short', noise)
-              assert result['metadata']['noise_level'] == noise, f"Noise level mismatch"
-              print(f"   ✅ Noise level {noise} works")
-          
-          print("5️⃣ Testing metadata...")
-          assert 'text_id' in result_short, "Missing text_id"
-          assert 'timestamp' in result_short, "Missing timestamp"
-          assert 'price' in result_short, "Missing price"
-          assert result_short['price'] > 0, "Price is not positive"
-          print(f"   ✅ Metadata complete (price:  ${result_short['price']})")
-          
-          print()
-          print("✅ All RauschenGenerator tests passed!")
-          print()
-          PYTHON_SCRIPT
-      
-      - name: 🔍 Test VektorAnalyzer
-        run: |
-          python << 'PYTHON_SCRIPT'
-          import sys
-          sys.path. insert(0, '.')
-          
-          print("="*60)
-          print("🔍 Testing VektorAnalyzer")
-          print("="*60)
-          
-          from src. vektor_analyzer import VektorAnalyzer
-          
-          print("1️⃣ Testing instantiation...")
-          analyzer = VektorAnalyzer()
-          print("   ✅ VektorAnalyzer created successfully")
-          
-          print("2️⃣ Testing coherence analysis...")
-          test_text = "Artificial intelligence is transforming technology.  Machine learning enables computers to learn from data. This revolution is changing how we work."
-          test_theme = "artificial intelligence"
-          
-          analysis = analyzer.analyze_coherence(test_text, test_theme)
-          assert 'quality' in analysis, "Missing quality field"
-          assert 'theme_similarity' in analysis, "Missing theme_similarity"
-          assert 'avg_inter_sentence_coherence' in analysis, "Missing coherence"
-          assert 'overall_score' in analysis, "Missing overall_score"
-          print(f"   ✅ Analysis complete (quality: {analysis['quality']})")
-          
-          print("3️⃣ Testing quality score ranges...")
-          assert 0 <= analysis['theme_similarity'] <= 1, "Theme similarity out of range"
-          assert 0 <= analysis['overall_score'] <= 1, "Overall score out of range"
-          print(f"   ✅ Scores in valid range")
-          print(f"      - Theme:  {analysis['theme_similarity']:. 3f}")
-          print(f"      - Overall: {analysis['overall_score']:.3f}")
-          
-          print("4️⃣ Testing text comparison...")
-          text1 = "AI is powerful"
-          text2 = "Artificial intelligence has great potential"
-          similarity = analyzer.compare_texts(text1, text2)
-          assert 0 <= similarity <= 1, "Similarity out of range"
-          print(f"   ✅ Comparison works (similarity: {similarity:.3f})")
-          
-          print()
-          print("✅ All VektorAnalyzer tests passed!")
-          print()
-          PYTHON_SCRIPT
-      
-      - name: 💰 Test DistributionEngine
-        run: |
-          python << 'PYTHON_SCRIPT'
-          import sys
-          sys.path.insert(0, '.')
-          
-          print("="*60)
-          print("💰 Testing DistributionEngine")
-          print("="*60)
-          
-          from src.distribution_engine import DistributionEngine
-          
-          print("1️⃣ Testing instantiation...")
-          engine = DistributionEngine()
-          print("   ✅ DistributionEngine created successfully")
-          
-          print("2️⃣ Testing payment allocation...")
-          allocation = engine.allocate_payment(10.0)
-          
-          assert allocation['charity'] == 4.0, f"Charity allocation wrong: {allocation['charity']}"
-          assert allocation['operations'] == 3.0, f"Operations allocation wrong: {allocation['operations']}"
-          assert allocation['upgrades'] == 3.0, f"Upgrades allocation wrong: {allocation['upgrades']}"
-          
-          total = allocation['charity'] + allocation['operations'] + allocation['upgrades']
-          assert abs(total - 10.0) < 0.01, f"Total allocation wrong: {total}"
-          
-          print(f"   ✅ Allocation correct:")
-          print(f"      - Charity (40%): €{allocation['charity']:.2f}")
-          print(f"      - Operations (30%): €{allocation['operations']:.2f}")
-          print(f"      - Upgrades (30%): €{allocation['upgrades']:.2f}")
-          
-          print("3️⃣ Testing different payment amounts...")
-          for amount in [5.0, 100.0, 1000.0]:
-              alloc = engine.allocate_payment(amount)
-              expected_charity = amount * 0.4
-              assert abs(alloc['charity'] - expected_charity) < 0.01, f"Wrong charity for {amount}"
-              print(f"   ✅ €{amount} → Charity: €{alloc['charity']:.2f}")
-          
-          print()
-          print("✅ All DistributionEngine tests passed!")
-          print()
-          PYTHON_SCRIPT
-      
-      - name: 🔗 Integration Test
-        run: |
-          python << 'PYTHON_SCRIPT'
-          import sys
-          sys.path.insert(0, '.')
-          
-          print("="*60)
-          print("🔗 Integration Test")
-          print("="*60)
-          
-          from src.rauschen_generator import RauschenGenerator
-          from src.vektor_analyzer import VektorAnalyzer
-          from src.distribution_engine import DistributionEngine
-          
-          print("Testing full pipeline...")
-          print()
-          
-          print("1️⃣ Generating text...")
-          generator = RauschenGenerator()
-          result = generator. generate_reflection('integration test', 'short', 0.4)
-          print(f"   ✅ Generated {result['word_count']} words")
-          
-          print("2️⃣ Analyzing quality...")
-          analyzer = VektorAnalyzer()
-          analysis = analyzer.analyze_coherence(result['text'], 'integration test')
-          print(f"   ✅ Quality:  {analysis['quality']} (score: {analysis['overall_score']:.3f})")
-          
-          print("3️⃣ Calculating distribution...")
-          engine = DistributionEngine()
-          allocation = engine.allocate_payment(result['price'])
-          print(f"   ✅ Price: ${result['price']} → Charity: ${allocation['charity']:.2f}")
-          
-          assert result['text'], "Text generation failed"
-          assert analysis['quality'] in ['excellent', 'good', 'acceptable'], "Invalid quality"
-          assert allocation['charity'] > 0, "Charity allocation failed"
-          
-          print()
-          print("="*60)
-          print("✅ INTEGRATION TEST PASSED")
-          print("="*60)
-          print()
-          print("Summary:")
-          print(f"  📝 Text: {result['word_count']} words")
-          print(f"  🎯 Quality: {analysis['quality']}")
-          print(f"  💰 Price: ${result['price']}")
-          print(f"  🎁 Charity: ${allocation['charity']:.2f}")
-          print()
-          PYTHON_SCRIPT
-      
-      - name: 📊 Test Summary
-        run:  |
-          echo "================================"
-          echo "✅ ALL TESTS PASSED"
-          echo "================================"
-          echo ""
-          echo "Components tested:"
-          echo "  ✅ RauschenGenerator (text generation)"
-          echo "  ✅ VektorAnalyzer (quality analysis)"
-          echo "  ✅ DistributionEngine (fund allocation)"
-          echo "  ✅ Integration (full pipeline)"
-          echo ""
-          echo "Python version: ${{ matrix.python-version }}"
-          echo "Status: Ready for production"
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      run: |
+        pytest tests/ --cov=umaja --cov-report=xml
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
