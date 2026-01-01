@@ -1514,7 +1514,7 @@ Need help? Have questions?
 - 📖 **Documentation**: Check our [Wiki](https://github.com/harrie19/UMAJA-Core/wiki)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/harrie19/UMAJA-Core/discussions)
 - 💭 **Discord**: Join our [community server](https://discord.gg/umaja)
-- 📧 **Email**: contact@umaja.org
+- 📧 **Email**: Umaja1919@googlemail.com
 
 ---
 

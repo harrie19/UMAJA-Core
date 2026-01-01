@@ -190,6 +190,8 @@ Acknowledges limitations, asks for help when needed
 4. Push to branch
 5. Open a Pull Request
 
+**Contact**: Umaja1919@googlemail.com
+
 **Areas for contribution**:
 - 🌐 Translations
 - 🎭 New archetypes
