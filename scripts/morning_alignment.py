@@ -104,8 +104,11 @@ def mission_alignment_check() -> bool:
     print()
     
     # Check if running in CI/automated environment
+    # Note: In CI, we assume alignment since interactive prompts aren't possible.
+    # Human review of PR and governance rules provides the alignment check.
     if os.environ.get('CI') or os.environ.get('GITHUB_ACTIONS'):
         print(f"{Colors.BLUE}Running in automated environment - assuming aligned{Colors.END}")
+        print(f"{Colors.BLUE}(Human review of PR provides alignment verification){Colors.END}")
         return True
     
     # Interactive check
