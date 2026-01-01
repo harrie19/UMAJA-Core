@@ -43,12 +43,16 @@ jobs:
           python -c "from src.vektor_analyzer import VektorAnalyzer; print('✅ VektorAnalyzer OK')" || echo "⚠️  VektorAnalyzer not found (optional)"
           python -c "import flask; print('✅ Flask OK')"
       
+      - name: 🚂 Install Railway CLI
+        run: |
+          curl -fsSL https://railway.app/install.sh | sh
+          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+      
       - name: 🚂 Deploy to Railway
-        uses: bervProject/railway-deploy@main
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: umaja-core-backend  # Note: Update this to match your Railway service name
+        run: |
+          railway up --service umaja-core-backend
         env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           ENVIRONMENT: ${{ github.event.inputs.environment || 'production' }}
       
       - name: ⏳ Wait for Deployment
