@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UMAJA - Universal Motivation & Joy for All. Personalized daily inspiration for 8 billion people at $0 cost.">
+    <meta name="keywords" content="UMAJA, motivation, inspiration, AI, joy, wellness, mental health">
+    <meta name="author" content="UMAJA Team">
+    
+    <title>UMAJA - Universal Motivation & Joy for All 🌍</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --dreamer-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warrior-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --healer-gradient: linear-gradient(135deg, #4facfe 0%, #43e97b 100%);
+            --dark-bg: #1a1a2e;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --error: #f56565;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            z-index: -1;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: white;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 0.5rem 1rem;
+        }
+
+        .status-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.25rem;
+        }
+
+        .status-healthy { color: var(--success); }
+        .status-warning { color: var(--warning); }
+        .status-error { color: var(--error); }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Archetype Cards */
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .archetype-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .archetype-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .archetype-header {
+            padding: 2rem;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .dreamer-header { background: var(--dreamer-gradient); }
+        .warrior-header { background: var(--warrior-gradient); }
+        .healer-header { background: var(--healer-gradient); }
+
+        .archetype-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .archetype-name {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .archetype-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .archetype-body {
+            padding: 2rem;
+        }
+
+        .smile-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            min-height: 100px;
+        }
+
+        .archetype-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: white;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .tagline { font-size: 1rem; }
+            .logo { font-size: 2.5rem; }
+            .archetype-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .status-bar { flex-direction: column; }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <header>
+        <div class="logo">🌍</div>
+        <h1>UMAJA</h1>
+        <p class="tagline">Universal Motivation & Joy for All</p>
+    </header>
+
+    <!-- System Status -->
+    <div class="container">
+        <div class="status-bar" role="status" aria-live="polite">
+            <div class="status-item">
+                <div class="status-label">System Status</div>
+                <div class="status-value status-healthy" id="system-status">🟢 Online</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">CDN Status</div>
+                <div class="status-value" id="cdn-status">🔄 Checking...</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Current Date</div>
+                <div class="status-value" id="current-date">Loading...</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Day of Year</div>
+                <div class="status-value" id="day-of-year">---</div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-number">8B</div>
+                <div class="stat-label">Target Global Reach</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number">$0</div>
+                <div class="stat-label">Infrastructure Cost</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-number">8,760</div>
+                <div class="stat-label">Pre-Generated Smiles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🌍</div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">Languages Supported</div>
+            </div>
+        </div>
+
+        <!-- Archetypes -->
+        <div class="archetype-grid">
+            <!-- Dreamer -->
+            <article class="archetype-card" data-archetype="Dreamer">
+                <div class="archetype-header dreamer-header">
+                    <div class="archetype-icon">💭</div>
+                    <h2 class="archetype-name">Dreamer</h2>
+                    <p class="archetype-subtitle">Visionaries & Innovators</p>
+                </div>
+                <div class="archetype-body">
+                    <p class="smile-text" id="dreamer-smile">
+                        <span class="loading"></span> Loading your daily inspiration...
+                    </p>
+                    <div class="archetype-meta">
+                        <span id="dreamer-source">Source: Loading...</span>
+                        <button class="btn" onclick="refreshSmile('Dreamer')">Refresh</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Warrior -->
+            <article class="archetype-card" data-archetype="Warrior">
+                <div class="archetype-header warrior-header">
+                    <div class="archetype-icon">⚔️</div>
+                    <h2 class="archetype-name">Warrior</h2>
+                    <p class="archetype-subtitle">Resilient & Courageous</p>
+                </div>
+                <div class="archetype-body">
+                    <p class="smile-text" id="warrior-smile">
+                        <span class="loading"></span> Loading your daily inspiration...
+                    </p>
+                    <div class="archetype-meta">
+                        <span id="warrior-source">Source: Loading...</span>
+                        <button class="btn" onclick="refreshSmile('Warrior')">Refresh</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Healer -->
+            <article class="archetype-card" data-archetype="Healer">
+                <div class="archetype-header healer-header">
+                    <div class="archetype-icon">💚</div>
+                    <h2 class="archetype-name">Healer</h2>
+                    <p class="archetype-subtitle">Compassionate & Nurturing</p>
+                </div>
+                <div class="archetype-body">
+                    <p class="smile-text" id="healer-smile">
+                        <span class="loading"></span> Loading your daily inspiration...
+                    </p>
+                    <div class="archetype-meta">
+                        <span id="healer-source">Source: Loading...</span>
+                        <button class="btn" onclick="refreshSmile('Healer')">Refresh</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 UMAJA - Universal Motivation & Joy for All</p>
+        <p style="margin-top: 1rem; opacity: 0.8;">Bringing joy and motivation to 8 billion people, one smile at a time 💙</p>
+        <div class="footer-links">
+            <a href="https://github.com/harrie19/UMAJA-Core" target="_blank">GitHub</a>
+            <a href="#">Documentation</a>
+            <a href="#">API</a>
+            <a href="#">About</a>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            CDN_BASE_URL: 'https://cdn.umaja.org/smiles',  // Replace with actual CDN URL
+            API_BASE_URL: 'https://api.umaja.org',          // Replace with actual API URL
+            LANGUAGE: 'en',
+            USE_CDN: true  // Set to true when CDN is deployed
+        };
+
+        // Hardcoded fallback smiles (always available)
+        const FALLBACK_SMILES = {
+            Dreamer: "Today, imagine the impossible - your dreams are the blueprint of tomorrow's reality. 💭✨",
+            Warrior: "Courage isn't the absence of fear - it's taking action despite it. Be brave today. ⚔️💪",
+            Healer: "Compassion is the foundation of healing. Share your light with someone today. 💚🌟"
+        };
+
+        // Get current date info
+        function getCurrentDateInfo() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            
+            return {
+                date: now,
+                dateString: now.toISOString().split('T')[0],
+                dayOfYear: dayOfYear,
+                year: now.getFullYear()
+            };
+        }
+
+        // Update date display
+        function updateDateDisplay() {
+            const dateInfo = getCurrentDateInfo();
+            document.getElementById('current-date').textContent = 
+                dateInfo.date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+            document.getElementById('day-of-year').textContent = dateInfo.dayOfYear;
+        }
+
+        // Fetch smile from CDN
+        async function fetchFromCDN(archetype, language, dayOfYear) {
+            const url = `${CONFIG.CDN_BASE_URL}/${archetype}/${language}/${dayOfYear}.json`;
+            
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    return { smile: data.smile, source: '📦 CDN' };
+                }
+            } catch (error) {
+                console.log(`CDN fetch failed for ${archetype}:`, error.message);
+            }
+            
+            return null;
+        }
+
+        // Fetch smile from API
+        async function fetchFromAPI(archetype, language) {
+            const url = `${CONFIG.API_BASE_URL}/smile?archetype=${archetype}&language=${language}`;
+            
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    return { smile: data.smile, source: '🌐 API' };
+                }
+            } catch (error) {
+                console.log(`API fetch failed for ${archetype}:`, error.message);
+            }
+            
+            return null;
+        }
+
+        // Get smile with fallback chain: CDN -> API -> Hardcoded
+        async function getSmile(archetype) {
+            const dateInfo = getCurrentDateInfo();
+            
+            // Try CDN first
+            if (CONFIG.USE_CDN) {
+                const cdnResult = await fetchFromCDN(archetype, CONFIG.LANGUAGE, dateInfo.dayOfYear);
+                if (cdnResult) return cdnResult;
+            }
+            
+            // Try API as fallback
+            const apiResult = await fetchFromAPI(archetype, CONFIG.LANGUAGE);
+            if (apiResult) return apiResult;
+            
+            // Use hardcoded fallback
+            return {
+                smile: FALLBACK_SMILES[archetype],
+                source: '💾 Cached'
+            };
+        }
+
+        // Update archetype card
+        async function updateArchetypeCard(archetype) {
+            const smileElement = document.getElementById(`${archetype.toLowerCase()}-smile`);
+            const sourceElement = document.getElementById(`${archetype.toLowerCase()}-source`);
+            
+            try {
+                const result = await getSmile(archetype);
+                smileElement.textContent = result.smile;
+                sourceElement.textContent = `Source: ${result.source}`;
+            } catch (error) {
+                console.error(`Error updating ${archetype}:`, error);
+                smileElement.textContent = FALLBACK_SMILES[archetype];
+                sourceElement.textContent = 'Source: 💾 Cached (Error)';
+            }
+        }
+
+        // Refresh smile for specific archetype
+        async function refreshSmile(archetype) {
+            const smileElement = document.getElementById(`${archetype.toLowerCase()}-smile`);
+            smileElement.innerHTML = '<span class="loading"></span> Refreshing...';
+            await updateArchetypeCard(archetype);
+        }
+
+        // Check CDN status
+        async function checkCDNStatus() {
+            const statusElement = document.getElementById('cdn-status');
+            
+            if (!CONFIG.USE_CDN) {
+                statusElement.innerHTML = '<span class="status-warning">⚪ Disabled</span>';
+                return;
+            }
+            
+            const dateInfo = getCurrentDateInfo();
+            const testUrl = `${CONFIG.CDN_BASE_URL}/Dreamer/en/${dateInfo.dayOfYear}.json`;
+            
+            try {
+                const response = await fetch(testUrl, { method: 'HEAD' });
+                if (response.ok) {
+                    statusElement.innerHTML = '<span class="status-healthy">🟢 Online</span>';
+                } else {
+                    statusElement.innerHTML = '<span class="status-warning">🟡 Degraded</span>';
+                }
+            } catch (error) {
+                statusElement.innerHTML = '<span class="status-error">🔴 Offline</span>';
+            }
+        }
+
+        // Initialize application
+        async function init() {
+            console.log('🌍 UMAJA Frontend Initialized');
+            console.log('Configuration:', CONFIG);
+            
+            // Update date display
+            updateDateDisplay();
+            
+            // Check CDN status
+            checkCDNStatus();
+            
+            // Load all smiles
+            await Promise.all([
+                updateArchetypeCard('Dreamer'),
+                updateArchetypeCard('Warrior'),
+                updateArchetypeCard('Healer')
+            ]);
+            
+            console.log('✅ All smiles loaded');
+        }
+
+        // Run initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // Auto-refresh at midnight
+        function scheduleNextRefresh() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const timeUntilMidnight = tomorrow - now;
+            
+            setTimeout(() => {
+                location.reload();
+            }, timeUntilMidnight);
+            
+            console.log(`⏰ Next auto-refresh scheduled in ${Math.round(timeUntilMidnight / 1000 / 60)} minutes`);
+        }
+
+        scheduleNextRefresh();
+    </script>
+</body>
+</html>
