@@ -27,10 +27,12 @@ jobs:
     if: |
       github.actor != 'github-actions[bot]' &&
       github.actor != 'copilot-swe-agent[bot]' &&
-      !contains(github.event.head_commit.message, '[skip-ci]') &&
-      !contains(github.event.head_commit.message, '[skip-agent]') &&
-      !contains(github.event.pull_request.labels.*.name, 'agent-processed') &&
-      !contains(github.event.pull_request.labels.*.name, 'agent-skip')
+      (github.event_name != 'pull_request' || (
+        !contains(github.event.head_commit.message, '[skip-ci]') &&
+        !contains(github.event.head_commit.message, '[skip-agent]') &&
+        !contains(github.event.pull_request.labels.*.name, 'agent-processed') &&
+        !contains(github.event.pull_request.labels.*.name, 'agent-skip')
+      ))
     
     steps:
       - name: Checkout Repository

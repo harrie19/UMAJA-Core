@@ -31,18 +31,18 @@ RESTRICTED_PATHS = [
     r'^package-lock\.json$',
 ]
 
-# Dangerous code patterns
+# Dangerous code patterns with word boundaries to reduce false positives
 DANGEROUS_PATTERNS = [
-    (r'eval\(', 'Code injection via eval()'),
-    (r'exec\(', 'Code execution via exec()'),
-    (r'__import__\(', 'Dynamic import'),
-    (r'os\.system\(', 'Shell command execution'),
-    (r'subprocess\.', 'Subprocess execution'),
-    (r'password\s*=\s*["\']', 'Hardcoded password'),
-    (r'api[_-]?key\s*=\s*["\']', 'Hardcoded API key'),
-    (r'token\s*=\s*["\'][^"\']{20,}["\']', 'Hardcoded token'),
-    (r'RAILWAY_TOKEN\s*=', 'Railway token in code'),
-    (r'GH_PAT\s*=', 'GitHub PAT in code'),
+    (r'\beval\s*\(', 'Code injection via eval()'),
+    (r'\bexec\s*\(', 'Code execution via exec()'),
+    (r'\b__import__\s*\(', 'Dynamic import'),
+    (r'\bos\.system\s*\(', 'Shell command execution'),
+    (r'\bsubprocess\.', 'Subprocess execution'),
+    (r'\bpassword\s*=\s*["\']', 'Hardcoded password'),
+    (r'\bapi[_-]?key\s*=\s*["\']', 'Hardcoded API key'),
+    (r'\btoken\s*=\s*["\'][^"\']{20,}["\']', 'Hardcoded token'),
+    (r'\bRAILWAY_TOKEN\s*=', 'Railway token in code'),
+    (r'\bGH_PAT\s*=', 'GitHub PAT in code'),
 ]
 
 def should_auto_approve(pr) -> Tuple[bool, List[str]]:
