@@ -287,7 +287,11 @@ class WorldtourGenerator:
                 "a beautiful disaster",
                 "an elaborate stage production"
             ])
-            topic = template.format(city=city['name'], comparison=comparison)
+            # Handle templates with different placeholders
+            if '{number}' in template:
+                topic = template.format(city=city['name'], number=random.randint(100, 9999))
+            else:
+                topic = template.format(city=city['name'], comparison=comparison)
             
         elif content_type == 'cultural_debate':
             topic_item = random.choice(city['topics'])
@@ -424,6 +428,17 @@ class WorldtourGenerator:
             'remaining_cities': total_cities - visited,
             'total_views': total_views,
             'completion_percentage': round((visited / total_cities) * 100, 1)
+        }
+
+    def get_progress(self) -> Dict:
+        """Get simple progress information (simpler version of get_stats)."""
+        total_cities = len(self.cities)
+        visited = sum(1 for c in self.cities.values() if c.get('visited', False))
+        
+        return {
+            'total_cities': total_cities,
+            'visited': visited,
+            'remaining': total_cities - visited
         }
 
 
