@@ -1,0 +1,213 @@
+name: Deployment Verification
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Run health checks every 6 hours
+    - cron: '0 */6 * * *'
+
+jobs:
+  verify-deployment:
+    runs-on: ubuntu-latest
+    name: Verify UMAJA Deployment
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests colorama
+      
+      - name: Check Backend Health
+        id: backend-health
+        continue-on-error: true
+        run: |
+          echo "🔍 Checking backend health..."
+          
+          # Try primary backend (Railway)
+          BACKEND_URL="https://umaja-core-production.up.railway.app"
+          
+          # Wait for cold start (Render/Railway free tier)
+          echo "⏳ Waiting for backend to wake up (15s timeout)..."
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" --max-time 15 "$BACKEND_URL/health" || echo "000")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo "backend_url=$BACKEND_URL" >> $GITHUB_OUTPUT
+          echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Backend is healthy!"
+            echo "backend_status=healthy" >> $GITHUB_OUTPUT
+            echo "$BODY" | jq '.' || echo "$BODY"
+          else
+            echo "❌ Backend health check failed (HTTP $HTTP_CODE)"
+            echo "backend_status=unhealthy" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+      
+      - name: Test Daily Smile Endpoint
+        if: steps.backend-health.outputs.backend_status == 'healthy'
+        id: daily-smile
+        continue-on-error: true
+        run: |
+          echo "🔍 Testing /api/daily-smile endpoint..."
+          
+          BACKEND_URL="${{ steps.backend-health.outputs.backend_url }}"
+          RESPONSE=$(curl -s -w "\n%{http_code}" --max-time 10 "$BACKEND_URL/api/daily-smile" || echo "000")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Daily smile endpoint working!"
+            echo "smile_status=working" >> $GITHUB_OUTPUT
+            echo "$BODY" | jq '.content' || echo "$BODY"
+          else
+            echo "❌ Daily smile endpoint failed (HTTP $HTTP_CODE)"
+            echo "smile_status=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+      
+      - name: Test Generate Endpoint
+        if: steps.backend-health.outputs.backend_status == 'healthy'
+        id: generate
+        continue-on-error: true
+        run: |
+          echo "🔍 Testing POST to backend..."
+          
+          BACKEND_URL="${{ steps.backend-health.outputs.backend_url }}"
+          
+          # Test smile by archetype
+          for ARCHETYPE in professor worrier enthusiast; do
+            echo "Testing archetype: $ARCHETYPE"
+            RESPONSE=$(curl -s -w "\n%{http_code}" --max-time 10 "$BACKEND_URL/api/smile/$ARCHETYPE" || echo "000")
+            HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+            
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "  ✅ $ARCHETYPE archetype working"
+            else
+              echo "  ❌ $ARCHETYPE archetype failed (HTTP $HTTP_CODE)"
+            fi
+          done
+          
+          echo "generate_status=tested" >> $GITHUB_OUTPUT
+      
+      - name: Check Frontend Deployment
+        id: frontend
+        continue-on-error: true
+        run: |
+          echo "🔍 Checking GitHub Pages frontend..."
+          
+          FRONTEND_URL="https://harrie19.github.io/UMAJA-Core/"
+          RESPONSE=$(curl -s -w "\n%{http_code}" --max-time 10 "$FRONTEND_URL" || echo "000")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo "frontend_url=$FRONTEND_URL" >> $GITHUB_OUTPUT
+          echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Frontend is accessible!"
+            echo "frontend_status=accessible" >> $GITHUB_OUTPUT
+            
+            # Check if page contains expected content
+            if echo "$BODY" | grep -q "UMAJA"; then
+              echo "✅ Frontend contains UMAJA branding"
+            else
+              echo "⚠️  Warning: Frontend may not have loaded correctly"
+            fi
+          else
+            echo "❌ Frontend check failed (HTTP $HTTP_CODE)"
+            echo "frontend_status=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+      
+      - name: Generate Summary
+        if: always()
+        run: |
+          echo "## 🌍 UMAJA Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Mission**: Bringing smiles to 8 billion people" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Backend Status
+          echo "### 🚂 Backend (Railway)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.backend-health.outputs.backend_status }}" = "healthy" ]; then
+            echo "✅ **Status**: Healthy (HTTP ${{ steps.backend-health.outputs.http_code }})" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **URL**: ${{ steps.backend-health.outputs.backend_url }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status**: Unhealthy" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **URL**: ${{ steps.backend-health.outputs.backend_url }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # API Endpoints
+          echo "### 🔌 API Endpoints" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.daily-smile.outputs.smile_status }}" = "working" ]; then
+            echo "✅ `/api/daily-smile` - Working" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ `/api/daily-smile` - Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.generate.outputs.generate_status }}" = "tested" ]; then
+            echo "✅ `/api/smile/<archetype>` - Tested" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️  `/api/smile/<archetype>` - Not tested" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Frontend Status
+          echo "### 🌐 Frontend (GitHub Pages)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.frontend.outputs.frontend_status }}" = "accessible" ]; then
+            echo "✅ **Status**: Accessible (HTTP ${{ steps.frontend.outputs.http_code }})" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **URL**: ${{ steps.frontend.outputs.frontend_url }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status**: Failed" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 **URL**: ${{ steps.frontend.outputs.frontend_url }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Overall Status
+          echo "### 📊 Overall Status" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.backend-health.outputs.backend_status }}" = "healthy" ] && \
+             [ "${{ steps.frontend.outputs.frontend_status }}" = "accessible" ]; then
+            echo "🎉 **UMAJA IS LIVE!**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "_Serving 8 billion people with Truth, Unity, and Service_ ✨" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️  **Deployment Issues Detected**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Troubleshooting**:" >> $GITHUB_STEP_SUMMARY
+            echo "- Check workflow logs for error details" >> $GITHUB_STEP_SUMMARY
+            echo "- Verify Railway deployment status" >> $GITHUB_STEP_SUMMARY
+            echo "- Check GitHub Pages deployment" >> $GITHUB_STEP_SUMMARY
+            echo "- Review recent commits for breaking changes" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "_Last checked: $(date -u '+%Y-%m-%d %H:%M:%S UTC')_" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "⚠️  Deployment verification failed!"
+          echo "Check the job summary for details."
+          echo ""
+          echo "This could indicate:"
+          echo "  - Backend is down or unhealthy"
+          echo "  - Frontend failed to deploy"
+          echo "  - API endpoints are not responding"
+          echo ""
+          echo "Review the logs above and take appropriate action."
+          exit 1

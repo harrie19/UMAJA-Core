@@ -1964,9 +1964,9 @@ redis-cli FLUSHALL                # Clear all data
 ## Support
 
 For deployment support:
-- **Email:** devops@umaja.com
+- **Email:** Umaja1919@googlemail.com
 - **Slack:** #umaja-deployments
-- **Emergency:** +1-XXX-XXX-XXXX (On-call)
+- **Emergency:** Contact via GitHub issues
 
 ---
 
