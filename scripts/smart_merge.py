@@ -7,9 +7,10 @@ import os
 import re
 import sys
 import time
+from typing import Tuple
 from github import Github
 
-def can_merge(pr, max_retries=5, wait_seconds=10) -> tuple[bool, str]:
+def can_merge(pr, max_retries=5, wait_seconds=10) -> Tuple[bool, str]:
     """
     Check if PR is mergeable with retry logic for UNKNOWN state
     Returns: (can_merge, reason)

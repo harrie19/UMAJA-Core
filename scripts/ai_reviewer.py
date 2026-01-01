@@ -9,7 +9,7 @@ import re
 import sys
 import json
 from github import Github
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Tuple
 
 # Security: NEVER log tokens, even partially
 def validate_token(token_name: str) -> str:
@@ -45,7 +45,7 @@ DANGEROUS_PATTERNS = [
     (r'GH_PAT\s*=', 'GitHub PAT in code'),
 ]
 
-def should_auto_approve(pr) -> tuple[bool, List[str]]:
+def should_auto_approve(pr) -> Tuple[bool, List[str]]:
     """
     Enhanced approval logic with comprehensive security checks
     Returns: (should_approve, reasons)
@@ -76,7 +76,9 @@ def should_auto_approve(pr) -> tuple[bool, List[str]]:
             for pattern, description in DANGEROUS_PATTERNS:
                 matches = re.finditer(pattern, file.patch, re.IGNORECASE)
                 for match in matches:
-                    security_issues.append(f"{file.filename}: {description} at line {match.start()}")
+                    # Calculate actual line number from patch position
+                    line_num = file.patch.count('\n', 0, match.start()) + 1
+                    security_issues.append(f"{file.filename}: {description} at line {line_num}")
     
     if security_issues:
         reasons.append(f"❌ Security issues detected:")
@@ -152,11 +154,23 @@ def main():
         if should_approve:
             comment_body += "\n\n✅ **Recommendation:** APPROVE\n"
             comment_body += "This PR passes all automated security and quality checks."
-            print(f"::set-output name=should_approve::true")
+            # Set output using GITHUB_OUTPUT environment file
+            github_output = os.getenv('GITHUB_OUTPUT')
+            if github_output:
+                with open(github_output, 'a') as f:
+                    f.write('should_approve=true\n')
+            else:
+                print("should_approve=true")
         else:
             comment_body += "\n\n⚠️ **Recommendation:** MANUAL REVIEW REQUIRED\n"
             comment_body += "This PR requires human review due to security concerns or policy violations."
-            print(f"::set-output name=should_approve::false")
+            # Set output using GITHUB_OUTPUT environment file
+            github_output = os.getenv('GITHUB_OUTPUT')
+            if github_output:
+                with open(github_output, 'a') as f:
+                    f.write('should_approve=false\n')
+            else:
+                print("should_approve=false")
         
         # Post comment
         pr.create_issue_comment(comment_body)
