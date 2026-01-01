@@ -2,6 +2,8 @@
 
 Complete guide for deploying UMAJA-Core to Railway with production-ready configuration.
 
+**Contact:** Umaja1919@googlemail.com
+
 ## Table of Contents
 - [Quick Start](#quick-start)
 - [Prerequisites](#prerequisites)
