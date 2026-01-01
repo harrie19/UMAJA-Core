@@ -40,17 +40,44 @@ User Request → CDN (GitHub Pages) → Static JSON Files → Backend API (fallb
 
 ### Live System
 
-**Frontend**: https://harrie19.github.io/UMAJA-Core/ *(pending activation)*
-**Backend API**: https://pro-bono.onrender.com/api/daily-smile
+🌐 **Dashboard**: https://harrie19.github.io/UMAJA-Core/  
+🚂 **Backend API**: https://umaja-core-production.up.railway.app *(update after Railway deployment)*
+
+Try it now:
+```bash
+# Check system health
+curl https://umaja-core-production.up.railway.app/health
+
+# Get a daily smile
+curl https://umaja-core-production.up.railway.app/api/daily-smile
+```
+
+### Deployment Status
+
+| Service | Status | URL |
+|---------|--------|-----|
+| 🌐 Dashboard (GitHub Pages) | ![Pages Status](https://img.shields.io/badge/status-active-brightgreen) | [Visit Dashboard](https://harrie19.github.io/UMAJA-Core/) |
+| 🚂 Backend (Railway) | ![Railway Status](https://img.shields.io/badge/status-deploying-yellow) | [Check Health](https://umaja-core-production.up.railway.app/health) |
 
 ### For Developers
 
 ```bash
+# Clone repository
 git clone https://github.com/harrie19/UMAJA-Core.git
 cd UMAJA-Core
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run backend locally
 python api/simple_server.py
+# → Visit http://localhost:5000/health
+
+# View dashboard locally
+# Open docs/index.html in your browser
 ```
+
+📖 **Full Deployment Guide**: See [docs/DUAL_DEPLOYMENT.md](docs/DUAL_DEPLOYMENT.md) for complete instructions
 
 ---
 
@@ -129,15 +156,55 @@ Compassionate, nurturing, empathetic
 
 ---
 
-## 📊 Status
+## 🚀 Deployment Architecture
+
+UMAJA-Core uses a **dual-deployment strategy**:
+
+### Railway (Backend)
+- **Service**: Python Flask API
+- **Endpoint**: `https://umaja-core-production.up.railway.app`
+- **Features**: 
+  - `/health` - System health monitoring
+  - `/api/daily-smile` - Smile generation API
+  - `/api/smile/<archetype>` - Archetype-specific smiles
+  - Automatic deployments on push to `main`
+
+### GitHub Pages (Frontend)
+- **Service**: Static HTML Dashboard
+- **URL**: `https://harrie19.github.io/UMAJA-Core/`
+- **Features**:
+  - Live backend status monitoring
+  - Interactive smile generator
+  - System metrics display
+  - Automatic refresh every 60s
+
+### Deployment Workflow
+
+```mermaid
+graph LR
+    A[Push to main] --> B[Railway Deploy]
+    A --> C[Pages Deploy]
+    B --> D[Backend Live]
+    C --> E[Dashboard Live]
+    E --> D
+```
+
+📖 **Complete Guide**: [docs/DUAL_DEPLOYMENT.md](docs/DUAL_DEPLOYMENT.md)
+
+---
+
+## 📊 Current Status
 
 ```yaml
-Backend:      ✅ Live on Render.com
-Frontend:     ⏳ Code deployed, Pages activation pending
-CDN:          ✅ Day 1 complete (24 files)
-Cost:         $0.00
-Reach:        5.1B people (64% of 8B target)
+Backend API:   🚂 Railway (auto-deploy on main)
+Dashboard:     🌐 GitHub Pages (docs/ folder)
+CDN Content:   ✅ Day 1 complete (24 files across 8 languages)
+Infrastructure: $0.00 monthly cost
+Global Reach:  5.1B people (64% of 8B target)
+Uptime:        99.9% target
 ```
+
+**Health Check**: [![Backend Health](https://img.shields.io/badge/backend-check%20status-blue)](https://umaja-core-production.up.railway.app/health)
 
 ---
 

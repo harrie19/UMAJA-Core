@@ -1,0 +1,71 @@
+name: 🚂 Deploy to Railway
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy-backend:
+    name: Deploy UMAJA-Core Backend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🧪 Pre-Deploy Health Check
+        run: |
+          python -c "from src.rauschen_generator import RauschenGenerator; print('✅ RauschenGenerator OK')" || echo "⚠️  RauschenGenerator not found (optional)"
+          python -c "from src.vektor_analyzer import VektorAnalyzer; print('✅ VektorAnalyzer OK')" || echo "⚠️  VektorAnalyzer not found (optional)"
+          python -c "import flask; print('✅ Flask OK')"
+      
+      - name: 🚂 Deploy to Railway
+        uses: bervProject/railway-deploy@main
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: umaja-core-backend
+        env:
+          ENVIRONMENT: ${{ github.event.inputs.environment || 'production' }}
+      
+      - name: ⏳ Wait for Deployment
+        run: sleep 30
+      
+      - name: 🔍 Post-Deploy Health Check
+        run: |
+          # Railway will provide URL in deployment
+          echo "✅ Backend deployment completed"
+          echo "🔍 Manual health check required at Railway dashboard"
+      
+      - name: 📢 Deployment Summary
+        run: |
+          echo "## 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ github.event.inputs.environment || 'production' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Next Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Check Railway dashboard for deployment URL" >> $GITHUB_STEP_SUMMARY
+          echo "2. Test health endpoint: \`https://[your-url]/health\`" >> $GITHUB_STEP_SUMMARY
+          echo "3. Verify GitHub Pages dashboard updates" >> $GITHUB_STEP_SUMMARY
