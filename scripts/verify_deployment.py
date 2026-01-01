@@ -10,6 +10,7 @@ We verify through action, not assumption.
 """
 
 import sys
+import os
 import requests
 import json
 from datetime import datetime
