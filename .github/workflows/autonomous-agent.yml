@@ -1,0 +1,110 @@
+name: 🤖 Autonomous DevOps Agent
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: write
+  statuses: write
+  issues: write
+
+jobs:
+  intelligent_review:
+    name: AI-Powered PR Review
+    runs-on: ubuntu-latest
+    
+    # CRITICAL: Prevent self-triggering infinite loops
+    if: |
+      github.actor != 'github-actions[bot]' &&
+      github.actor != 'copilot-swe-agent[bot]' &&
+      !contains(github.event.head_commit.message, '[skip-ci]') &&
+      !contains(github.event.head_commit.message, '[skip-agent]') &&
+      !contains(github.event.pull_request.labels.*.name, 'agent-processed') &&
+      !contains(github.event.pull_request.labels.*.name, 'agent-skip')
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install Dependencies
+        run: |
+          pip install PyGithub requests
+      
+      - name: Mark PR as Agent Processing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --add-label "agent-processing" \
+            || echo "Label addition failed (PR may be closed)"
+      
+      - name: Run AI Review
+        id: review
+        env:
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python scripts/ai_reviewer.py
+      
+      - name: Mark PR as Agent Processed
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --remove-label "agent-processing" \
+            --add-label "agent-processed" \
+            || echo "Label update failed"
+      
+      - name: Approve PR if Criteria Met
+        if: steps.review.outputs.should_approve == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr review ${{ github.event.pull_request.number }} \
+            --approve \
+            --body "✅ Automated approval: All security and quality checks passed."
+
+  auto_merge:
+    name: Smart Auto-Merge
+    needs: intelligent_review
+    runs-on: ubuntu-latest
+    if: |
+      needs.intelligent_review.outputs.approved == 'true' &&
+      github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Dependencies
+        run: pip install PyGithub
+      
+      - name: Execute Smart Merge
+        env:
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: python scripts/smart_merge.py
