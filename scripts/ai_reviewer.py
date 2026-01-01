@@ -29,6 +29,11 @@ RESTRICTED_PATHS = [
     r'^railway\.json$',
     r'^\.env.*',
     r'^package-lock\.json$',
+    r'.*migrations?/.*',  # Database migrations
+    r'.*alembic/.*',  # Alembic migrations
+    r'^infrastructure/.*',  # Infrastructure configs
+    r'^terraform/.*',  # Terraform configs
+    r'^k8s/.*',  # Kubernetes configs
 ]
 
 # Dangerous code patterns with word boundaries to reduce false positives
@@ -43,6 +48,10 @@ DANGEROUS_PATTERNS = [
     (r'\btoken\s*=\s*["\'][^"\']{20,}["\']', 'Hardcoded token'),
     (r'\bRAILWAY_TOKEN\s*=', 'Railway token in code'),
     (r'\bGH_PAT\s*=', 'GitHub PAT in code'),
+    (r'\brm\s+-rf\s+/', 'Destructive file operation (rm -rf)'),
+    (r'\bDROP\s+TABLE\b', 'Destructive database operation (DROP TABLE)'),
+    (r'\bDELETE\s+FROM\s+\w+\s*(;|$)', 'Destructive database operation (DELETE)'),
+    (r'\bTRUNCATE\s+TABLE\b', 'Destructive database operation (TRUNCATE)'),
 ]
 
 def should_auto_approve(pr) -> Tuple[bool, List[str]]:
@@ -52,12 +61,20 @@ def should_auto_approve(pr) -> Tuple[bool, List[str]]:
     """
     reasons = []
     
-    # 1. Size check
+    # 1. Size check - files and total changes
     if pr.changed_files > 10:
         reasons.append(f"❌ Too many files changed: {pr.changed_files} (max 10)")
         return False, reasons
     
     reasons.append(f"✅ File count acceptable: {pr.changed_files}/10")
+    
+    # 1b. Total line changes check (safety limit from analysis)
+    total_changes = pr.additions + pr.deletions
+    if total_changes > 1000:
+        reasons.append(f"❌ Too many changes: {total_changes} lines (max 1000 for auto-merge safety)")
+        return False, reasons
+    
+    reasons.append(f"✅ Change size acceptable: {total_changes}/1000 lines")
     
     # 2. Restricted path check
     files = pr.get_files()
@@ -141,6 +158,18 @@ def main():
         
         # Connect to GitHub
         g = Github(gh_token)
+        
+        # Check API rate limits (prevent quota exhaustion)
+        rate_limit = g.get_rate_limit()
+        remaining = rate_limit.core.remaining
+        print(f"📊 API Rate Limit: {remaining}/{rate_limit.core.limit} remaining")
+        
+        if remaining < 100:
+            print(f"⚠️ WARNING: Low API rate limit ({remaining} remaining)")
+            if remaining < 10:
+                print(f"❌ CRITICAL: API rate limit too low, skipping review")
+                sys.exit(1)
+        
         repo = g.get_repo(repo_name)
         pr = repo.get_pull(pr_number)
         

@@ -86,6 +86,18 @@ def main():
         
         # Connect
         g = Github(gh_token)
+        
+        # Check API rate limits
+        rate_limit = g.get_rate_limit()
+        remaining = rate_limit.core.remaining
+        print(f"📊 API Rate Limit: {remaining}/{rate_limit.core.limit} remaining")
+        
+        if remaining < 50:
+            print(f"⚠️ WARNING: Low API rate limit for merge operation")
+            if remaining < 5:
+                print(f"❌ CRITICAL: API rate limit too low, postponing merge")
+                sys.exit(1)
+        
         repo = g.get_repo(repo_name)
         pr = repo.get_pull(pr_number)
         

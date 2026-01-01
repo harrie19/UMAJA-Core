@@ -67,6 +67,16 @@ jobs:
         run: |
           python scripts/ai_reviewer.py
       
+      - name: Record Review Metrics
+        if: always()
+        run: |
+          echo "📊 Review Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- PR Number: ${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Changed Files: ${{ github.event.pull_request.changed_files }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Additions: +${{ github.event.pull_request.additions }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Deletions: -${{ github.event.pull_request.deletions }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Review Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+      
       - name: Mark PR as Agent Processed
         if: always()
         env:
