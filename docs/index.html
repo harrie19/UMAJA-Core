@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UMAJA - Ubuntu Marketplace for Artisans, Jobs & Activities</title>
+    <title>Daily Smile World Tour 🌍 - UMAJA Core</title>
     <style>
         * {
             margin: 0;
@@ -15,19 +15,19 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
         header {
             text-align: center;
-            padding: 40px 0;
+            padding: 40px 0 20px 0;
             color: white;
         }
 
@@ -38,16 +38,30 @@
             animation: fadeInDown 1s ease-in;
         }
 
-        header p {
-            font-size: 1.3em;
+        header .tagline {
+            font-size: 1.5em;
             opacity: 0.95;
             animation: fadeInUp 1s ease-in;
-        }
-
-        .tagline {
             font-style: italic;
             margin-top: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 20px 0;
             font-size: 1.1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         @keyframes fadeInDown {
@@ -72,83 +86,135 @@
             }
         }
 
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #f5576c;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .card {
             background: white;
             border-radius: 15px;
             padding: 30px;
             margin: 20px 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: translateY(-3px);
         }
 
         .card h2 {
-            color: #667eea;
-            margin-bottom: 15px;
+            color: #f5576c;
+            margin-bottom: 20px;
             font-size: 2em;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #f5576c;
             padding-bottom: 10px;
         }
 
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        .card h3 {
+            color: #f5576c;
+            margin: 20px 0 10px 0;
+            font-size: 1.5em;
         }
 
-        .feature-box {
+        .world-map {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 4em;
+        }
+
+        .city-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .city-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 25px;
             border-radius: 10px;
-            text-align: center;
             transition: transform 0.3s ease;
         }
 
-        .feature-box:hover {
+        .city-card:hover {
             transform: scale(1.05);
         }
 
-        .feature-box h3 {
-            margin-bottom: 10px;
+        .city-card h4 {
             font-size: 1.5em;
+            margin-bottom: 10px;
         }
 
-        .feature-icon {
+        .archetype-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .archetype-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .archetype-icon {
             font-size: 3em;
             margin-bottom: 15px;
         }
 
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .tech-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            display: inline-block;
-            transition: transform 0.2s ease;
-        }
-
-        .tech-badge:hover {
-            transform: scale(1.1);
+        .cta-buttons {
+            text-align: center;
+            margin: 30px 0;
         }
 
         .cta-button {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #f5576c;
             padding: 15px 40px;
             border-radius: 30px;
             text-decoration: none;
@@ -164,70 +230,35 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .status-active {
-            background: #10b981;
-            color: white;
-        }
-
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .timeline-item {
+        .fallback-notice {
+            background: #fbbf24;
+            color: #78350f;
             padding: 20px;
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-
-        .timeline-item h3 {
-            color: #667eea;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
         }
 
         footer {
             text-align: center;
             color: white;
-            padding: 30px 0;
+            padding: 40px 0;
             margin-top: 40px;
-        }
-
-        .ubuntu-philosophy {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .ubuntu-philosophy h2 {
-            color: white;
-            border-bottom: 3px solid white;
+            font-size: 1.1em;
         }
 
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2.5em;
             }
-
-            .features {
+            
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
-
-            .cta-button {
-                display: block;
-                margin: 10px 0;
+            
+            .stat-number {
+                font-size: 2.5em;
             }
         }
     </style>
@@ -235,173 +266,199 @@
 <body>
     <div class="container">
         <header>
-            <h1>🌍 UMAJA</h1>
-            <p><strong>Ubuntu Marketplace for Artisans, Jobs & Activities</strong></p>
-            <p class="tagline">"I am because we are" - Building communities through shared prosperity</p>
-            <div class="status-badge status-active">🟢 LIVE NOW - Spreading Smiles!</div>
+            <h1>🌍 Daily Smile World Tour</h1>
+            <p class="tagline">"Bringing smiles to all 8 billion people on Earth"</p>
+            <div class="status-badge">🟢 LIVE NOW - Tour in Progress!</div>
         </header>
 
-        <div class="card ubuntu-philosophy">
-            <h2>🤝 The Ubuntu Philosophy</h2>
-            <p style="font-size: 1.2em; margin-top: 15px;">
-                UMAJA embodies the African philosophy of Ubuntu - "I am because we are." 
-                We believe in the interconnectedness of all people and that our humanity 
-                is bound up in one another. Through this platform, we're not just creating 
-                a marketplace; we're building a community where everyone's success contributes 
-                to collective prosperity.
+        <!-- Statistics Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="cities-visited">0</div>
+                <div class="stat-label">Cities Visited</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="cities-remaining">50+</div>
+                <div class="stat-label">Cities Remaining</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="content-pieces">0</div>
+                <div class="stat-label">Comedy Pieces Created</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completion">0%</div>
+                <div class="stat-label">Tour Completion</div>
+            </div>
+        </div>
+
+        <!-- World Map Visualization -->
+        <div class="card">
+            <h2>🗺️ Tour Map</h2>
+            <div class="world-map">
+                <div>🌏 🌍 🌎</div>
+                <p style="font-size: 0.4em; margin-top: 20px; color: #666;">
+                    Interactive world map coming soon!<br>
+                    Tracking our journey across 50+ cities worldwide
+                </p>
+            </div>
+        </div>
+
+        <!-- Mission Statement -->
+        <div class="card">
+            <h2>😊 Our Mission</h2>
+            <p style="font-size: 1.2em; margin-bottom: 15px;">
+                The Daily Smile World Tour is a global journey to bring joy, laughter, and connection 
+                to every corner of our planet. Through the unique personalities of The Professor, 
+                The Worrier, and The Enthusiast, we're visiting 50+ cities worldwide, creating 
+                authentic, warm content that puts smiles on faces.
+            </p>
+            <p style="font-size: 1.1em; color: #666; font-style: italic;">
+                "Die Erde ist nur ein Land, und alle Menschen sind seine Bürger"<br>
+                - Bahá'u'lláh
             </p>
         </div>
 
+        <!-- Archetypes -->
         <div class="card">
-            <h2>🎯 Project Vision</h2>
-            <p style="font-size: 1.1em;">
-                UMAJA is a revolutionary community-driven platform designed to empower local artisans, 
-                service providers, and job seekers. By leveraging modern technology while embracing 
-                traditional values of community support, UMAJA creates a digital ecosystem where 
-                local talent can thrive and communities can prosper together.
-            </p>
-        </div>
-
-        <div class="card">
-            <h2>✨ Core Features</h2>
-            <div class="features">
-                <div class="feature-box">
-                    <div class="feature-icon">🛍️</div>
-                    <h3>Artisan Marketplace</h3>
-                    <p>Showcase and sell handcrafted goods, traditional art, and unique creations from local artisans</p>
+            <h2>🎭 Meet Our Friendly Personalities</h2>
+            <div class="archetype-grid">
+                <div class="archetype-card">
+                    <div class="archetype-icon">🎓</div>
+                    <h3>The Professor</h3>
+                    <p>Curious, thoughtful, loves sharing fascinating facts that make you smile with knowledge</p>
                 </div>
-                <div class="feature-box">
-                    <div class="feature-icon">💼</div>
-                    <h3>Job Board</h3>
-                    <p>Connect job seekers with local employers and opportunities in the community</p>
+                <div class="archetype-card">
+                    <div class="archetype-icon">😰</div>
+                    <h3>The Worrier</h3>
+                    <p>Relatable, caring, finds humor in everyday concerns and makes you feel less alone</p>
                 </div>
-                <div class="feature-box">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Service Directory</h3>
-                    <p>Find and offer local services from skilled professionals in your area</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">📅</div>
-                    <h3>Community Events</h3>
-                    <p>Discover and organize local activities, workshops, and community gatherings</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">🤝</div>
-                    <h3>Skill Sharing</h3>
-                    <p>Exchange knowledge and learn from community members through peer-to-peer education</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">���</div>
-                    <h3>Community Forum</h3>
-                    <p>Engage in discussions, share ideas, and build stronger community connections</p>
+                <div class="archetype-card">
+                    <div class="archetype-icon">🎉</div>
+                    <h3>The Enthusiast</h3>
+                    <p>Energetic, joyful, celebrates life's small joys and spreads positive energy</p>
                 </div>
             </div>
         </div>
 
+        <!-- Recent Cities -->
         <div class="card">
-            <h2>🚀 Technology Stack</h2>
-            <p style="margin-bottom: 20px;">Built with modern, robust technologies for scalability and performance:</p>
-            <div class="tech-stack">
-                <span class="tech-badge">React.js</span>
-                <span class="tech-badge">Node.js</span>
-                <span class="tech-badge">Express</span>
-                <span class="tech-badge">MongoDB</span>
-                <span class="tech-badge">JWT Authentication</span>
-                <span class="tech-badge">RESTful API</span>
-                <span class="tech-badge">Responsive Design</span>
-                <span class="tech-badge">Cloud Deployment</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>🗓️ Development Roadmap</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>✅ Phase 1: Foundation (Completed)</h3>
-                    <ul>
-                        <li>Project architecture and setup</li>
-                        <li>Database design and implementation</li>
-                        <li>User authentication system</li>
-                        <li>Basic frontend framework</li>
-                    </ul>
+            <h2>🏙️ Recent Cities Visited</h2>
+            <div class="city-showcase" id="recent-cities">
+                <!-- Static fallback content -->
+                <div class="city-card">
+                    <h4>🗽 New York, USA</h4>
+                    <p><strong>Topic:</strong> Pizza debates and subway adventures</p>
+                    <p><strong>Personality:</strong> The Professor</p>
+                    <p><em>Coming soon...</em></p>
                 </div>
-                <div class="timeline-item">
-                    <h3>🚧 Phase 2: Core Features (In Progress)</h3>
-                    <ul>
-                        <li>Artisan marketplace functionality</li>
-                        <li>Job board implementation</li>
-                        <li>Service directory</li>
-                        <li>User profiles and dashboards</li>
-                    </ul>
+                <div class="city-card">
+                    <h4>🗼 Paris, France</h4>
+                    <p><strong>Topic:</strong> Café culture and artistic expression</p>
+                    <p><strong>Personality:</strong> The Enthusiast</p>
+                    <p><em>Coming soon...</em></p>
                 </div>
-                <div class="timeline-item">
-                    <h3>📋 Phase 3: Community Features (Planned)</h3>
-                    <ul>
-                        <li>Event management system</li>
-                        <li>Community forum</li>
-                        <li>Messaging and notifications</li>
-                        <li>Rating and review system</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <h3>🎯 Phase 4: Enhancement (Future)</h3>
-                    <ul>
-                        <li>Mobile application</li>
-                        <li>Payment integration</li>
-                        <li>Advanced analytics</li>
-                        <li>Multi-language support</li>
-                    </ul>
+                <div class="city-card">
+                    <h4>🏯 Tokyo, Japan</h4>
+                    <p><strong>Topic:</strong> Technology meets tradition</p>
+                    <p><strong>Personality:</strong> The Worrier</p>
+                    <p><em>Coming soon...</em></p>
                 </div>
             </div>
         </div>
 
+        <!-- How It Works -->
         <div class="card">
-            <h2>🌟 Why UMAJA?</h2>
-            <ul style="font-size: 1.1em; line-height: 2;">
-                <li>💪 <strong>Empowerment:</strong> Provides tools for individuals to showcase their talents and find opportunities</li>
-                <li>🌍 <strong>Community-Focused:</strong> Built on the principle that we rise together</li>
-                <li>🔒 <strong>Secure:</strong> Advanced authentication and data protection</li>
-                <li>📱 <strong>Accessible:</strong> Responsive design works on all devices</li>
-                <li>🌱 <strong>Sustainable:</strong> Promotes local economy and reduces environmental impact</li>
-                <li>🤗 <strong>Inclusive:</strong> Designed for users of all skill levels and backgrounds</li>
+            <h2>⚙️ How The Tour Works</h2>
+            <h3>📅 Daily Schedule</h3>
+            <p>Every day, we visit a new city and create fresh content through the lens of our three friendly personalities.</p>
+            
+            <h3>🎨 Content Types</h3>
+            <ul style="list-style: none; padding: 0; font-size: 1.1em;">
+                <li style="margin: 10px 0;">🏙️ <strong>City Reviews:</strong> Unique perspectives on urban life</li>
+                <li style="margin: 10px 0;">🍽️ <strong>Food Adventures:</strong> Culinary explorations with humor</li>
+                <li style="margin: 10px 0;">💬 <strong>Cultural Insights:</strong> Relatable observations about local customs</li>
+                <li style="margin: 10px 0;">🎭 <strong>Language Lessons:</strong> Fun with local phrases and expressions</li>
+                <li style="margin: 10px 0;">🎪 <strong>Tourist Traps:</strong> Humorous takes on famous attractions</li>
             </ul>
+            
+            <h3>🌐 Distribution</h3>
+            <p>Content is shared across multiple platforms to reach audiences worldwide and spread smiles everywhere!</p>
         </div>
 
-        <div class="card">
-            <h2>👥 Get Involved</h2>
-            <p style="font-size: 1.1em; margin-bottom: 20px;">
-                UMAJA is more than a platform—it's a movement. Whether you're a developer, designer, 
-                artisan, or community member, there's a place for you in our growing ecosystem.
-            </p>
-            <div style="text-align: center;">
-                <a href="https://github.com/harrie19/UMAJA-Core" class="cta-button">View on GitHub</a>
-                <a href="#" class="cta-button">Join the Community</a>
-                <a href="#" class="cta-button">Contribute</a>
-            </div>
+        <!-- Offline Fallback Notice -->
+        <div class="fallback-notice" id="offline-notice" style="display: none;">
+            ⚠️ Live API is currently offline. Showing cached content. Check back soon for real-time updates!
         </div>
 
-        <div class="card">
-            <h2>📞 Contact & Support</h2>
-            <p style="font-size: 1.1em;">
-                <strong>Project Lead:</strong> Harrie<br>
-                <strong>GitHub:</strong> <a href="https://github.com/harrie19" style="color: #667eea;">@harrie19</a><br>
-                <strong>Repository:</strong> <a href="https://github.com/harrie19/UMAJA-Core" style="color: #667eea;">UMAJA-Core</a><br>
-                <strong>Status:</strong> Active Development 🚀
-            </p>
+        <!-- Call to Action -->
+        <div class="cta-buttons">
+            <a href="https://github.com/harrie19/UMAJA-Core" class="cta-button">View on GitHub</a>
+            <a href="https://github.com/harrie19/UMAJA-Core#-getting-started" class="cta-button">Get Started</a>
+            <a href="https://github.com/harrie19/UMAJA-Core#-production-deployment" class="cta-button">Deploy Your Own</a>
         </div>
 
+        <!-- Footer -->
         <footer>
-            <p style="font-size: 1.2em; margin-bottom: 10px;">
-                <strong>UMAJA - Ubuntu Marketplace for Artisans, Jobs & Activities</strong>
+            <p style="font-size: 1.3em; margin-bottom: 15px;">
+                <strong>🌍 UMAJA Core - Daily Smile World Tour</strong>
             </p>
-            <p>"Building bridges, creating opportunities, fostering community"</p>
+            <p>"Our mission is to put smiles on faces"</p>
             <p style="margin-top: 15px; opacity: 0.9;">
-                © 2025 UMAJA Project | Licensed under MIT License
+                Powered by authentic archetypes • Spreading joy worldwide
             </p>
-            <p style="margin-top: 10px; font-style: italic;">
-                🌍 Proudly built with the spirit of Ubuntu
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                © 2025 UMAJA Project | MIT License
             </p>
         </footer>
     </div>
+
+    <script>
+        // Fetch live data from API (with fallback)
+        async function loadLiveData() {
+            try {
+                // Try to fetch from API
+                // NOTE: Update this URL to match your deployment:
+                // - For local dev: 'http://localhost:8000/api/worldtour/stats'
+                // - For production: 'https://your-api-domain.com/api/worldtour/stats'
+                const response = await fetch('/api/worldtour/stats');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStats(data);
+                } else {
+                    // Fallback to static data
+                    showOfflineNotice();
+                }
+            } catch (error) {
+                // API not available, show fallback content
+                console.log('API unavailable, using fallback content');
+                showOfflineNotice();
+                loadFallbackData();
+            }
+        }
+
+        function updateStats(data) {
+            document.getElementById('cities-visited').textContent = data.visited_cities || 0;
+            document.getElementById('cities-remaining').textContent = data.remaining_cities || '50+';
+            document.getElementById('content-pieces').textContent = (data.visited_cities || 0) * 3; // 3 personalities per city
+            document.getElementById('completion').textContent = (data.completion_percentage || 0) + '%';
+        }
+
+        function loadFallbackData() {
+            // Static fallback data
+            updateStats({
+                visited_cities: 0,
+                remaining_cities: 50,
+                completion_percentage: 0
+            });
+        }
+
+        function showOfflineNotice() {
+            document.getElementById('offline-notice').style.display = 'block';
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadLiveData);
+    </script>
 </body>
 </html>
