@@ -20,6 +20,8 @@ jobs:
   intelligent_review:
     name: AI-Powered PR Review
     runs-on: ubuntu-latest
+    outputs:
+      should_approve: ${{ steps.review.outputs.should_approve }}
     
     # CRITICAL: Prevent self-triggering infinite loops
     if: |
@@ -87,7 +89,7 @@ jobs:
     needs: intelligent_review
     runs-on: ubuntu-latest
     if: |
-      needs.intelligent_review.outputs.approved == 'true' &&
+      needs.intelligent_review.outputs.should_approve == 'true' &&
       github.event.pull_request.draft == false
     
     steps:

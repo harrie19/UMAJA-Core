@@ -4,6 +4,7 @@ Smart Merge Strategy with Mergeable State Retry Logic
 """
 
 import os
+import re
 import sys
 import time
 from github import Github
@@ -72,7 +73,6 @@ def is_conventional_commit(commit) -> bool:
         r'^test(\(.+\))?:',
         r'^chore(\(.+\))?:',
     ]
-    import re
     return any(re.match(p, message) for p in patterns)
 
 def main():

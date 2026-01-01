@@ -96,14 +96,18 @@ def should_auto_approve(pr) -> tuple[bool, List[str]]:
         reasons.append(f"✅ Dependency file update detected")
     
     # 5. Check tests passing
-    commit = pr.get_commits().reversed[0]
-    statuses = commit.get_combined_status()
-    
-    if statuses.state != 'success':
-        reasons.append(f"❌ Checks not passing: {statuses.state}")
-        return False, reasons
-    
-    reasons.append(f"✅ All checks passing")
+    commits_list = list(pr.get_commits())
+    if commits_list:
+        commit = commits_list[-1]
+        statuses = commit.get_combined_status()
+        
+        if statuses.state != 'success':
+            reasons.append(f"❌ Checks not passing: {statuses.state}")
+            return False, reasons
+        
+        reasons.append(f"✅ All checks passing")
+    else:
+        reasons.append(f"⚠️ No commits found in PR")
     
     # 6. No file deletions
     deletions = [f for f in files if f.status == 'removed']
