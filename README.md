@@ -44,6 +44,81 @@ We've moved away from impersonating real people to create original, friendly per
 - **Focus:** Celebrating life's small joys and spreading positive energy
 - **Example:** "Friends! Right now, somewhere in the world, someone just laughed so hard they snorted. And that made someone else laugh even harder! We're living in a beautiful world!"
 
+## 🚀 Deploy Now - UMAJA is LIVE!
+
+**Mission:** Bring smiles to 8 billion people. **Focus:** Deeds, not words.
+
+### Quick Deployment (After Merging PR)
+
+**Step 1:** Merge this PR ✅
+
+**Step 2:** Enable GitHub Pages
+- Go to: **Settings** → **Pages**
+- Set: Source = "Deploy from branch"
+- Branch = **main**, Folder = **/docs**
+- Click **Save**
+
+**Step 3:** Wait 2-3 minutes
+
+**Step 4:** Verify it's live:
+```bash
+python scripts/verify_deployment.py
+```
+
+**Step 5:** See the magic! ✨
+- 🌐 Frontend: https://harrie19.github.io/UMAJA-Core/
+- 🔌 Backend: https://umaja-core.onrender.com/health
+- 😊 Get a smile: https://umaja-core.onrender.com/api/daily-smile
+
+### What This Deployment Includes
+
+✅ **Backend (Render.com):**
+- Minimal Flask server at `umaja-core.onrender.com`
+- 3 endpoints: `/health`, `/api/daily-smile`, `/api/generate`
+- Free tier (starts automatically on first request)
+- Auto-deploys on push to main
+
+✅ **Frontend (GitHub Pages):**
+- Beautiful dashboard at `harrie19.github.io/UMAJA-Core/`
+- Live status indicator
+- Three personality archetypes
+- Fetches smiles from backend
+- Mobile responsive
+
+✅ **CI/CD:**
+- Automated deployment checks
+- Health monitoring
+- API testing on every push
+
+✅ **Governance:**
+- AI autonomy rules defined
+- Emergency stop mechanism
+- Daily alignment practices
+
+### Troubleshooting
+
+**Backend not responding?**
+- Render free tier sleeps after 15 min inactivity
+- First request takes 30-60 seconds to wake up
+- Just wait and retry!
+
+**Frontend not loading?**
+- Make sure GitHub Pages is enabled (see Step 2)
+- Clear browser cache (Ctrl+Shift+R)
+
+See [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) for detailed troubleshooting.
+
+### What This Does NOT Include (Deliberately)
+
+❌ Payment system (future phase)  
+❌ Complex features (future phase)  
+❌ World tour automation (future phase)  
+❌ Multi-language support (future phase)  
+
+**Philosophy:** Truth over optimization. Start simple. Improve incrementally.
+
+---
+
 ## 🏗️ Architecture & Components
 
 UMAJA-Core is built on three powerful components that work together to create, analyze, and distribute high-quality content:

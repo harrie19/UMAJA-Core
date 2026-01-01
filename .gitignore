@@ -87,3 +87,6 @@ temp_generation/
 # City database (if contains sensitive data)
 data/sales.json
 data/analytics.json
+
+# Backup files
+*.backup

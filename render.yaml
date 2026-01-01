@@ -1,0 +1,41 @@
+# Render.com deployment configuration for UMAJA-Core
+# Mission: Deploy what WORKS, serve 8 billion people
+# Focus: Truth over optimization, deeds not words
+
+services:
+  # Single web service - minimal, functional, live
+  - type: web
+    name: umaja-core
+    env: python
+    region: oregon  # Free tier region
+    plan: free      # Start free, scale when needed
+    branch: main
+    
+    # Build configuration
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    
+    # Start command - run the minimal server
+    startCommand: python api/simple_server.py
+    
+    # Health check - proves we're alive
+    healthCheckPath: /health
+    
+    # Environment variables
+    envVars:
+      - key: PORT
+        value: 10000  # Render's default port
+      
+      - key: DEBUG
+        value: false
+      
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    
+    # Auto-deploy on push to main
+    autoDeploy: true
+    
+    # Minimal resources to prevent cost blowup
+    # Free tier: 512MB RAM, 0.1 CPU
+    # This is enough for serving smiles!
