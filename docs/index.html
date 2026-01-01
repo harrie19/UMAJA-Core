@@ -416,7 +416,10 @@
         // Fetch live data from API (with fallback)
         async function loadLiveData() {
             try {
-                // Try to fetch from API (adjust URL to your deployment)
+                // Try to fetch from API
+                // NOTE: Update this URL to match your deployment:
+                // - For local dev: 'http://localhost:8000/api/worldtour/stats'
+                // - For production: 'https://your-api-domain.com/api/worldtour/stats'
                 const response = await fetch('/api/worldtour/stats');
                 
                 if (response.ok) {

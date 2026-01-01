@@ -125,6 +125,6 @@ def test_archetype_text_length():
         smile = engine.generate_daily_smile(archetype)
         text = smile['content']
         
-        # Rough estimate: 150-200 words per minute speaking = 75-200 words for 30-60 sec
+        # Target: 30-60 seconds at 150-200 words per minute = 75-200 words
         word_count = len(text.split())
-        assert 20 <= word_count <= 300, f"{archetype} text length out of range: {word_count} words"
+        assert 30 <= word_count <= 250, f"{archetype} text length out of range: {word_count} words"

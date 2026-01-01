@@ -288,6 +288,7 @@ class WorldtourGenerator:
                 "an elaborate stage production"
             ])
             # Handle templates with different placeholders
+            # C3PO's template uses {number}, others use {comparison}
             if '{number}' in template:
                 topic = template.format(city=city['name'], number=random.randint(100, 9999))
             else:
