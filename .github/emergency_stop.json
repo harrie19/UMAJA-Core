@@ -1,0 +1,7 @@
+{
+  "agent_enabled": true,
+  "last_check": "2026-01-01T23:59:00Z",
+  "disabled_by": null,
+  "reason": null,
+  "note": "To disable autonomous agent: Set agent_enabled to false and commit"
+}
