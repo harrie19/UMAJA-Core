@@ -1,0 +1,181 @@
+name: Deployment Check - UMAJA-Core Live
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-deployment:
+    name: Verify UMAJA-Core Deployment
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests
+      
+      - name: 🏥 Check Backend Health
+        id: backend-health
+        continue-on-error: true
+        run: |
+          echo "Checking backend health..."
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://umaja-core.onrender.com/health || echo "000")
+          echo "Backend response code: $response"
+          
+          if [ "$response" = "200" ]; then
+            echo "✅ Backend is healthy!"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Backend returned $response (may be starting up on free tier)"
+            echo "status=starting" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 🧪 Test API Endpoints
+        id: test-api
+        continue-on-error: true
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import requests
+          import json
+          import sys
+          
+          API_BASE = "https://umaja-core.onrender.com"
+          all_passed = True
+          
+          print("=" * 60)
+          print("🧪 Testing UMAJA-Core API Endpoints")
+          print("=" * 60)
+          
+          # Test 1: Health endpoint
+          print("\n1️⃣ Testing /health endpoint...")
+          try:
+              response = requests.get(f"{API_BASE}/health", timeout=30)
+              if response.status_code == 200:
+                  data = response.json()
+                  print(f"   ✅ Health check passed: {data.get('mission', 'N/A')}")
+                  print(f"   Status: {data.get('status', 'N/A')}")
+              else:
+                  print(f"   ⚠️ Health check returned {response.status_code}")
+                  all_passed = False
+          except Exception as e:
+              print(f"   ❌ Health check failed: {e}")
+              all_passed = False
+          
+          # Test 2: Daily Smile endpoint
+          print("\n2️⃣ Testing /api/daily-smile endpoint...")
+          try:
+              response = requests.get(f"{API_BASE}/api/daily-smile", timeout=30)
+              if response.status_code == 200:
+                  data = response.json()
+                  if data.get('success'):
+                      smile = data.get('smile', {})
+                      print(f"   ✅ Daily smile generated!")
+                      print(f"   Personality: {smile.get('personality', 'N/A')}")
+                      print(f"   Content preview: {smile.get('content', '')[:50]}...")
+                  else:
+                      print(f"   ⚠️ API returned success=false")
+                      all_passed = False
+              else:
+                  print(f"   ⚠️ Daily smile returned {response.status_code}")
+                  all_passed = False
+          except Exception as e:
+              print(f"   ❌ Daily smile failed: {e}")
+              all_passed = False
+          
+          # Test 3: Generate endpoint
+          print("\n3️⃣ Testing /api/generate endpoint...")
+          try:
+              payload = {"archetype": "professor", "topic": "test"}
+              response = requests.post(
+                  f"{API_BASE}/api/generate",
+                  json=payload,
+                  timeout=30
+              )
+              if response.status_code == 200:
+                  data = response.json()
+                  if data.get('success'):
+                      print(f"   ✅ Custom generation works!")
+                  else:
+                      print(f"   ⚠️ API returned success=false")
+                      all_passed = False
+              else:
+                  print(f"   ⚠️ Generate returned {response.status_code}")
+                  all_passed = False
+          except Exception as e:
+              print(f"   ❌ Generate failed: {e}")
+              all_passed = False
+          
+          print("\n" + "=" * 60)
+          if all_passed:
+              print("✅ ALL API TESTS PASSED!")
+              print("=" * 60)
+              sys.exit(0)
+          else:
+              print("⚠️ SOME TESTS FAILED (Backend may be starting)")
+              print("=" * 60)
+              sys.exit(1)
+          PYTHON_SCRIPT
+      
+      - name: 🌐 Check Frontend Loads
+        id: test-frontend
+        continue-on-error: true
+        run: |
+          echo "Checking if frontend is accessible..."
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://harrie19.github.io/UMAJA-Core/ || echo "000")
+          echo "Frontend response code: $response"
+          
+          if [ "$response" = "200" ]; then
+            echo "✅ Frontend is live!"
+            echo "status=live" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Frontend returned $response (may not be deployed yet)"
+            echo "status=not-deployed" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 📊 Deployment Status Summary
+        run: |
+          echo "=" >> $GITHUB_STEP_SUMMARY
+          echo "# 🚀 UMAJA-Core Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "=" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Backend Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Health Check: ${{ steps.backend-health.outputs.status || 'unknown' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- API Tests: ${{ steps.test-api.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: https://umaja-core.onrender.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Frontend Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ steps.test-frontend.outputs.status || 'unknown' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: https://harrie19.github.io/UMAJA-Core/" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Mission" >> $GITHUB_STEP_SUMMARY
+          echo "🌍 Bringing smiles to 8 billion people" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Note: Render free tier may take 1-2 minutes to wake from sleep*" >> $GITHUB_STEP_SUMMARY
+      
+      - name: 🎉 Success Message
+        if: steps.test-api.outcome == 'success'
+        run: |
+          echo "════════════════════════════════════════════════"
+          echo "🎉 UMAJA-Core is LIVE and serving smiles!"
+          echo "════════════════════════════════════════════════"
+          echo ""
+          echo "Backend: ✅ Healthy"
+          echo "API: ✅ Responding"
+          echo "Mission: 🌍 8 billion smiles"
+          echo ""
+          echo "\"Let deeds, not words, be your adorning.\""
+          echo "════════════════════════════════════════════════"
