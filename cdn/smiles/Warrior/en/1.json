@@ -1,0 +1,11 @@
+{
+  "id": "warrior-en-001",
+  "archetype": "Warrior",
+  "language": "en",
+  "day_of_year": 1,
+  "date": "2026-01-01",
+  "smile": "Courage isn't the absence of fear - it's taking action despite it. Be brave today. ⚔️💪",
+  "generated_at": "2026-01-01T04:00:00Z",
+  "version": "1.0.0",
+  "source": "UMAJA-Autonomous-Agent"
+}
