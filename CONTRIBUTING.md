@@ -1281,7 +1281,7 @@ const apiKey = process.env.API_KEY;
 
 **DO NOT** open public issues for security vulnerabilities.
 
-Instead, email security concerns to: **security@umaja.org**
+Instead, email security concerns to: **Umaja1919@googlemail.com**
 
 Include:
 - Description of the vulnerability
@@ -1473,7 +1473,7 @@ We pledge to make participation in UMAJA a harassment-free experience for everyo
 
 - **GitHub Discussions**: Feature discussions, questions
 - **Discord**: Real-time chat, community support
-- **Email**: security@umaja.org for security issues
+- **Email**: Umaja1919@googlemail.com for security issues
 - **Twitter**: @UMAJAProject for announcements
 
 ### Mentorship
@@ -1491,7 +1491,7 @@ Contact maintainers via Discord or GitHub Discussions.
 If you experience or witness unacceptable behavior:
 
 1. **Direct Resolution**: Politely address the person directly (if comfortable)
-2. **Report to Maintainers**: Contact via conduct@umaja.org
+2. **Report to Maintainers**: Contact via Umaja1919@googlemail.com
 3. **Provide Details**: Include links, screenshots, context
 4. **Confidentiality**: Reports will be kept confidential
 5. **Action**: Maintainers will investigate and take appropriate action
@@ -1514,7 +1514,7 @@ Need help? Have questions?
 - 📖 **Documentation**: Check our [Wiki](https://github.com/harrie19/UMAJA-Core/wiki)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/harrie19/UMAJA-Core/discussions)
 - 💭 **Discord**: Join our [community server](https://discord.gg/umaja)
-- 📧 **Email**: contact@umaja.org
+- 📧 **Email**: Umaja1919@googlemail.com
 
 ---
 

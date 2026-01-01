@@ -1,1 +1,20 @@
-services:\n  - type: web\n    name: umaja-core\n    runtime: python\n    plan: free\n    region: frankfurt\n    buildCommand: pip install -r requirements.txt\n    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 api.simple_server:app\n    envVars:\n      - key: PYTHON_VERSION\n        value: 3.11.0\n      - key: PORT\n        value: 5000\n    healthCheckPath: /health\n    autoDeploy: true\n
+services:
+  - type: web
+    name: umaja-core
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: python api/simple_server.py
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DEBUG
+        value: false
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    autoDeploy: true
