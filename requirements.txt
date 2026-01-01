@@ -7,4 +7,7 @@ requests==2.31.0
 # AI/ML dependencies for text generation and analysis
 sentence-transformers>=2.3.0
 numpy>=1.24.0,<2.0.0
+
+# PyTorch - using default CPU version (CUDA version would be torch==2.9.1+cu126)
+# For Railway/production deployment, CPU version is sufficient and much smaller
 torch>=2.0.0

@@ -385,8 +385,8 @@ curl http://localhost:5000/health
 pip freeze > requirements-frozen.txt
 diff requirements.txt requirements-frozen.txt
 
-# Add missing packages
-echo "sentence-transformers==2.2.2" >> requirements.txt
+# Add missing packages (example with correct version)
+echo "sentence-transformers>=2.3.0" >> requirements.txt
 ```
 
 #### 4. VektorAnalyzer Errors
