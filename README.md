@@ -102,6 +102,14 @@ OUTPUT_FORMAT=text
 
 Brief overview of what has been built, why progress paused, and whether anything is live: [docs/STATUS.md](docs/STATUS.md).
 
+## ➡️ Wie geht's weiter? (What next)
+
+If you're picking things up and wonder about the next step:
+1. Load the full story/context for collaborators: `python scripts/remember_me.py`.
+2. See the upcoming World Tour stop without changing data: `python scripts/launch_world_tour.py --dry-run`.
+3. Check roadmap/state before acting: [docs/STATUS.md](docs/STATUS.md) and deployment notes in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+4. When ready to go live, fill `.env`, set `SALES_ENABLED=true`, and run the APIs (`python api/simple_server.py`).
+
 ## 📚 Usage Examples
 
 ### Python API
