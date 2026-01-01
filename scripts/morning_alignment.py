@@ -34,7 +34,7 @@ def print_header(text: str) -> None:
 
 def print_quote(quote: str, author: str) -> None:
     """Print an inspirational quote"""
-    print(f"{Colors.MAGENTA}"{quote}"{Colors.END}")
+    print(f'{Colors.MAGENTA}"{quote}"{Colors.END}')
     print(f"{Colors.CYAN}— {author}{Colors.END}\n")
 
 def check_emergency_stop() -> bool:
