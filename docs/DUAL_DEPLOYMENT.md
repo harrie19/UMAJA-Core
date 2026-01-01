@@ -52,7 +52,13 @@ UMAJA-Core uses a dual-deployment strategy:
    # Value: <your-railway-token>
    ```
 
-2. **Automatic Deployment**
+2. **Update Railway Service Name** (if needed)
+   Edit `.github/workflows/railway-deploy.yml` line 47:
+   ```yaml
+   service: umaja-core-backend  # Change to match your Railway service name
+   ```
+
+3. **Automatic Deployment**
    - Push to `main` branch triggers automatic deployment
    - Or manually trigger via Actions tab → "🚂 Deploy to Railway"
 
@@ -130,7 +136,7 @@ After Railway deployment completes:
 
 2. **Update Dashboard Configuration**
    ```javascript
-   // In docs/index.html, line ~352
+   // In docs/index.html, around line 243
    const BACKEND_URL = 'https://your-actual-railway-url.up.railway.app';
    const FALLBACK_MODE = false; // Set to false once backend is live
    ```

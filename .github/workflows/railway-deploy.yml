@@ -44,7 +44,7 @@ jobs:
         uses: bervProject/railway-deploy@main
         with:
           railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: umaja-core-backend
+          service: umaja-core-backend  # Note: Update this to match your Railway service name
         env:
           ENVIRONMENT: ${{ github.event.inputs.environment || 'production' }}
       

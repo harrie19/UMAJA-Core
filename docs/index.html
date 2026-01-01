@@ -240,8 +240,10 @@
     
     <script>
         // Configuration
+        // TODO: Update BACKEND_URL after Railway deployment completes
+        // Get your Railway URL from: https://railway.app/dashboard
         const BACKEND_URL = 'https://umaja-core-production.up.railway.app'; // Update after Railway deployment
-        const FALLBACK_MODE = true; // Enable if backend is not deployed yet
+        const FALLBACK_MODE = true; // Set to false once backend is deployed and verified
         
         // Check backend health
         async function checkHealth() {
