@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-01-01T04:00:00Z",
+  "version": "1.0.0",
+  "archetypes": ["Dreamer", "Warrior", "Healer"],
+  "languages": ["en", "es", "zh", "hi", "ar", "pt", "fr", "sw"],
+  "total_smiles": 8760,
+  "structure": "{archetype}/{language}/{day_of_year}.json",
+  "cdn_ready": true,
+  "target_reach": "8 billion users",
+  "cost": "$0",
+  "sample_urls": [
+    "/cdn/smiles/Dreamer/en/1.json",
+    "/cdn/smiles/Warrior/en/1.json",
+    "/cdn/smiles/Healer/en/1.json"
+  ],
+  "fallback_smiles": {
+    "Dreamer": "Today, imagine the impossible - your dreams are the blueprint of tomorrow's reality. 💭✨",
+    "Warrior": "Courage isn't the absence of fear - it's taking action despite it. Be brave today. ⚔️💪",
+    "Healer": "Compassion is the foundation of healing. Share your light with someone today. 💚🌟"
+  }
+}
