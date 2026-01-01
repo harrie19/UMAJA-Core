@@ -198,18 +198,7 @@ class DeploymentHealthCheck:
     
     def save_report(self, filename: str = "deployment_report.json"):
         """Save report to file"""
-        report = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "target": self.base_url,
-            "summary": {
-                "total_checks": self.passed + self.failed,
-                "passed": self.passed,
-                "failed": self.failed,
-                "success_rate": f"{(self.passed / (self.passed + self.failed) * 100):.1f}%"
-            },
-            "results": self.results,
-            "deployment_status": "HEALTHY" if self.failed == 0 else "UNHEALTHY"
-        }
+        report = self.generate_report()
         
         with open(filename, 'w') as f:
             json.dump(report, f, indent=2)
