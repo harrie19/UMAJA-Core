@@ -87,3 +87,7 @@ temp_generation/
 # City database (if contains sensitive data)
 data/sales.json
 data/analytics.json
+
+# Deployment artifacts
+deployment_report.json
+deployment_metrics.json
