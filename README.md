@@ -183,7 +183,313 @@ OUTPUT_DIR=output/daily_smiles
 OUTPUT_FORMAT=text
 ```
 
+## 🚀 Production Deployment
+
+### Deployment Options
+
+UMAJA-Core can be deployed to various platforms. Choose the option that best fits your needs:
+
+#### Option 1: Railway (Recommended)
+
+Railway provides easy deployment with automatic HTTPS and environment management.
+
+**Steps:**
+
+1. **Create Railway Account**
+   - Sign up at [railway.app](https://railway.app)
+   - Connect your GitHub account
+
+2. **Create New Project**
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Choose `harrie19/UMAJA-Core`
+
+3. **Configure Environment Variables**
+   
+   Go to your project settings and add these required variables:
+   
+   ```env
+   ENVIRONMENT=production
+   SALES_ENABLED=false
+   WORLDTOUR_MODE=true
+   USE_OFFLINE_TTS=true
+   OPENAI_API_KEY=your_openai_key_here
+   FLASK_SECRET_KEY=your_secret_key_here
+   ```
+   
+   Generate a Flask secret key:
+   ```bash
+   python -c "import secrets; print(secrets.token_hex(32))"
+   ```
+
+4. **Set Start Command**
+   
+   In Railway settings, set the start command:
+   ```bash
+   python api/simple_server.py
+   ```
+
+5. **Deploy**
+   - Railway will automatically deploy your application
+   - Get your public URL from the Railway dashboard
+
+**Cost:** Railway offers a free tier with $5/month of usage credit.
+
+#### Option 2: Render
+
+Render provides a similar experience to Railway with free tier options.
+
+**Steps:**
+
+1. **Create Render Account**
+   - Sign up at [render.com](https://render.com)
+   - Connect your GitHub account
+
+2. **Create New Web Service**
+   - Click "New +" → "Web Service"
+   - Connect to your `UMAJA-Core` repository
+   - Choose a name for your service
+
+3. **Configure Build Settings**
+   
+   - **Environment:** Python 3
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn api.simple_server:app --bind 0.0.0.0:$PORT`
+
+4. **Add Environment Variables**
+   
+   In the "Environment" tab, add:
+   
+   ```env
+   ENVIRONMENT=production
+   SALES_ENABLED=false
+   WORLDTOUR_MODE=true
+   USE_OFFLINE_TTS=true
+   OPENAI_API_KEY=your_openai_key_here
+   FLASK_SECRET_KEY=your_secret_key_here
+   PORT=10000
+   ```
+
+5. **Deploy**
+   - Click "Create Web Service"
+   - Render will build and deploy automatically
+   - Access your app at the provided `.onrender.com` URL
+
+**Cost:** Render offers a free tier with some limitations (spins down after 15 mins of inactivity).
+
+**Note:** Add `gunicorn` to requirements.txt if not already present:
+```bash
+echo "gunicorn==21.2.0" >> requirements.txt
+```
+
+#### Option 3: Self-Hosted (VPS/Cloud)
+
+For full control, deploy to your own server.
+
+**Prerequisites:**
+- Ubuntu 20.04+ or similar Linux distribution
+- Python 3.11+
+- Nginx (for reverse proxy)
+- SSL certificate (Let's Encrypt recommended)
+
+**Steps:**
+
+1. **Clone Repository**
+   
+   ```bash
+   git clone https://github.com/harrie19/UMAJA-Core.git
+   cd UMAJA-Core
+   ```
+
+2. **Set Up Python Environment**
+   
+   ```bash
+   # Install Python 3.11 if not available
+   sudo apt update
+   sudo apt install python3.11 python3.11-venv python3-pip
+   
+   # Create virtual environment
+   python3.11 -m venv venv
+   source venv/bin/activate
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   ```
+
+3. **Configure Environment**
+   
+   ```bash
+   # Copy production environment template
+   cp .env.production .env
+   
+   # Edit and fill in required values
+   nano .env
+   ```
+   
+   Required variables:
+   - `OPENAI_API_KEY`
+   - `FLASK_SECRET_KEY`
+
+4. **Set Up Systemd Service**
+   
+   Create `/etc/systemd/system/umaja-core.service`:
+   
+   ```ini
+   [Unit]
+   Description=UMAJA Core Daily Smile World Tour
+   After=network.target
+   
+   [Service]
+   Type=simple
+   User=www-data
+   WorkingDirectory=/var/www/UMAJA-Core
+   Environment="PATH=/var/www/UMAJA-Core/venv/bin"
+   ExecStart=/var/www/UMAJA-Core/venv/bin/python api/simple_server.py
+   Restart=always
+   
+   [Install]
+   WantedBy=multi-user.target
+   ```
+   
+   Enable and start the service:
+   ```bash
+   sudo systemctl enable umaja-core
+   sudo systemctl start umaja-core
+   sudo systemctl status umaja-core
+   ```
+
+5. **Configure Nginx Reverse Proxy**
+   
+   Create `/etc/nginx/sites-available/umaja-core`:
+   
+   ```nginx
+   server {
+       listen 80;
+       server_name your-domain.com;
+       
+       location / {
+           proxy_pass http://127.0.0.1:8000;
+           proxy_set_header Host $host;
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header X-Forwarded-Proto $scheme;
+       }
+   }
+   ```
+   
+   Enable the site:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/umaja-core /etc/nginx/sites-enabled/
+   sudo nginx -t
+   sudo systemctl reload nginx
+   ```
+
+6. **Set Up SSL with Let's Encrypt**
+   
+   ```bash
+   sudo apt install certbot python3-certbot-nginx
+   sudo certbot --nginx -d your-domain.com
+   ```
+
+7. **Test Deployment**
+   
+   ```bash
+   curl https://your-domain.com/health
+   ```
+
+**Cost:** Depends on your VPS provider (typically $5-20/month for basic servers).
+
+### GitHub Pages Deployment (Dashboard)
+
+The UMAJA-Core dashboard is automatically deployed to GitHub Pages.
+
+**Verify Deployment:**
+
+1. Check that `.github/workflows/deploy-pages.yml` exists
+2. Go to repository Settings → Pages
+3. Ensure source is set to "GitHub Actions"
+4. Access your dashboard at: `https://harrie19.github.io/UMAJA-Core/`
+
+**Manual Trigger:**
+```bash
+# Trigger Pages deployment manually
+gh workflow run deploy-pages.yml
+```
+
+### Environment Variables Reference
+
+See `.env.production` for a complete list of available environment variables.
+
+**Critical Variables:**
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `ENVIRONMENT` | Yes | Set to `production` |
+| `OPENAI_API_KEY` | Yes | OpenAI API key for content generation |
+| `FLASK_SECRET_KEY` | Yes | Secret key for Flask sessions |
+| `WORLDTOUR_MODE` | No | Enable World Tour features (default: `true`) |
+| `USE_OFFLINE_TTS` | No | Use offline TTS (default: `true`) |
+| `SALES_ENABLED` | No | Enable sales features (default: `false`) |
+
+### Post-Deployment Checklist
+
+After deploying, verify:
+
+- [ ] API endpoint is accessible
+- [ ] Health check passes: `curl https://your-domain/health`
+- [ ] Environment variables are set correctly
+- [ ] Logs show no critical errors
+- [ ] Daily Smile generation works
+- [ ] World Tour city database is accessible
+- [ ] GitHub Pages dashboard is live
+- [ ] SSL certificate is valid (if applicable)
+
+### Monitoring & Maintenance
+
+**Logs:**
+- Railway: View logs in Railway dashboard
+- Render: View logs in Render dashboard
+- Self-hosted: `sudo journalctl -u umaja-core -f`
+
+**Updates:**
+```bash
+# Railway/Render: Push to main branch, auto-deploys
+git push origin main
+
+# Self-hosted:
+cd /var/www/UMAJA-Core
+git pull
+sudo systemctl restart umaja-core
+```
+
+### Troubleshooting Deployment
+
+**Issue: Module not found errors**
+```bash
+# Ensure all dependencies are installed
+pip install -r requirements.txt --force-reinstall
+```
+
+**Issue: Port already in use**
+```bash
+# Change PORT in .env file
+PORT=8080
+```
+
+**Issue: OpenAI API errors**
+- Verify `OPENAI_API_KEY` is set correctly
+- Check API key has credits
+- Verify API key permissions
+
+**Issue: Database file not found**
+```bash
+# Ensure data directory exists
+mkdir -p data
+# Copy default cities database if needed
+```
+
 ## 📌 Project Status
+
 
 Brief overview of what has been built, why progress paused, and whether anything is live: [docs/STATUS.md](docs/STATUS.md).
 
