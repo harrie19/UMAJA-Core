@@ -61,7 +61,7 @@ User → GitHub Pages (Static Dashboard) → Railway API (Backend) → Response
 
 3. **Configure Deployment**
    - Railway will auto-detect Python
-   - Start command: `python api/simple_server.py`
+   - Start command: `gunicorn --bind 0.0.0.0:$PORT wsgi:app`
    - Build command: `pip install -r requirements.txt`
 
 ### Step 2: Configure Environment Variables
@@ -92,6 +92,7 @@ The `railway.json` file includes:
 ```json
 {
   "deploy": {
+    "startCommand": "gunicorn --bind 0.0.0.0:$PORT wsgi:app",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE"
@@ -99,7 +100,7 @@ The `railway.json` file includes:
 }
 ```
 
-This ensures Railway monitors your service health.
+This ensures Railway monitors your service health and uses gunicorn for production-grade WSGI serving.
 
 ---
 
@@ -210,9 +211,12 @@ curl https://your-railway-url.up.railway.app/api/daily-smile
 Solution:
 1. Verify requirements.txt has all dependencies:
    - Flask==3.0.0
-   - torch>=2.6.0
+   - gunicorn==23.0.0
+   - torch>=2.0.0
    - sentence-transformers>=2.2.2
    - numpy>=1.24.3,<2.0.0
+   - pycountry>=22.3.0
+   - pysrt>=1.1.2
 2. Check Railway logs for specific error
 3. Ensure Python 3.11 is being used
 ```
@@ -265,9 +269,12 @@ Solution:
 **Import Errors**: Missing dependencies
 ```bash
 # Add to requirements.txt:
-torch>=2.6.0
+torch>=2.0.0
 sentence-transformers>=2.2.2
 numpy>=1.24.3,<2.0.0
+pycountry>=22.3.0
+pysrt>=1.1.2
+gunicorn==23.0.0
 ```
 
 **Timezone Warnings**: Deprecated datetime usage
