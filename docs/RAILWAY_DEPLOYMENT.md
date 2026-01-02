@@ -59,7 +59,7 @@ railway up
 2. **DNS Provider (z.B. Cloudflare):**
    - Typ: `CNAME`
    - Name: `umaja`
-   - Target: `g05ns7.up.railway.app` (Railway gibt dir diese)
+   - Target: `[your-project-id].up.railway.app` (Railway gibt dir diese)
    - Proxy: ON (orange cloud)
 
 3. **Cloudflare SSL Settings:**

@@ -128,7 +128,7 @@ User Request → CDN (GitHub Pages) → Static JSON Files → Backend API (fallb
 
 ### 🚂 Deploy to Railway
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/umaja-core)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/harrie19/UMAJA-Core)
 
 **Quick Deploy (3 minutes)**
 
