@@ -288,7 +288,12 @@ def worldtour_start():
             "error": str(exc)
         }), 400
 
-    worldtour_gen.mark_city_visited(city_id)
+    marked = worldtour_gen.mark_city_visited(city_id)
+    if not marked:
+        return jsonify({
+            "success": False,
+            "error": "Could not mark city as visited"
+        }), 500
 
     return jsonify({
         "success": True,
@@ -363,7 +368,13 @@ def root():
             "version": "/version",
             "deployment_info": "/deployment-info",
             "daily_smile": "/api/daily-smile",
-            "smile_by_archetype": "/api/smile/<archetype>"
+            "smile_by_archetype": "/api/smile/<archetype>",
+            "worldtour_cities": "/api/worldtour/cities",
+            "worldtour_next": "/api/worldtour/next",
+            "worldtour_queue": "/api/worldtour/queue",
+            "worldtour_start": "/api/worldtour/start",
+            "worldtour_vote": "/api/worldtour/vote",
+            "worldtour_analytics": "/api/analytics/worldtour",
         },
         "available_archetypes": list(SMILES.keys()),
         "principle": "Truth, Unity, Service"
@@ -375,7 +386,19 @@ def not_found(error):
     return jsonify({
         "error": "Not found",
         "message": "The requested endpoint does not exist",
-        "available_endpoints": ["/health", "/version", "/deployment-info", "/api/daily-smile", "/api/smile/<archetype>"]
+        "available_endpoints": [
+            "/health",
+            "/version",
+            "/deployment-info",
+            "/api/daily-smile",
+            "/api/smile/<archetype>",
+            "/api/worldtour/cities",
+            "/api/worldtour/next",
+            "/api/worldtour/queue",
+            "/api/worldtour/start",
+            "/api/worldtour/vote",
+            "/api/analytics/worldtour",
+        ]
     }), 404
 
 @app.errorhandler(500)
