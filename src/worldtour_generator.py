@@ -356,6 +356,9 @@ class WorldtourGenerator:
             
             self._save_cities_db()
             logger.info(f"Marked {city_id} as visited")
+            return True
+        
+        return False
     
     def get_next_city(self) -> Optional[Dict]:
         """Get the next unvisited city."""
