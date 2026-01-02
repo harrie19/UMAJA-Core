@@ -1,5 +1,188 @@
 # 🚂 Railway Deployment Guide
 
+## Quick Deploy (3 Minuten)
+
+### Option A: Web UI (Empfohlen)
+
+1. **Go to Railway.app**
+   - Klick "New Project"
+   - Wähle "Deploy from GitHub repo"
+   - Wähle `harrie19/UMAJA-Core`
+
+2. **Railway auto-detects:**
+   - ✅ `railway.json` config
+   - ✅ Python project (via `requirements.txt`)
+   - ✅ Health check endpoint
+
+3. **Environment Variables setzen:**
+   ```
+   Variables Tab → Add:
+   ENVIRONMENT=production
+   DEBUG=False
+   WORLDTOUR_MODE=true
+   SALES_ENABLED=false
+   USE_OFFLINE_TTS=true
+   CONTACT_EMAIL=Umaja1919@googlemail.com
+   ```
+
+4. **Deploy!**
+   - Railway baut automatisch
+   - Generiert Public URL
+   - Health check läuft
+
+5. **Generate Domain:**
+   - Settings → Networking → Generate Domain
+   - SSL Certificate wird automatisch erstellt
+
+### Option B: Railway CLI
+
+```bash
+# Install CLI
+npm i -g @railway/cli
+
+# Login
+railway login
+
+# Link project
+railway link
+
+# Deploy
+railway up
+```
+
+## Custom Domain Setup
+
+1. **Railway Dashboard:**
+   - Settings → Networking → Custom Domain
+   - Add: `umaja.yourdomain.com`
+
+2. **DNS Provider (z.B. Cloudflare):**
+   - Typ: `CNAME`
+   - Name: `umaja`
+   - Target: `g05ns7.up.railway.app` (Railway gibt dir diese)
+   - Proxy: ON (orange cloud)
+
+3. **Cloudflare SSL Settings:**
+   - SSL/TLS → Overview → **Full** (NOT Full Strict!)
+   - SSL/TLS → Edge Certificates → Universal SSL: ON
+
+4. **Wait 2-5 minutes:**
+   - Railway verifiziert Domain
+   - SSL Certificate wird automatisch issued (Let's Encrypt)
+   - Green checkmark erscheint
+
+## Monitoring
+
+### Health Check
+```bash
+curl https://your-app.up.railway.app/health
+```
+
+Expected response:
+```json
+{
+  "status": "healthy",
+  "service": "UMAJA-Core",
+  "version": "1.0.0",
+  "timestamp": "2026-01-02T15:30:00Z"
+}
+```
+
+### Railway Dashboard
+- Deployment Logs: Echtzeit output
+- Metrics: CPU, Memory, Network
+- Custom Metrics: Health check status
+
+## Troubleshooting
+
+### App startet nicht
+**Problem:** `Error: listen EADDRINUSE`
+**Lösung:** Railway setzt PORT automatisch, nicht hardcoden!
+
+```python
+# ❌ FALSCH
+app.run(port=5000)
+
+# ✅ RICHTIG
+port = int(os.getenv("PORT", 5000))
+app.run(host='0.0.0.0', port=port)
+```
+
+### Health Check fails
+**Problem:** `/health` endpoint nicht erreichbar
+**Lösung:** Bind auf `0.0.0.0`, nicht `127.0.0.1`
+
+### Custom Domain zeigt 522 Error
+**Problem:** Cloudflare Proxy mit Full (Strict) SSL
+**Lösung:** Ändere auf **Full** (ohne Strict)
+
+### Port 10000 warning
+**Hinweis:** Railway nutzt oft Port 10000 intern
+**Lösung:** Kein Problem! App sollte $PORT verwenden, nicht hardcoden
+
+## Auto-Deploy Setup
+
+Railway deployt automatisch bei jedem push zu `main`:
+
+1. Push code to GitHub
+2. Railway detects change
+3. Builds new image
+4. Runs health check
+5. Switches traffic (zero downtime!)
+
+## Cost Estimation
+
+**Hobby Plan (kostenlos):**
+- 500 hours/month
+- $5 credit
+- Custom domains: 2 per service
+
+**Pro Plan ($20/month):**
+- Unlimited usage
+- Priority support
+- 20 domains per service
+
+**UMAJA-Core typical usage:**
+- ~$0-5/month (very light workload)
+- World Tour mode: minimal compute
+
+## Security Best Practices
+
+1. **Secrets Management:**
+   - Nie API keys in Code
+   - Nutze Railway's Environment Variables
+   - Separate configs für staging/production
+
+2. **Network Security:**
+   - Railway provides SSL automatisch
+   - DDoS protection included
+   - Rate limiting via Cloudflare (optional)
+
+3. **Access Control:**
+   - Railway Dashboard: Team members
+   - GitHub: Protected branches
+   - API: Token authentication (future)
+
+## Next Steps After Deploy
+
+✅ App is live on Railway
+✅ Domain mit SSL configured
+✅ Health checks passing
+
+**Jetzt:**
+1. Test world tour: `/api/worldtour/cities`
+2. Generate content: `/api/generate`
+3. Monitor logs: Railway Dashboard
+4. Setup GitHub Pages frontend
+
+---
+
+**Support:** Railway Discord, GitHub Issues, Docs
+
+---
+
+## Advanced Configuration
+
 Complete guide for deploying UMAJA-Core to Railway with production-ready configuration.
 
 ## Table of Contents

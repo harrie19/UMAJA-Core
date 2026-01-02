@@ -126,6 +126,23 @@ User Request → CDN (GitHub Pages) → Static JSON Files → Backend API (fallb
 
 ## 🚀 Quick Start
 
+### 🚂 Deploy to Railway
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/umaja-core)
+
+**Quick Deploy (3 minutes)**
+
+1. Click "Deploy on Railway" button above
+2. Set environment variables:
+   - `ENVIRONMENT=production`
+   - `WORLDTOUR_MODE=true`
+   - `SALES_ENABLED=false`
+3. Done! Your instance is live
+
+📖 **Full deployment guide**: [docs/RAILWAY_DEPLOYMENT.md](docs/RAILWAY_DEPLOYMENT.md)
+
+---
+
 ### Live System
 
 🌐 **Dashboard**: https://harrie19.github.io/UMAJA-Core/  
