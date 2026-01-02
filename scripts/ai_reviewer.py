@@ -161,8 +161,9 @@ def main():
         
         # Check API rate limits (prevent quota exhaustion)
         rate_limit = g.get_rate_limit()
-        remaining = rate_limit.core.remaining
-        print(f"📊 API Rate Limit: {remaining}/{rate_limit.core.limit} remaining")
+        core = rate_limit.resources['core']
+        remaining = core.remaining
+        print(f"📊 API Rate Limit: {remaining}/{core.limit} remaining")
         
         if remaining < 100:
             print(f"⚠️ WARNING: Low API rate limit ({remaining} remaining)")
