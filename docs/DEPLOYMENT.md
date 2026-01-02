@@ -1,5 +1,7 @@
 # 🚀 UMAJA WORLDTOUR Deployment Guide
 
+**Contact:** Umaja1919@googlemail.com
+
 Complete guide for deploying the UMAJA system to production.
 
 ## Table of Contents

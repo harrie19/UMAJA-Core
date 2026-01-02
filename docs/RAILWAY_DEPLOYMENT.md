@@ -1,5 +1,7 @@
 # 🚂 Railway Deployment Guide
 
+**Contact:** Umaja1919@googlemail.com
+
 Complete guide for deploying UMAJA-Core to Railway with production-ready configuration.
 
 ## Table of Contents
