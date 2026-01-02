@@ -1,0 +1,21 @@
+{
+  "city_id": "cairo",
+  "city_name": "Cairo",
+  "country": "Various",
+  "personality": "c3po",
+  "content_type": "food_review",
+  "topic": "Goodness! local food contains exactly 38 ingredients, by my analysis...",
+  "topics": [
+    "local food",
+    "culture",
+    "landmarks",
+    "people"
+  ],
+  "stereotypes": [
+    "Unique culture"
+  ],
+  "fun_facts": [
+    "Rich history"
+  ],
+  "language": "Local"
+}

@@ -346,6 +346,9 @@ class WorldtourGenerator:
             city_id: City identifier
             video_url: URL of the video
             views: Number of views
+            
+        Returns:
+            True if successful, False otherwise
         """
         if city_id in self.cities:
             self.cities[city_id]['visited'] = True
@@ -356,6 +359,8 @@ class WorldtourGenerator:
             
             self._save_cities_db()
             logger.info(f"Marked {city_id} as visited")
+            return True
+        return False
     
     def get_next_city(self) -> Optional[Dict]:
         """Get the next unvisited city."""
@@ -425,6 +430,11 @@ class WorldtourGenerator:
             'total_views': total_views,
             'completion_percentage': round((visited / total_cities) * 100, 1)
         }
+    
+    def get_progress(self) -> str:
+        """Get a formatted progress string."""
+        stats = self.get_stats()
+        return f"{stats['visited_cities']}/{stats['total_cities']} cities visited ({stats['completion_percentage']}%)"
 
 
 # Example usage and testing

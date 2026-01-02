@@ -786,7 +786,9 @@
       "Hello"
     ],
     "language": "Local",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T14:21:42.582231",
+    "video_views": 0
   },
   "cape_town": {
     "name": "Cape Town",
@@ -975,7 +977,9 @@
       "Hello"
     ],
     "language": "Local",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T11:07:22.267669",
+    "video_views": 0
   },
   "manila": {
     "name": "Manila",
@@ -1059,7 +1063,9 @@
       "Hello"
     ],
     "language": "Local",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T11:09:47.078159",
+    "video_views": 0
   },
   "tehran": {
     "name": "Tehran",

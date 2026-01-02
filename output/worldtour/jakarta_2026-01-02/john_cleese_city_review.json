@@ -1,0 +1,21 @@
+{
+  "city_id": "jakarta",
+  "city_name": "Jakarta",
+  "country": "Various",
+  "personality": "john_cleese",
+  "content_type": "city_review",
+  "topic": "Now, the curious thing about Jakarta is that it's rather like a confused tourist with a map...",
+  "topics": [
+    "local food",
+    "culture",
+    "landmarks",
+    "people"
+  ],
+  "stereotypes": [
+    "Unique culture"
+  ],
+  "fun_facts": [
+    "Rich history"
+  ],
+  "language": "Local"
+}
