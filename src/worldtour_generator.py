@@ -287,7 +287,16 @@ class WorldtourGenerator:
                 "a beautiful disaster",
                 "an elaborate stage production"
             ])
-            topic = template.format(city=city['name'], comparison=comparison)
+            
+            # Handle personality-specific template formatting
+            if personality == 'c3po':
+                # c3po template uses {number} instead of {comparison}
+                topic = template.format(
+                    city=city['name'],
+                    number=random.randint(100, 9999)
+                )
+            else:
+                topic = template.format(city=city['name'], comparison=comparison)
             
         elif content_type == 'cultural_debate':
             topic_item = random.choice(city['topics'])
