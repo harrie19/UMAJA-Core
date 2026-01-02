@@ -159,6 +159,104 @@
             font-size: 0.9em;
             margin-top: 10px;
         }
+        
+        .worldtour-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .city-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .city-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .city-card.visited {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .city-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .city-country {
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+        
+        .city-status {
+            margin-top: 10px;
+            font-size: 0.8em;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .city-status.visited {
+            background: rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+        
+        .city-status.unvisited {
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0.6;
+        }
+        
+        .worldtour-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #10b981;
+        }
+        
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .content-display {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .personality-badge {
+            display: inline-block;
+            background: rgba(118, 75, 162, 0.4);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -199,6 +297,52 @@
         </div>
         
         <div class="status-card">
+            <h2>🌍 World Tour</h2>
+            <p style="opacity: 0.8; margin-bottom: 15px;">Visiting cities around the globe!</p>
+            
+            <div class="worldtour-stats" id="worldtourStats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalCities">-</div>
+                    <div class="stat-label">Total Cities</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="visitedCities">-</div>
+                    <div class="stat-label">Visited</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="remainingCities">-</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="completionPercent">-</div>
+                    <div class="stat-label">Completion</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="btn" onclick="startWorldTour()" style="margin-right: 10px;">🚀 Start Tour</button>
+                <button class="btn" onclick="loadCities()">🔄 Refresh Cities</button>
+            </div>
+            
+            <div id="nextCityInfo" style="display: none; background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <h3 style="margin: 0 0 10px 0;">📍 Next Destination</h3>
+                <div id="nextCityDetails"></div>
+            </div>
+            
+            <h3 style="margin-top: 25px;">🗺️ Cities (showing first 12)</h3>
+            <div class="worldtour-grid" id="citiesGrid">
+                <div style="text-align: center; opacity: 0.7; grid-column: 1/-1;">
+                    Loading cities...
+                </div>
+            </div>
+            
+            <div id="cityContent" style="display: none; margin-top: 20px;">
+                <h3>🎭 City Content</h3>
+                <div class="content-display" id="contentDisplay"></div>
+            </div>
+        </div>
+        
+        <div class="status-card">
             <h2>🎭 Daily Smile Generator</h2>
             <p style="opacity: 0.8; margin-bottom: 15px;">Get your dose of joy!</p>
             <button class="btn" onclick="generateSmile()">✨ Generate Smile</button>
@@ -225,6 +369,22 @@
                 <li class="endpoint-item">
                     <span>Smile by Archetype</span>
                     <code>/api/smile/&lt;archetype&gt;</code>
+                </li>
+                <li class="endpoint-item">
+                    <span>World Tour Start</span>
+                    <code>POST /worldtour/start</code>
+                </li>
+                <li class="endpoint-item">
+                    <span>World Tour Status</span>
+                    <code>GET /worldtour/status</code>
+                </li>
+                <li class="endpoint-item">
+                    <span>World Tour Cities</span>
+                    <code>GET /worldtour/cities</code>
+                </li>
+                <li class="endpoint-item">
+                    <span>Visit City</span>
+                    <code>POST /worldtour/visit/&lt;city&gt;</code>
                 </li>
             </ul>
         </div>
@@ -324,6 +484,197 @@
         // Check health on load and every 60 seconds
         checkHealth();
         setInterval(checkHealth, 60000);
+        
+        // World Tour Functions
+        let worldtourData = {
+            cities: [],
+            stats: {},
+            nextCity: null
+        };
+        
+        async function loadWorldTourStatus() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/worldtour/status`);
+                const data = await response.json();
+                
+                worldtourData.stats = data.stats;
+                worldtourData.nextCity = data.next_city;
+                
+                updateWorldTourStats(data.stats);
+                
+                if (data.next_city) {
+                    showNextCity(data.next_city);
+                }
+            } catch (error) {
+                console.error('Error loading World Tour status:', error);
+                showDemoWorldTourStats();
+            }
+        }
+        
+        async function loadCities() {
+            const grid = document.getElementById('citiesGrid');
+            grid.innerHTML = '<div style="text-align: center; opacity: 0.7; grid-column: 1/-1;">Loading cities...</div>';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/worldtour/cities?limit=12`);
+                const data = await response.json();
+                
+                if (data.success && data.cities.length > 0) {
+                    worldtourData.cities = data.cities;
+                    displayCities(data.cities);
+                    updateWorldTourStats(data.stats);
+                } else {
+                    grid.innerHTML = '<div style="text-align: center; opacity: 0.7; grid-column: 1/-1;">No cities available</div>';
+                }
+            } catch (error) {
+                console.error('Error loading cities:', error);
+                displayDemoCities();
+            }
+        }
+        
+        function displayCities(cities) {
+            const grid = document.getElementById('citiesGrid');
+            grid.innerHTML = '';
+            
+            cities.forEach(city => {
+                const cityCard = document.createElement('div');
+                cityCard.className = `city-card ${city.visited ? 'visited' : ''}`;
+                cityCard.onclick = () => showCityDetails(city.id);
+                
+                cityCard.innerHTML = `
+                    <div class="city-name">${city.name}</div>
+                    <div class="city-country">${city.country}</div>
+                    <div class="city-status ${city.visited ? 'visited' : 'unvisited'}">
+                        ${city.visited ? '✅ Visited' : '⏳ Pending'}
+                    </div>
+                `;
+                
+                grid.appendChild(cityCard);
+            });
+        }
+        
+        function displayDemoCities() {
+            const demoCities = [
+                { id: 'new_york', name: 'New York', country: 'USA', visited: false },
+                { id: 'london', name: 'London', country: 'UK', visited: true },
+                { id: 'tokyo', name: 'Tokyo', country: 'Japan', visited: false },
+                { id: 'paris', name: 'Paris', country: 'France', visited: true },
+                { id: 'berlin', name: 'Berlin', country: 'Germany', visited: false },
+                { id: 'rome', name: 'Rome', country: 'Italy', visited: false }
+            ];
+            displayCities(demoCities);
+        }
+        
+        function updateWorldTourStats(stats) {
+            document.getElementById('totalCities').textContent = stats.total_cities || '-';
+            document.getElementById('visitedCities').textContent = stats.visited_cities || '-';
+            document.getElementById('remainingCities').textContent = stats.remaining_cities || '-';
+            document.getElementById('completionPercent').textContent = stats.completion_percentage 
+                ? `${stats.completion_percentage}%` 
+                : '-';
+        }
+        
+        function showDemoWorldTourStats() {
+            updateWorldTourStats({
+                total_cities: 59,
+                visited_cities: 3,
+                remaining_cities: 56,
+                completion_percentage: 5.1
+            });
+        }
+        
+        function showNextCity(city) {
+            const nextCityInfo = document.getElementById('nextCityInfo');
+            const nextCityDetails = document.getElementById('nextCityDetails');
+            
+            nextCityInfo.style.display = 'block';
+            nextCityDetails.innerHTML = `
+                <div style="font-size: 1.2em; font-weight: bold; margin-bottom: 5px;">
+                    ${city.name}, ${city.country}
+                </div>
+                <div style="opacity: 0.8;">
+                    ${city.language ? `Language: ${city.language}` : ''}
+                </div>
+            `;
+        }
+        
+        async function startWorldTour() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/worldtour/start`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`🎉 World Tour Started!\n\nNext destination: ${data.next_city.name}, ${data.next_city.country}`);
+                    loadWorldTourStatus();
+                    loadCities();
+                } else {
+                    alert(`Tour status: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Error starting World Tour:', error);
+                alert('Demo Mode: World Tour would start here! 🌍\n\nConnect to the backend to enable this feature.');
+            }
+        }
+        
+        async function showCityDetails(cityId) {
+            const contentDisplay = document.getElementById('contentDisplay');
+            const cityContent = document.getElementById('cityContent');
+            
+            cityContent.style.display = 'block';
+            contentDisplay.innerHTML = '<p style="opacity: 0.7;">Loading city information...</p>';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/worldtour/content/${cityId}?generate=true`);
+                const data = await response.json();
+                
+                if (data.success && data.content) {
+                    const content = data.content;
+                    contentDisplay.innerHTML = `
+                        <h4 style="margin: 0 0 15px 0;">${content.city_name}, ${content.country}</h4>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <span class="personality-badge">🎭 ${content.personality.replace('_', ' ')}</span>
+                            <span class="personality-badge">📝 ${content.content_type.replace('_', ' ')}</span>
+                        </div>
+                        
+                        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <p style="font-size: 1.1em; line-height: 1.6; margin: 0;">
+                                ${content.topic}
+                            </p>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <strong>Fun Facts:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                ${content.fun_facts.map(fact => `<li>${fact}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <strong>Topics:</strong> ${content.topics.slice(0, 5).join(', ')}
+                        </div>
+                        
+                        ${data.city.visited ? '<div style="margin-top: 15px; color: #10b981;">✅ City visited!</div>' : ''}
+                    `;
+                } else {
+                    contentDisplay.innerHTML = `<p style="opacity: 0.7;">Could not load city content.</p>`;
+                }
+            } catch (error) {
+                console.error('Error loading city details:', error);
+                contentDisplay.innerHTML = `
+                    <p style="opacity: 0.7;">
+                        Demo Mode: City details would appear here!<br>
+                        Connect to the backend to see generated content.
+                    </p>
+                `;
+            }
+        }
+        
+        // Load World Tour data on page load
+        loadWorldTourStatus();
+        loadCities();
     </script>
 </body>
 </html>

@@ -105,7 +105,7 @@ Health check endpoint.
 
 **Response**:
 ```json
-{"status": "alive", "mission": "8 billion smiles"}
+{"status": "healthy", "mission": "8 billion smiles", "version": "2.0.0"}
 ```
 
 ### `GET /api/daily-smile`
@@ -115,9 +115,138 @@ Get today's random smile.
 ```json
 {
   "content": "Today, imagine the impossible...",
-  "archetype": "Dreamer",
-  "date": "2026-01-01",
-  "language": "en"
+  "archetype": "professor",
+  "mission": "Serving 8 billion people"
+}
+```
+
+### World Tour API Endpoints
+
+#### `POST /worldtour/start`
+Launch the World Tour and get the next city to visit.
+
+**Response**:
+```json
+{
+  "success": true,
+  "message": "World Tour launched successfully! 🌍",
+  "next_city": {
+    "id": "tokyo",
+    "name": "Tokyo",
+    "country": "Japan",
+    "topics": ["sushi", "trains", "technology"],
+    "language": "Japanese"
+  },
+  "stats": {
+    "total_cities": 59,
+    "visited_cities": 3,
+    "remaining_cities": 56,
+    "completion_percentage": 5.1
+  }
+}
+```
+
+#### `GET /worldtour/status`
+Get current World Tour status and statistics.
+
+**Response**:
+```json
+{
+  "status": "active",
+  "stats": {
+    "total_cities": 59,
+    "visited_cities": 3,
+    "remaining_cities": 56,
+    "total_views": 0,
+    "completion_percentage": 5.1
+  },
+  "next_city": {
+    "id": "paris",
+    "name": "Paris",
+    "country": "France"
+  },
+  "recent_visits": [...]
+}
+```
+
+#### `GET /worldtour/cities`
+List all cities in the World Tour database.
+
+**Query Parameters**:
+- `visited` (optional): Filter by visited status (`true`/`false`)
+- `limit` (optional): Limit number of results
+
+**Response**:
+```json
+{
+  "success": true,
+  "count": 59,
+  "cities": [
+    {
+      "id": "new_york",
+      "name": "New York",
+      "country": "USA",
+      "visited": false,
+      "language": "English (American)",
+      "topics": ["pizza", "subway", "Central Park"]
+    }
+  ]
+}
+```
+
+#### `POST /worldtour/visit/{city_id}`
+Visit a city and generate content.
+
+**Request Body** (optional):
+```json
+{
+  "personality": "john_cleese",
+  "content_type": "city_review"
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "message": "Successfully visited London! 🎉",
+  "city": {
+    "id": "london",
+    "name": "London",
+    "country": "UK",
+    "visited": true
+  },
+  "content": {
+    "city_name": "London",
+    "personality": "john_cleese",
+    "content_type": "city_review",
+    "topic": "Now, the curious thing about London is...",
+    "fun_facts": [...]
+  }
+}
+```
+
+#### `GET /worldtour/content/{city_id}`
+Get content for a specific city.
+
+**Query Parameters**:
+- `generate` (optional): Generate new content (`true`/`false`)
+- `personality` (optional): Specific personality
+- `content_type` (optional): Specific content type
+
+**Response**:
+```json
+{
+  "success": true,
+  "city": {
+    "id": "london",
+    "name": "London",
+    "country": "UK",
+    "topics": ["tea", "tube", "Big Ben"],
+    "fun_facts": [...]
+  },
+  "available_personalities": ["john_cleese", "c3po", "robin_williams"],
+  "available_content_types": ["city_review", "cultural_debate", "language_lesson", "tourist_trap", "food_review"]
 }
 ```
 
@@ -234,16 +363,20 @@ Acknowledges limitations, asks for help when needed
 - [x] Frontend application
 - [x] Day 1 CDN (8 languages)
 - [x] Documentation
+- [x] World Tour API (5 endpoints)
+- [x] World Tour Dashboard
 
 ### Phase 2: Expansion 🔄
+- [x] Automated testing (19 tests)
+- [x] GitHub Actions CI/CD
+- [x] World Tour: 59 cities database
 - [ ] Week 1 CDN (Days 1-7)
-- [ ] Automated testing
-- [ ] GitHub Actions CI/CD
-- [ ] Monitoring dashboard
+- [ ] Monitoring dashboard enhancements
 
 ### Phase 3: Scale 📅
 - [ ] Full year CDN (365 days)
 - [ ] Additional languages
+- [ ] World Tour video generation
 - [ ] Mobile app
 - [ ] Reach 8 billion users
 
