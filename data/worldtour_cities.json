@@ -60,7 +60,9 @@
       "Mind the gap"
     ],
     "language": "English (British)",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T12:13:28.733473",
+    "video_views": 0
   },
   "tokyo": {
     "name": "Tokyo",
@@ -90,7 +92,9 @@
       "Oishii"
     ],
     "language": "Japanese",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T12:14:51.190246",
+    "video_views": 0
   },
   "paris": {
     "name": "Paris",
@@ -120,7 +124,9 @@
       "Voil\u00e0"
     ],
     "language": "French",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T12:14:51.187902",
+    "video_views": 0
   },
   "berlin": {
     "name": "Berlin",
