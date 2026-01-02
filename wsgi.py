@@ -1,17 +1,12 @@
 """
-WSGI Production Entrypoint for UMAJA-Core
-Exposes the Flask application for WSGI servers (gunicorn, uWSGI, etc.)
+WSGI entry point for production deployment
 """
-
 from api.simple_server import app
 
-# Expose both 'app' and 'application' for different WSGI servers
+# For WSGI servers like Gunicorn
 application = app
 
 if __name__ == "__main__":
-    # Development mode only - do not use in production
-    # In production, use: gunicorn --bind 0.0.0.0:$PORT wsgi:app
     import os
-    port = int(os.environ.get('PORT', 5000))
-    debug = os.environ.get('DEBUG', 'false').lower() == 'true'
-    app.run(host='0.0.0.0', port=port, debug=debug)
+    port = int(os.getenv("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
