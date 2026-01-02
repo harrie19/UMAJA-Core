@@ -22,19 +22,19 @@ jobs:
       - name: 🐍 Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix. python-version }}
-          cache:  'pip'
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
       
       - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements. txt
+          pip install -r requirements.txt
       
       - name:  🧪 Test RauschenGenerator
         run:  |
           python << 'PYTHON_SCRIPT'
           import sys
-          sys. path.insert(0, '.')
+          sys.path.insert(0, '.')
           
           print("="*60)
           print("🎨 Testing RauschenGenerator")
@@ -81,13 +81,13 @@ jobs:
         run: |
           python << 'PYTHON_SCRIPT'
           import sys
-          sys.path. insert(0, '.')
+          sys.path.insert(0, '.')
           
           print("="*60)
           print("🔍 Testing VektorAnalyzer")
           print("="*60)
           
-          from src. vektor_analyzer import VektorAnalyzer
+          from src.vektor_analyzer import VektorAnalyzer
           
           print("1️⃣ Testing instantiation...")
           analyzer = VektorAnalyzer()
@@ -108,7 +108,7 @@ jobs:
           assert 0 <= analysis['theme_similarity'] <= 1, "Theme similarity out of range"
           assert 0 <= analysis['overall_score'] <= 1, "Overall score out of range"
           print(f"   ✅ Scores in valid range")
-          print(f"      - Theme:  {analysis['theme_similarity']:. 3f}")
+          print(f"      - Theme: {analysis['theme_similarity']:.3f}")
           print(f"      - Overall: {analysis['overall_score']:.3f}")
           
           print("4️⃣ Testing text comparison...")
@@ -185,13 +185,13 @@ jobs:
           
           print("1️⃣ Generating text...")
           generator = RauschenGenerator()
-          result = generator. generate_reflection('integration test', 'short', 0.4)
+          result = generator.generate_reflection('integration test', 'short', 0.4)
           print(f"   ✅ Generated {result['word_count']} words")
           
           print("2️⃣ Analyzing quality...")
           analyzer = VektorAnalyzer()
           analysis = analyzer.analyze_coherence(result['text'], 'integration test')
-          print(f"   ✅ Quality:  {analysis['quality']} (score: {analysis['overall_score']:.3f})")
+          print(f"   ✅ Quality: {analysis['quality']} (score: {analysis['overall_score']:.3f})")
           
           print("3️⃣ Calculating distribution...")
           engine = DistributionEngine()
