@@ -10,7 +10,7 @@ import os
 import sys
 import random
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 import signal
 from pathlib import Path
 
@@ -112,7 +112,7 @@ def health():
             "service": "UMAJA-Core",
             "version": VERSION,
             "mission": "8 billion smiles",
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "environment": os.environ.get('ENVIRONMENT', 'production'),
             "security": {
                 "rate_limiting": "enabled",
@@ -138,7 +138,7 @@ def health():
         return jsonify({
             "status": "unhealthy",
             "error": str(e),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }), 503
 
 @app.route('/version')
@@ -163,7 +163,7 @@ def deployment_info():
         "version": VERSION,
         "uptime": "Service operational",
         "platform": "Railway",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }), 200
 
 @app.route('/api/daily-smile')

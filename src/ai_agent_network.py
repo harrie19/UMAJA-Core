@@ -239,7 +239,7 @@ def generate_chatgpt_plugin_manifest() -> Dict:
             "url": "https://umaja-core.railway.app/openapi.json"
         },
         "logo_url": "https://umaja-core.railway.app/static/logo.png",
-        "contact_email": "hello@umaja-core.com",
+        "contact_email": "Umaja1919@googlemail.com",
         "legal_info_url": "https://umaja-core.railway.app/legal"
     }
 
