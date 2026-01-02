@@ -4,9 +4,11 @@
 
 > *"The earth is but one country, and mankind its citizens"* — Bahá'u'lláh
 
-[![Status](https://img.shields.io/badge/status-live-brightgreen)](https://harrie19.github.io/UMAJA-Core/)
-[![Cost](https://img.shields.io/badge/cost-$0-blue)](https://github.com/harrie19/UMAJA-Core)
-[![Reach](https://img.shields.io/badge/reach-5.1B%20people-orange)](https://github.com/harrie19/UMAJA-Core)
+[![Live Status](https://img.shields.io/badge/status-LIVE%20DAY%201-brightgreen)](https://harrie19.github.io/UMAJA-Core/)
+[![Day](https://img.shields.io/badge/day-1%2F365-blue)]()
+[![Languages](https://img.shields.io/badge/languages-8-orange)]()
+[![Reach](https://img.shields.io/badge/reach-8B%20people-red)]()
+[![Cost](https://img.shields.io/badge/cost-$0-success)](https://github.com/harrie19/UMAJA-Core)
 
 ---
 

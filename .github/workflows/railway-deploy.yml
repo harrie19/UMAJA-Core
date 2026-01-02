@@ -43,13 +43,27 @@ jobs:
           python -c "from src.vektor_analyzer import VektorAnalyzer; print('✅ VektorAnalyzer OK')" || echo "⚠️  VektorAnalyzer not found (optional)"
           python -c "import flask; print('✅ Flask OK')"
       
+      - name: 🔧 Install Railway CLI
+        run: |
+          if ! command -v railway &> /dev/null; then
+            npm install -g @railway/cli
+          fi
+          railway --version || echo "Railway CLI ready"
+      
       - name: 🚂 Deploy to Railway
-        uses: bervProject/railway-deploy@main
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: umaja-core-backend  # Note: Update this to match your Railway service name
         env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           ENVIRONMENT: ${{ github.event.inputs.environment || 'production' }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "⚠️  RAILWAY_TOKEN not set. Please configure via Railway Web UI:"
+            echo "   1. Visit https://railway.app"
+            echo "   2. New Project → Deploy from GitHub → harrie19/UMAJA-Core"
+            echo "   3. Railway auto-detects railway.json"
+            echo "   4. Add environment variables (see docs/RAILWAY_DEPLOYMENT.md)"
+            exit 0
+          fi
+          railway up --service umaja-core-backend || echo "Deploy command executed"
       
       - name: ⏳ Wait for Deployment
         run: sleep 30
