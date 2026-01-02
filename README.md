@@ -23,6 +23,42 @@ Bring personalized daily inspiration to **8 billion people** at **$0 cost** thro
 
 ---
 
+## 🧠 AI Memory System
+
+Never re-explain context! Load full story instantly:
+
+```bash
+python scripts/remember_me.py
+```
+
+This loads your complete context into any AI session:
+- **Identity & Mission**: Who you are and what UMAJA-Core aims to achieve
+- **Bahá'í Principles**: The spiritual foundation guiding development
+- **Project History**: Key milestones and decisions
+- **Current Status**: Latest progress and what's being worked on
+
+**Why use it?**
+- ⚡ **Instant Context**: AI understands your mission immediately
+- 🎯 **No Repetition**: Never explain your vision again
+- 🔄 **Consistency**: All AI helpers start with the same knowledge
+- 📈 **Productivity**: Get straight to work, skip the intro
+
+**Platform-Specific Usage:**
+```bash
+# For GitHub Copilot
+python scripts/remember_me.py --platform copilot
+
+# For ChatGPT
+python scripts/remember_me.py --platform chatgpt
+
+# For Claude
+python scripts/remember_me.py --platform claude
+```
+
+See [AI Memory Guide](docs/AI_MEMORY_GUIDE.md) for complete documentation.
+
+---
+
 ## 🎭 UMAJA Worldtour: LIVE! 🌍
 
 The UMAJA Worldtour brings comedy and joy to cities around the world through 3 AI comedian personalities!
