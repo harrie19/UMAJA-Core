@@ -1,0 +1,21 @@
+{
+  "city_id": "jakarta",
+  "city_name": "Jakarta",
+  "country": "Various",
+  "personality": "robin_williams",
+  "content_type": "cultural_debate",
+  "topic": "Imagine if local food in Jakarta was a Broadway musical!",
+  "topics": [
+    "local food",
+    "culture",
+    "landmarks",
+    "people"
+  ],
+  "stereotypes": [
+    "Unique culture"
+  ],
+  "fun_facts": [
+    "Rich history"
+  ],
+  "language": "Local"
+}

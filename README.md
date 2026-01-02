@@ -23,6 +23,58 @@ Bring personalized daily inspiration to **8 billion people** at **$0 cost** thro
 
 ---
 
+## 🎭 UMAJA Worldtour: LIVE! 🌍
+
+The UMAJA Worldtour brings comedy and joy to cities around the world through 3 AI comedian personalities!
+
+### Meet the Comedians
+
+- 🎩 **John Cleese Style**: British wit, dry humor, observational comedy
+- 🤖 **C-3PO Style**: Protocol-obsessed, analytical, endearingly nervous
+- 🎪 **Robin Williams Style**: High-energy, improvisational, heartfelt
+
+### Worldtour Statistics
+
+```yaml
+Status:          🟢 LIVE
+Cities Visited:  3 / 59
+Progress:        5.1% complete
+Latest City:     Jakarta 🇮🇩
+Launch Date:     2026-01-02
+```
+
+### How It Works
+
+1. **Daily City Visit**: Each day, visit a new city from our database of 59+ global destinations
+2. **Triple Comedy**: Generate content from all 3 comedian personalities
+3. **Multi-Format**: Create text, audio, images, and video content
+4. **Global Distribution**: Share via social media, reaching millions worldwide
+
+### Content Types
+
+- 🏙️ **City Reviews**: Hilarious takes on local culture and landmarks
+- 🍕 **Food Reviews**: Comedy about local cuisine and dining experiences
+- 🗣️ **Cultural Debates**: Witty observations about local customs
+- 📚 **Language Lessons**: Funny attempts at learning local phrases
+- 🎪 **Tourist Traps**: Comedic guides to popular attractions
+
+### Recent Content
+
+📁 Latest: [Jakarta Content](/output/worldtour/jakarta_2026-01-02/) (Jan 2, 2026)
+
+**Try it yourself:**
+```bash
+# Launch the worldtour and visit the next city
+python scripts/launch_world_tour.py
+
+# Generate daily content with multimedia
+python scripts/daily_worldtour_post.py
+```
+
+*"Die Erde ist nur ein Land, und alle Menschen sind seine Bürger"* — Bahá'u'lláh
+
+---
+
 ## 🏗️ Architecture
 
 ```
