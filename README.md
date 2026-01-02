@@ -487,6 +487,8 @@ Acknowledges limitations, asks for help when needed
 - 🐛 Bug fixes
 - 📚 Documentation
 
+**Contact**: Umaja1919@googlemail.com
+
 ---
 
 ## 💫 Vision
