@@ -142,7 +142,7 @@ def test_worldtour_visit_city(client):
     assert data['content']['content_type'] == 'food_review'
 
 
-def test_worldtour_visit_city_default_params(client):
+def test_worldtour_visit_city_default_params(client, worldtour_generator):
     """Test POST /worldtour/visit/{city_id} with default parameters"""
     response = client.post(
         '/worldtour/visit/tokyo',
@@ -154,9 +154,9 @@ def test_worldtour_visit_city_default_params(client):
     data = json.loads(response.data)
     assert data['success'] is True
     assert 'content' in data
-    # Personality and content_type should be randomly selected
-    assert data['content']['personality'] in ['john_cleese', 'c3po', 'robin_williams']
-    assert data['content']['content_type'] in ['city_review', 'cultural_debate', 'language_lesson', 'tourist_trap', 'food_review']
+    # Personality and content_type should be randomly selected from available options
+    assert data['content']['personality'] in worldtour_generator.PERSONALITIES
+    assert data['content']['content_type'] in worldtour_generator.CONTENT_TYPES
 
 
 def test_worldtour_visit_invalid_city(client):
