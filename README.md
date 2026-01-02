@@ -37,9 +37,9 @@ The UMAJA Worldtour brings comedy and joy to cities around the world through 3 A
 
 ```yaml
 Status:          🟢 LIVE
-Cities Visited:  4 / 59
-Progress:        6.8% complete
-Latest City:     Jakarta & Karachi 🇮🇩 🇵🇰
+Cities Visited:  5 / 59
+Progress:        8.5% complete
+Latest City:     Cairo 🇪🇬
 Launch Date:     2026-01-02
 ```
 

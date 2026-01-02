@@ -1,0 +1,21 @@
+{
+  "city_id": "cairo",
+  "city_name": "Cairo",
+  "country": "Various",
+  "personality": "john_cleese",
+  "content_type": "city_review",
+  "topic": "Now, the curious thing about Cairo is that it's rather like a beautiful disaster...",
+  "topics": [
+    "local food",
+    "culture",
+    "landmarks",
+    "people"
+  ],
+  "stereotypes": [
+    "Unique culture"
+  ],
+  "fun_facts": [
+    "Rich history"
+  ],
+  "language": "Local"
+}

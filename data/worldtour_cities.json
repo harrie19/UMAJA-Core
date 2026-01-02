@@ -780,7 +780,9 @@
       "Hello"
     ],
     "language": "Local",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-02T14:21:42.582231",
+    "video_views": 0
   },
   "cape_town": {
     "name": "Cape Town",
