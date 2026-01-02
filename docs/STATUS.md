@@ -6,12 +6,12 @@ The UMAJA Worldtour has officially launched! Our 3 AI comedians are visiting cit
 
 ### Worldtour Progress
 - **Status**: 🟢 **LIVE**
-- **Cities Visited**: 3 (Jakarta, Baghdad, Helsinki)
+- **Cities Visited**: 4 (Jakarta, Karachi, Baghdad, Helsinki)
 - **Total Cities**: 59
-- **Completion**: 5.1%
+- **Completion**: 6.8%
 - **Start Date**: 2026-01-02
 
-### Latest Visit: Jakarta 🇮🇩
+### Latest Visit: Jakarta & Karachi 🇮🇩 🇵🇰
 - **Date**: January 2, 2026
 - **Content Generated**: 
   - John Cleese: City Review
