@@ -4,12 +4,14 @@ Bahá'í principle: Service, not profit
 """
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import json
 import os
 import sys
 import random
 import logging
 from datetime import datetime
 import signal
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(
@@ -27,6 +29,29 @@ DEPLOYMENT_DATE = "2026-01-01"
 
 app = Flask(__name__)
 CORS(app)
+
+# Ensure src is on path for worldtour imports
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = PROJECT_ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from worldtour_generator import WorldtourGenerator  # noqa: E402
+
+WORLDTOUR_DB_PATH = Path(
+    os.environ.get(
+        "WORLDTOUR_DB_PATH",
+        PROJECT_ROOT / "data" / "worldtour_cities.json",
+    )
+)
+WORLDTOUR_VOTES_PATH = Path(
+    os.environ.get(
+        "WORLDTOUR_VOTES_PATH",
+        PROJECT_ROOT / "data" / "worldtour_votes.json",
+    )
+)
+
+worldtour_gen = WorldtourGenerator(str(WORLDTOUR_DB_PATH))
 
 # Validate critical environment variables on startup
 REQUIRED_ENV_VARS = []  # No required vars for basic operation
@@ -63,6 +88,25 @@ SMILES = {
         "You know what's incredible? You're alive during the time when we can see photos from Mars. MARS! 🌟"
     ]
 }
+
+def _load_votes() -> dict:
+    """Load stored worldtour votes."""
+    if WORLDTOUR_VOTES_PATH.exists():
+        try:
+            return json.loads(WORLDTOUR_VOTES_PATH.read_text())
+        except Exception as exc:  # pragma: no cover - defensive
+            logger.warning(f"Could not load votes file: {exc}")
+    return {}
+
+
+def _save_votes(votes: dict) -> None:
+    """Persist worldtour votes to disk."""
+    try:
+        WORLDTOUR_VOTES_PATH.parent.mkdir(parents=True, exist_ok=True)
+        WORLDTOUR_VOTES_PATH.write_text(json.dumps(votes, indent=2))
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.error(f"Could not save votes file: {exc}")
+
 
 @app.route('/health')
 def health():
@@ -169,6 +213,143 @@ def smile_by_archetype(archetype):
             "error": "Failed to get smile",
             "message": "Please try again"
         }), 500
+
+
+@app.route('/api/worldtour/cities')
+def worldtour_cities():
+    """List cities with optional visited filter and stats."""
+    visited_param = request.args.get('visited')
+    visited_only = str(visited_param).lower() == 'true' if visited_param is not None else False
+
+    cities = worldtour_gen.list_cities(visited_only=visited_only)
+    stats = worldtour_gen.get_stats()
+
+    return jsonify({
+        "cities": cities,
+        "stats": stats
+    }), 200
+
+
+@app.route('/api/worldtour/next')
+def worldtour_next():
+    """Return next unvisited city."""
+    next_city = worldtour_gen.get_next_city()
+    if not next_city:
+        return jsonify({
+            "error": "No cities remaining",
+            "message": "All cities have been visited"
+        }), 404
+
+    return jsonify(next_city), 200
+
+
+@app.route('/api/worldtour/queue')
+def worldtour_queue():
+    """Return planned content queue for upcoming days."""
+    try:
+        days = int(request.args.get('days', 7))
+    except (TypeError, ValueError):
+        days = 7
+
+    queue = worldtour_gen.create_content_queue(days=days)
+    return jsonify({
+        "queue": queue,
+        "days": days
+    }), 200
+
+
+@app.route('/api/worldtour/start', methods=['POST'])
+def worldtour_start():
+    """Start or continue the worldtour from this server."""
+    data = request.get_json(force=True, silent=True) or {}
+
+    city_id = data.get('city_id')
+    if not city_id:
+        next_city = worldtour_gen.get_next_city()
+        if not next_city:
+            return jsonify({
+                "success": False,
+                "error": "No cities available to start",
+            }), 404
+        city_id = next_city['id']
+
+    personality = data.get('personality', worldtour_gen.PERSONALITIES[0])
+    content_type = data.get('content_type', worldtour_gen.CONTENT_TYPES[0])
+
+    try:
+        content = worldtour_gen.generate_city_content(
+            city_id=city_id,
+            personality=personality,
+            content_type=content_type
+        )
+    except ValueError as exc:
+        return jsonify({
+            "success": False,
+            "error": str(exc)
+        }), 400
+
+    worldtour_gen.mark_city_visited(city_id)
+
+    return jsonify({
+        "success": True,
+        "city_id": city_id,
+        "content": content,
+        "stats": worldtour_gen.get_stats()
+    }), 200
+
+
+@app.route('/api/worldtour/vote', methods=['POST'])
+def worldtour_vote():
+    """Record a vote for the next city."""
+    data = request.get_json(force=True, silent=True) or {}
+    city_id = data.get('city_id')
+
+    if not city_id:
+        return jsonify({
+            "success": False,
+            "error": "city_id is required"
+        }), 400
+
+    city = worldtour_gen.get_city(city_id)
+    if not city:
+        return jsonify({
+            "success": False,
+            "error": "Unknown city"
+        }), 404
+
+    votes = _load_votes()
+    votes[city_id] = votes.get(city_id, 0) + 1
+    _save_votes(votes)
+
+    return jsonify({
+        "success": True,
+        "city_id": city_id,
+        "message": f"Vote recorded for {city.get('name', city_id)}"
+    }), 200
+
+
+@app.route('/api/analytics/worldtour')
+def worldtour_analytics():
+    """Return basic analytics for the worldtour."""
+    stats = worldtour_gen.get_stats()
+    votes = _load_votes()
+
+    response = {
+        "total_cities": stats["total_cities"],
+        "visited_cities": stats["visited_cities"],
+        "remaining_cities": stats["remaining_cities"],
+        "total_views": stats["total_views"],
+        "completion_percentage": stats["completion_percentage"],
+    }
+
+    if votes:
+        top_votes = sorted(votes.items(), key=lambda item: item[1], reverse=True)
+        response["top_voted_cities"] = [
+            {"city_id": city_id, "votes": count}
+            for city_id, count in top_votes[:5]
+        ]
+
+    return jsonify(response), 200
 
 @app.route('/')
 def root():
