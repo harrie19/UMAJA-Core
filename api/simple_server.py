@@ -4,6 +4,8 @@ Bahá'í principle: Service, not profit
 """
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import os
 import sys
 import random
@@ -26,11 +28,24 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Application version
-VERSION = "2.0.0"
+VERSION = "2.1.0"
 DEPLOYMENT_DATE = "2026-01-02"
 
 app = Flask(__name__)
 CORS(app)
+
+# Configure rate limiting to prevent API quota exhaustion
+# Default: 100 requests per hour per IP
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["100 per hour"],
+    storage_uri="memory://",
+    strategy="fixed-window"
+)
+
+# Request timeout configuration (handled by gunicorn in production)
+REQUEST_TIMEOUT = int(os.environ.get('REQUEST_TIMEOUT', 30))  # 30 seconds default
 
 # Initialize World Tour Generator (lazy loading)
 _worldtour_generator = None
@@ -99,6 +114,11 @@ def health():
             "mission": "8 billion smiles",
             "timestamp": datetime.utcnow().isoformat(),
             "environment": os.environ.get('ENVIRONMENT', 'production'),
+            "security": {
+                "rate_limiting": "enabled",
+                "request_timeout": f"{REQUEST_TIMEOUT}s",
+                "cors": "enabled"
+            },
             "checks": {
                 "api": "ok",
                 "smiles_loaded": len(SMILES) > 0,
@@ -195,6 +215,7 @@ def smile_by_archetype(archetype):
 # =============================================================================
 
 @app.route('/worldtour/start', methods=['POST'])
+@limiter.limit("10 per minute")  # Limit tour starts to prevent abuse
 def worldtour_start():
     """
     Launch the World Tour campaign
@@ -241,6 +262,7 @@ def worldtour_start():
         }), 500
 
 @app.route('/worldtour/visit/<city_id>', methods=['POST'])
+@limiter.limit("20 per minute")  # Limit city visits
 def worldtour_visit_city(city_id):
     """
     Visit a specific city and generate content
@@ -530,6 +552,16 @@ def internal_error(error):
         "error": "Internal server error",
         "message": "Something went wrong. Please try again later."
     }), 500
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Handle rate limit errors"""
+    logger.warning(f"Rate limit exceeded: {str(e)}")
+    return jsonify({
+        "error": "Too many requests",
+        "message": "Rate limit exceeded. Please try again later.",
+        "retry_after": e.description
+    }), 429
 
 def shutdown_handler(signum, frame):
     """Graceful shutdown handler"""
