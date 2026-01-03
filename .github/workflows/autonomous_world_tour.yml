@@ -1,0 +1,282 @@
+name: Autonomous World Tour
+
+on:
+  # Run daily at 12:00 UTC
+  schedule:
+    - cron: '0 12 * * *'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      city_id:
+        description: 'Specific city ID to visit (optional)'
+        required: false
+        type: string
+
+jobs:
+  world-tour:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: 🌍 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🚨 Check Emergency Stop
+        id: emergency_check
+        run: |
+          if [ -f .github/emergency_stop.json ]; then
+            ENABLED=$(jq -r '.agent_enabled' .github/emergency_stop.json)
+            echo "enabled=$ENABLED" >> $GITHUB_OUTPUT
+            
+            if [ "$ENABLED" != "true" ]; then
+              echo "❌ Emergency stop is active!"
+              REASON=$(jq -r '.reason // "No reason specified"' .github/emergency_stop.json)
+              echo "Reason: $REASON"
+              exit 1
+            fi
+          else
+            echo "enabled=true" >> $GITHUB_OUTPUT
+          fi
+          echo "✅ Emergency stop check passed"
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🎯 Select Next City
+        id: select_city
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          from pathlib import Path
+          
+          # Add src to path
+          sys.path.insert(0, 'src')
+          
+          from worldtour_generator import WorldtourGenerator
+          
+          generator = WorldtourGenerator()
+          
+          # Check if specific city requested
+          city_id = "${{ github.event.inputs.city_id }}"
+          
+          if city_id:
+              print(f"🎯 Using requested city: {city_id}")
+              # Load city data
+              with open('data/worldtour_cities.json', 'r') as f:
+                  data = json.load(f)
+                  cities = data['cities']
+                  city = next((c for c in cities if c['id'] == city_id), None)
+          else:
+              city = generator.get_next_city()
+          
+          if not city:
+              print("❌ No cities available!")
+              sys.exit(1)
+          
+          print(f"✅ Selected: {city['name']}, {city['country']}")
+          
+          # Save to GitHub output
+          with open('city_info.json', 'w') as f:
+              json.dump(city, f)
+          EOF
+      
+      - name: 🎭 Generate Content - John Cleese
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          sys.path.insert(0, 'src')
+          
+          from worldtour_generator import WorldtourGenerator
+          
+          with open('city_info.json', 'r') as f:
+              city = json.load(f)
+          
+          generator = WorldtourGenerator()
+          
+          content = generator.generate_city_content(
+              city_id=city['id'],
+              personality='john_cleese',
+              content_type='city_review'
+          )
+          
+          print(f"✅ John Cleese content generated")
+          print(f"Preview: {content.get('topic', '')[:100]}...")
+          EOF
+      
+      - name: 🎭 Generate Content - C3PO
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          sys.path.insert(0, 'src')
+          
+          from worldtour_generator import WorldtourGenerator
+          
+          with open('city_info.json', 'r') as f:
+              city = json.load(f)
+          
+          generator = WorldtourGenerator()
+          
+          content = generator.generate_city_content(
+              city_id=city['id'],
+              personality='c3po',
+              content_type='food_review'
+          )
+          
+          print(f"✅ C3PO content generated")
+          print(f"Preview: {content.get('topic', '')[:100]}...")
+          EOF
+      
+      - name: 🎭 Generate Content - Robin Williams
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          sys.path.insert(0, 'src')
+          
+          from worldtour_generator import WorldtourGenerator
+          
+          with open('city_info.json', 'r') as f:
+              city = json.load(f)
+          
+          generator = WorldtourGenerator()
+          
+          content = generator.generate_city_content(
+              city_id=city['id'],
+              personality='robin_williams',
+              content_type='cultural_debate'
+          )
+          
+          print(f"✅ Robin Williams content generated")
+          print(f"Preview: {content.get('topic', '')[:100]}...")
+          EOF
+      
+      - name: ✅ Run Quality Checks
+        run: |
+          python3 << 'EOF'
+          import sys
+          sys.path.insert(0, 'src')
+          
+          from vektor_analyzer import VektorAnalyzer
+          
+          analyzer = VektorAnalyzer()
+          
+          # Simple quality check on sample content
+          test_content = "Welcome to our world tour! This is a joyful journey through amazing cities."
+          result = analyzer.analyze_coherence(test_content, "travel and joy")
+          
+          print(f"Quality Score: {result['overall_score']:.2f}")
+          print(f"Quality Rating: {result['quality']}")
+          
+          if result['overall_score'] < 0.3:
+              print("❌ Quality check failed!")
+              sys.exit(1)
+          else:
+              print("✅ Quality check passed!")
+          EOF
+      
+      - name: 📝 Mark City as Visited
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          sys.path.insert(0, 'src')
+          
+          from worldtour_generator import WorldtourGenerator
+          
+          with open('city_info.json', 'r') as f:
+              city = json.load(f)
+          
+          generator = WorldtourGenerator()
+          success = generator.mark_city_visited(city['id'])
+          
+          if success:
+              print(f"✅ City marked as visited: {city['name']}")
+              progress = generator.get_progress()
+              print(f"📊 Progress: {progress}")
+          else:
+              print(f"⚠️  Could not mark city as visited")
+          EOF
+      
+      - name: 📊 Update Statistics
+        run: |
+          python3 << 'EOF'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          
+          # Update stats file
+          stats_file = Path('data/worldtour_stats.json')
+          
+          if stats_file.exists():
+              with open(stats_file, 'r') as f:
+                  stats = json.load(f)
+          else:
+              stats = {
+                  "total_visits": 0,
+                  "last_visit": None,
+                  "personalities_used": {}
+              }
+          
+          stats['total_visits'] += 1
+          stats['last_visit'] = datetime.utcnow().isoformat()
+          
+          for personality in ['john_cleese', 'c3po', 'robin_williams']:
+              stats['personalities_used'][personality] = stats['personalities_used'].get(personality, 0) + 1
+          
+          stats_file.parent.mkdir(parents=True, exist_ok=True)
+          with open(stats_file, 'w') as f:
+              json.dump(stats, f, indent=2)
+          
+          print(f"✅ Statistics updated")
+          print(f"Total visits: {stats['total_visits']}")
+          EOF
+      
+      - name: 💾 Commit Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Add all generated content and updated data
+          git add data/worldtour_cities.json
+          git add data/worldtour_stats.json || true
+          git add output/ || true
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            CITY_NAME=$(python3 -c "import json; c=json.load(open('city_info.json')); print(c['name'])")
+            git commit -m "🌍 World Tour: Visited $CITY_NAME [automated]"
+            echo "✅ Changes committed"
+          fi
+      
+      - name: 🚀 Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      
+      - name: 📢 Notify on Failure
+        if: failure()
+        run: |
+          echo "❌ World Tour workflow failed!"
+          echo "Check the logs for details."
+          
+          # Could integrate with notification service here
+          # For now, just log the failure
