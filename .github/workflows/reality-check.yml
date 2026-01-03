@@ -43,8 +43,10 @@ jobs:
       - name: 📊 Display Summary
         run: |
           echo "## 🥽 Reality Check Results" >> $GITHUB_STEP_SUMMARY
-          if [ -f data/reality_checks/*.md ]; then
+          if ls data/reality_checks/*.md 1> /dev/null 2>&1; then
             cat $(ls -t data/reality_checks/*.md | head -1) >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No markdown reports found." >> $GITHUB_STEP_SUMMARY
           fi
       
       - name: 📤 Upload Results

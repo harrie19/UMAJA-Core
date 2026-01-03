@@ -167,12 +167,21 @@ class RealityGlassesSensor:
             'LOW': [f for f in findings if f['severity'] == 'LOW']
         }
         
+        # Determine status based on severity
+        if by_severity['CRITICAL']:
+            status = 'CRITICAL'
+        elif by_severity['HIGH'] or by_severity['MEDIUM']:
+            status = 'WARNING'
+        else:
+            status = 'OK'
+        
+        MAX_FINDINGS_IN_REPORT = 20  # Limit report size
+        
         return {
-            'status': 'CRITICAL' if by_severity['CRITICAL'] else 
-                     'WARNING' if (by_severity['HIGH'] or by_severity['MEDIUM']) else 'OK',
+            'status': status,
             'total_findings': len(findings),
             'by_severity': {k: len(v) for k, v in by_severity.items()},
-            'findings': findings[:20],  # Top 20
+            'findings': findings[:MAX_FINDINGS_IN_REPORT],
             'confidence': 0.95
         }
     
