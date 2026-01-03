@@ -113,7 +113,11 @@ CORS(app)  # Allows all origins
 
 If you want to restrict to specific origins:
 ```python
-CORS(app, origins=["https://harrie19.github.io", "http://localhost:*"])
+CORS(app, origins=[
+    "https://harrie19.github.io",
+    "http://localhost:5000",  # For local development
+    "http://localhost:3000"   # For alternative local port
+])
 ```
 
 ### Issue: Wrong URL in Configuration
