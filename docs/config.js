@@ -9,7 +9,7 @@
     // Define backend URLs for different environments
     const BACKEND_URLS = {
         production: 'https://umaja-core-production.up.railway.app',
-        staging: 'https://umaja-core-staging.up.railway.app', // Update when staging exists
+        staging: null,  // Set this when staging environment is available
         development: 'http://localhost:5000'
     };
     
@@ -37,10 +37,13 @@
         const env = detectEnvironment();
         const url = BACKEND_URLS[env];
         
-        console.log(`🔧 Environment detected: ${env}`);
-        console.log(`🔗 Backend URL: ${url}`);
+        // Fallback to production if environment URL not configured
+        const finalUrl = url || BACKEND_URLS.production;
         
-        return url;
+        console.log(`🔧 Environment detected: ${env}`);
+        console.log(`🔗 Backend URL: ${finalUrl}`);
+        
+        return finalUrl;
     }
     
     /**

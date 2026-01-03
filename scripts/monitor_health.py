@@ -8,6 +8,7 @@ import sys
 import time
 import json
 import smtplib
+import tempfile
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -17,7 +18,7 @@ import os
 # Configuration
 CHECK_INTERVAL = 300  # 5 minutes
 ALERT_THRESHOLD = 3  # Alert after 3 consecutive failures
-LOG_FILE = "/tmp/umaja_health_monitor.log"
+LOG_FILE = os.path.join(tempfile.gettempdir(), "umaja_health_monitor.log")
 
 def log(message):
     """Log message with timestamp"""
@@ -98,7 +99,7 @@ def send_alert(failure_count, last_error):
     """
     
     # Write alert to file for external monitoring
-    alert_file = "/tmp/umaja_health_alert.json"
+    alert_file = os.path.join(tempfile.gettempdir(), "umaja_health_alert.json")
     with open(alert_file, 'w') as f:
         json.dump({
             'status': 'ALERT',
