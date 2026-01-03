@@ -1,24 +1,57 @@
-"""Personality Engine - Friendly Archetypes for Daily Smiles
+"""Personality Engine - AI Comedian Personalities for World Tour
 
-Transformed from comedian impersonations to warm, friendly personality archetypes
-that focus on putting smiles on faces through community engagement.
+Implements 3 distinct AI comedian personalities:
+- John Cleese: British wit, dry humor, absurdist observations
+- C-3PO: Protocol-obsessed, analytical, endearingly nervous
+- Robin Williams: High-energy, improvisational, heartfelt
+
+Also includes friendly archetypes for daily smiles.
 """
 
 import random
-from typing import Dict, List
+from typing import Dict, List, Optional, Literal
 
 
 class PersonalityArchetype:
-    """Base class for friendly personality archetypes"""
+    """Base class for personality archetypes"""
     
-    def __init__(self, name: str, traits: List[str], tone: str):
+    def __init__(self, name: str, traits: List[str], tone: str, style_markers: Optional[List[str]] = None,
+                 voice_params: Optional[Dict[str, float]] = None):
         self.name = name
         self.traits = traits
         self.tone = tone
+        self.style_markers = style_markers or []
+        # Voice synthesis parameters
+        self.voice_params = voice_params or {
+            'pitch': 1.0,  # Pitch multiplier
+            'speed': 1.0,  # Speed multiplier
+            'rate': 160    # Words per minute
+        }
     
     def generate_smile_text(self, topic: str = None) -> str:
-        """Generate 30-60 second friendly content to put smiles on faces"""
+        """Generate content to put smiles on faces"""
         raise NotImplementedError
+    
+    def generate_text(self, topic: str, length: Literal['short', 'medium', 'long'] = 'medium',
+                     style_intensity: float = 0.7) -> Dict[str, str]:
+        """Generate styled text content with intensity control
+        
+        Args:
+            topic: Topic or theme to generate content about
+            length: Length of content ('short', 'medium', 'long')
+            style_intensity: How strongly to apply personality style (0.0-1.0)
+            
+        Returns:
+            Dictionary with 'text', 'personality', and 'tone'
+        """
+        text = self.generate_smile_text(topic)
+        return {
+            'text': text,
+            'personality': self.name,
+            'tone': self.tone,
+            'style_intensity': style_intensity,
+            'voice_params': self.voice_params
+        }
 
 
 class TheProfessor(PersonalityArchetype):
@@ -126,23 +159,226 @@ class TheEnthusiast(PersonalityArchetype):
         return f"{random.choice(openers)} {random.choice(celebrations)} {random.choice(closers)}"
 
 
-class PersonalityEngine:
-    """Manages friendly personality archetypes for community engagement"""
+# ============================================================================
+# COMEDIAN PERSONALITIES (World Tour)
+# ============================================================================
+
+class JohnCleese(PersonalityArchetype):
+    """John Cleese Style - Dry British wit, absurdist observations"""
     
     def __init__(self):
+        super().__init__(
+            name="John Cleese",
+            traits=["dry wit", "sophisticated", "absurdist", "deadpan"],
+            tone="measured and sarcastic",
+            style_markers=["Quite.", "How perfectly absurd.", "I see.", "Splendid."],
+            voice_params={
+                'pitch': 0.8,   # Slightly lower pitch
+                'speed': 0.9,   # Measured pace
+                'rate': 150     # Words per minute
+            }
+        )
+        
+        self.opening_templates = [
+            "Now, the curious thing about {topic}...",
+            "Rather like the British railway system, {topic}...",
+            "You see, what most people don't realize about {topic} is...",
+            "If I may be so bold as to observe, {topic}..."
+        ]
+        
+        self.continuation_phrases = [
+            "which is, of course, perfectly ridiculous",
+            "much like a confused penguin at a tea party",
+            "rather reminiscent of a Ministry meeting",
+            "not unlike the Spanish Inquisition",
+            "which nobody expects, naturally"
+        ]
+    
+    def generate_smile_text(self, topic: str = None) -> str:
+        """Generate dry British wit content"""
+        if not topic:
+            topic = "daily life"
+        
+        opener = random.choice(self.opening_templates).format(topic=topic)
+        continuation = random.choice(self.continuation_phrases)
+        marker = random.choice(self.style_markers)
+        
+        return f"{opener} {continuation}. {marker}"
+
+
+class C3PO(PersonalityArchetype):
+    """C-3PO Style - Protocol-obsessed, analytical, anxious"""
+    
+    def __init__(self):
+        super().__init__(
+            name="C-3PO",
+            traits=["polite", "analytical", "anxious", "precise"],
+            tone="formal and worried",
+            style_markers=["Oh my!", "We're doomed!", "How rude!", "Goodness gracious!"],
+            voice_params={
+                'pitch': 1.3,   # Higher pitch
+                'speed': 1.1,   # Slightly faster (anxious)
+                'rate': 180     # Words per minute
+            }
+        )
+        
+        self.opening_templates = [
+            "Oh my! {topic} presents precisely {number} possible interpretations...",
+            "By my calculations, {topic} exhibits {number} probability factors...",
+            "Goodness gracious! According to my programming, {topic}...",
+            "I must inform you that {topic} has approximately {number} variations..."
+        ]
+        
+        self.continuation_phrases = [
+            "which corresponds to protocol section 7.2.4",
+            "according to my extensive linguistic databases",
+            "as documented in 6 million forms of communication",
+            "which my circuits find most perplexing",
+            "resulting in a 97.3% probability of confusion"
+        ]
+    
+    def generate_smile_text(self, topic: str = None) -> str:
+        """Generate anxious protocol droid content"""
+        if not topic:
+            topic = "this situation"
+        
+        opener = random.choice(self.opening_templates).format(
+            topic=topic, 
+            number=random.randint(100, 9999)
+        )
+        continuation = random.choice(self.continuation_phrases)
+        marker = random.choice(self.style_markers)
+        
+        return f"{opener} {continuation}. {marker}"
+
+
+class RobinWilliams(PersonalityArchetype):
+    """Robin Williams Style - High-energy, improvisational, heartfelt"""
+    
+    def __init__(self):
+        super().__init__(
+            name="Robin Williams",
+            traits=["energetic", "warm", "spontaneous", "emotional"],
+            tone="dynamic and heartfelt",
+            style_markers=["*laughs*", "*voice changes*", "*wild gesture*", "*switches accent*"],
+            voice_params={
+                'pitch': 1.1,   # Varied, slightly higher
+                'speed': 1.2,   # Fast, energetic
+                'rate': 190     # Words per minute
+            }
+        )
+        
+        self.opening_templates = [
+            "So {topic} walks into a bar... *laughs*",
+            "Imagine if {topic} was a Broadway musical!",
+            "You know what's crazy about {topic}? *voice changes*",
+            "Picture this: {topic} meets {random}! *laughs*",
+            "Wait, wait, wait... {topic} is like if {a} had a baby with {b}!"
+        ]
+        
+        self.continuation_phrases = [
+            "*laughs* But seriously though...",
+            "*voice change* And then you've got...",
+            "*wild gesture* Picture this!",
+            "*sudden whisper* But here's the secret...",
+            "*explosive energy* Oh! Oh! And another thing!"
+        ]
+    
+    def generate_smile_text(self, topic: str = None) -> str:
+        """Generate energetic improvisational content"""
+        if not topic:
+            topic = "life"
+        
+        opener = random.choice(self.opening_templates).format(
+            topic=topic,
+            random=random.choice(["Shakespeare", "a food truck", "a spaceship"]),
+            a=random.choice(["Shakespeare", "technology", "nature"]),
+            b=random.choice(["a food truck", "the internet", "poetry"])
+        )
+        continuation = random.choice(self.continuation_phrases)
+        
+        # Add warm humanity
+        closer = "That's the beautiful thing about humanity right there!"
+        
+        return f"{opener} {continuation} {closer}"
+
+
+# ============================================================================
+# PERSONALITY ENGINE
+# ============================================================================
+
+class PersonalityEngine:
+    """Manages all personality archetypes - both comedians and friendly archetypes"""
+    
+    def __init__(self):
+        # Comedian personalities for World Tour
+        self.comedians = {
+            "john_cleese": JohnCleese(),
+            "c3po": C3PO(),
+            "robin_williams": RobinWilliams()
+        }
+        
+        # Friendly archetypes for Daily Smiles
         self.archetypes = {
             "professor": TheProfessor(),
             "worrier": TheWorrier(),
             "enthusiast": TheEnthusiast()
         }
+        
+        # Combined dictionary for easy access
+        self.all_personalities = {**self.comedians, **self.archetypes}
     
-    def get_archetype(self, archetype_name: str) -> PersonalityArchetype:
-        """Get a specific personality archetype"""
+    def get_personality(self, name: str) -> Optional[PersonalityArchetype]:
+        """Get a specific personality by name"""
+        return self.all_personalities.get(name.lower())
+    
+    def get_archetype(self, archetype_name: str) -> Optional[PersonalityArchetype]:
+        """Get a specific archetype (friendly personality)"""
         return self.archetypes.get(archetype_name.lower())
     
+    def get_comedian(self, comedian_name: str) -> Optional[PersonalityArchetype]:
+        """Get a specific comedian personality"""
+        return self.comedians.get(comedian_name.lower())
+    
     def get_random_archetype(self) -> PersonalityArchetype:
-        """Get a random personality archetype"""
+        """Get a random friendly archetype"""
         return random.choice(list(self.archetypes.values()))
+    
+    def get_random_comedian(self) -> PersonalityArchetype:
+        """Get a random comedian"""
+        return random.choice(list(self.comedians.values()))
+    
+    def list_comedians(self) -> List[str]:
+        """List all available comedian personalities"""
+        return list(self.comedians.keys())
+    
+    def list_archetypes(self) -> List[str]:
+        """List all available friendly archetypes"""
+        return list(self.archetypes.keys())
+    
+    def generate_text(self, topic: str, personality: str = None,
+                     length: Literal['short', 'medium', 'long'] = 'medium',
+                     style_intensity: float = 0.7) -> Dict[str, str]:
+        """Generate text with specific personality
+        
+        Args:
+            topic: Topic to generate content about
+            personality: Specific personality name, or random if None
+            length: Content length
+            style_intensity: How strongly to apply personality (0.0-1.0)
+            
+        Returns:
+            Dictionary with generated content
+        """
+        if personality:
+            person = self.get_personality(personality)
+            if not person:
+                raise ValueError(f"Unknown personality: {personality}")
+        else:
+            # Random from all personalities
+            person = random.choice(list(self.all_personalities.values()))
+        
+        return person.generate_text(topic, length, style_intensity)
     
     def generate_daily_smile(self, archetype_name: str = None) -> Dict[str, str]:
         """Generate a Daily Smile post with community engagement
@@ -161,3 +397,24 @@ class PersonalityEngine:
             "tone": archetype.tone,
             "traits": ", ".join(archetype.traits)
         }
+    
+    def generate_worldtour_content(self, topic: str, personality: str = None,
+                                   style_intensity: float = 0.7) -> Dict[str, str]:
+        """Generate World Tour content with comedian personality
+        
+        Args:
+            topic: Topic (usually city-specific)
+            personality: Comedian name (john_cleese, c3po, robin_williams)
+            style_intensity: Style intensity (0.0-1.0)
+            
+        Returns:
+            Generated content dictionary
+        """
+        if personality:
+            comedian = self.get_comedian(personality)
+            if not comedian:
+                raise ValueError(f"Unknown comedian: {personality}. Available: {self.list_comedians()}")
+        else:
+            comedian = self.get_random_comedian()
+        
+        return comedian.generate_text(topic, 'medium', style_intensity)
