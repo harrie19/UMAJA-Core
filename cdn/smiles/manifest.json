@@ -1,21 +1,164 @@
 {
-  "generated_at": "2026-01-01T04:00:00Z",
   "version": "1.0.0",
-  "archetypes": ["Dreamer", "Warrior", "Healer"],
-  "languages": ["en", "es", "zh", "hi", "ar", "pt", "fr", "sw"],
-  "total_smiles": 8760,
-  "structure": "{archetype}/{language}/{day_of_year}.json",
-  "cdn_ready": true,
-  "target_reach": "8 billion users",
-  "cost": "$0",
-  "sample_urls": [
-    "/cdn/smiles/Dreamer/en/1.json",
-    "/cdn/smiles/Warrior/en/1.json",
-    "/cdn/smiles/Healer/en/1.json"
-  ],
-  "fallback_smiles": {
-    "Dreamer": "Today, imagine the impossible - your dreams are the blueprint of tomorrow's reality. 💭✨",
-    "Warrior": "Courage isn't the absence of fear - it's taking action despite it. Be brave today. ⚔️💪",
-    "Healer": "Compassion is the foundation of healing. Share your light with someone today. 💚🌟"
-  }
+  "generated_at": "2026-01-03T12:31:32.887177Z",
+  "assets": {
+    "smiles/Dreamer/hi/1.json": {
+      "size": 374,
+      "hash": "47ddf6500795",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/hi/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/en/1.json": {
+      "size": 327,
+      "hash": "a42afd1f659b",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/en/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/fr/1.json": {
+      "size": 293,
+      "hash": "4a832aac0887",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/fr/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/ar/1.json": {
+      "size": 292,
+      "hash": "bf56f88c5f66",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/ar/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/zh/1.json": {
+      "size": 280,
+      "hash": "b9ab46962127",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/zh/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/es/1.json": {
+      "size": 286,
+      "hash": "674bef7f957c",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/es/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/pt/1.json": {
+      "size": 287,
+      "hash": "853c12c345f7",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/pt/1.json",
+      "compressed": false
+    },
+    "smiles/Dreamer/sw/1.json": {
+      "size": 276,
+      "hash": "0b25d5267e20",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Dreamer/sw/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/hi/1.json": {
+      "size": 364,
+      "hash": "d02bdd342189",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/hi/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/en/1.json": {
+      "size": 282,
+      "hash": "885edb2c6357",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/en/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/fr/1.json": {
+      "size": 304,
+      "hash": "f6f7928e6ae2",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/fr/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/ar/1.json": {
+      "size": 292,
+      "hash": "c6146f163102",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/ar/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/zh/1.json": {
+      "size": 267,
+      "hash": "6e64288e95ce",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/zh/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/es/1.json": {
+      "size": 279,
+      "hash": "cef0764ef9cf",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/es/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/pt/1.json": {
+      "size": 274,
+      "hash": "10c930593545",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/pt/1.json",
+      "compressed": false
+    },
+    "smiles/Healer/sw/1.json": {
+      "size": 264,
+      "hash": "66829d970ab0",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Healer/sw/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/hi/1.json": {
+      "size": 417,
+      "hash": "e73132aaacfc",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/hi/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/en/1.json": {
+      "size": 328,
+      "hash": "11f7de9c5e3a",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/en/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/fr/1.json": {
+      "size": 303,
+      "hash": "7ddcfd5acf8b",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/fr/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/ar/1.json": {
+      "size": 329,
+      "hash": "22d814baad0a",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/ar/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/zh/1.json": {
+      "size": 286,
+      "hash": "65d965f0e1ed",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/zh/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/es/1.json": {
+      "size": 291,
+      "hash": "83ccbff9903f",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/es/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/pt/1.json": {
+      "size": 287,
+      "hash": "5bf57a384182",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/pt/1.json",
+      "compressed": false
+    },
+    "smiles/Warrior/sw/1.json": {
+      "size": 283,
+      "hash": "98b8eee5ec2f",
+      "url": "https://harrie19.github.io/UMAJA-Core/smiles/Warrior/sw/1.json",
+      "compressed": false
+    }
+  },
+  "cdn_urls": {
+    "primary": {
+      "url": "https://harrie19.github.io/UMAJA-Core",
+      "priority": 1,
+      "provider": "GitHub Pages"
+    },
+    "fallback": {
+      "url": "https://cdn.jsdelivr.net/gh/harrie19/UMAJA-Core@main",
+      "priority": 3,
+      "provider": "jsDelivr"
+    }
+  },
+  "total_files": 24,
+  "total_size_bytes": 7265
 }

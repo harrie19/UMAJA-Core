@@ -1,0 +1,116 @@
+{
+  "version": "1.0.0",
+  "cdn": {
+    "primary": {
+      "provider": "GitHub Pages",
+      "url": "https://harrie19.github.io/UMAJA-Core",
+      "enabled": true,
+      "priority": 1
+    },
+    "secondary": {
+      "provider": "Cloudflare",
+      "url": "https://cdn.umaja.global",
+      "enabled": false,
+      "priority": 2,
+      "note": "Future enhancement for Phase 3"
+    },
+    "fallback": {
+      "provider": "jsDelivr",
+      "url": "https://cdn.jsdelivr.net/gh/harrie19/UMAJA-Core@main",
+      "enabled": true,
+      "priority": 3
+    }
+  },
+  "caching": {
+    "static_assets": {
+      "max_age": 31536000,
+      "stale_while_revalidate": 86400,
+      "stale_if_error": 259200,
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    "dynamic_content": {
+      "max_age": 3600,
+      "stale_while_revalidate": 600,
+      "cache_control": "public, max-age=3600, stale-while-revalidate=600"
+    },
+    "api_responses": {
+      "max_age": 300,
+      "cache_control": "public, max-age=300, must-revalidate"
+    }
+  },
+  "compression": {
+    "brotli": {
+      "enabled": true,
+      "quality": 11,
+      "extensions": [".json", ".js", ".css", ".html", ".svg"]
+    },
+    "gzip": {
+      "enabled": true,
+      "level": 9,
+      "extensions": [".json", ".js", ".css", ".html", ".svg"]
+    }
+  },
+  "routing": {
+    "geo_routing": {
+      "enabled": false,
+      "regions": {
+        "na": "North America",
+        "eu": "Europe",
+        "as": "Asia",
+        "sa": "South America",
+        "af": "Africa",
+        "oc": "Oceania"
+      },
+      "fallback": "global"
+    }
+  },
+  "performance": {
+    "http2": true,
+    "http3": false,
+    "early_hints": true,
+    "prefetch": {
+      "enabled": true,
+      "resources": [
+        "/cdn/smiles/manifest.json"
+      ]
+    }
+  },
+  "security": {
+    "cors": {
+      "enabled": true,
+      "allowed_origins": ["*"],
+      "allowed_methods": ["GET", "HEAD", "OPTIONS"],
+      "allowed_headers": ["Content-Type", "Accept", "Cache-Control"],
+      "max_age": 86400
+    },
+    "headers": {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "SAMEORIGIN",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "health_check_interval": 300,
+    "endpoints": [
+      "/cdn/smiles/manifest.json",
+      "/cdn/health"
+    ],
+    "alerts": {
+      "error_rate_threshold": 0.01,
+      "latency_threshold_ms": 500
+    }
+  },
+  "scalability": {
+    "target_users": 8000000000,
+    "estimated_requests_per_day": 8000000000,
+    "bandwidth_optimization": {
+      "compression_ratio": 0.7,
+      "cache_hit_rate_target": 0.99
+    },
+    "cost_optimization": {
+      "target_cost_per_million_requests": 0,
+      "cdn_bandwidth_limit_gb": "unlimited"
+    }
+  }
+}
