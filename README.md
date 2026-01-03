@@ -146,8 +146,12 @@ curl https://umaja-core-production.up.railway.app/api/daily-smile
 
 | Service | Status | URL |
 |---------|--------|-----|
-| 🌐 Dashboard (GitHub Pages) | ![Pages Status](https://img.shields.io/badge/status-active-brightgreen) | [Visit Dashboard](https://harrie19.github.io/UMAJA-Core/) |
-| 🚂 Backend (Railway) | ![Railway Status](https://img.shields.io/badge/status-deploying-yellow) | [Check Health](https://umaja-core-production.up.railway.app/health) |
+| 🌐 Dashboard (GitHub Pages) | ![Pages Status](https://img.shields.io/badge/status-ready-brightgreen) | [Visit Dashboard](https://harrie19.github.io/UMAJA-Core/) |
+| 🚂 Backend (Railway) | ![Railway Status](https://img.shields.io/badge/status-ready-brightgreen) | [Check Health](https://umaja-core-production.up.railway.app/health) |
+
+**Quick Deploy:**
+- 📖 [Railway Deployment Quick Start](RAILWAY_DEPLOYMENT_QUICK_START.md)
+- 📋 [Deployment Status Report](DEPLOYMENT_STATUS_REPORT.md)
 
 ### For Developers
 
