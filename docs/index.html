@@ -317,6 +317,10 @@
 
     <script>
         // Configuration
+        // Backend URL - Railway Production Deployment
+        // Verify this URL matches your actual Railway deployment at: https://railway.app/dashboard
+        // Correct URL format: https://umaja-core-production.up.railway.app
+        // Previous wrong URL: https://web-production-6ec45.up.railway.app (DO NOT USE)
         const BACKEND_URL = 'https://umaja-core-production.up.railway.app';
         let isBackendAvailable = false;
 
@@ -352,6 +356,9 @@
                 }
             } catch (error) {
                 console.error('Backend health check failed:', error);
+                console.error(`Unable to connect to: ${BACKEND_URL}/health`);
+                console.error('Possible causes: 1) Backend not deployed 2) Wrong URL 3) CORS issue 4) Network problem');
+                console.error('Verify Railway deployment at: https://railway.app/dashboard');
                 isBackendAvailable = false;
                 document.getElementById('backendStatus').textContent = 'Offline ❌';
                 document.getElementById('backendStatusDot').classList.add('error');
