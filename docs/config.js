@@ -8,7 +8,7 @@
     
     // Define backend URLs for different environments
     const BACKEND_URLS = {
-        production: 'https://umaja-core-production.up.railway.app',
+        production: 'https://web-production-6ec45.up.railway.app',
         staging: null,  // Set this when staging environment is available
         development: 'http://localhost:5000'
     };
