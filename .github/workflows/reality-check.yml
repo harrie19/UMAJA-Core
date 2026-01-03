@@ -53,7 +53,7 @@ jobs:
           echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
           
           # Find the latest JSON report (with error handling)
-          if ls data/reality_checks/*.json 1> /dev/null 2>&1; then
+          if ls data/reality_checks/*.json >/dev/null 2>&1; then
             LATEST_JSON=$(ls -t data/reality_checks/*.json | head -1)
             echo "report_path=$LATEST_JSON" >> $GITHUB_OUTPUT
             

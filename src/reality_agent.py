@@ -194,11 +194,6 @@ class RealityGlassesSensor:
                         "count": len(todo_matches)
                     })
                 
-                # Note: Removed flawed try/except counting check
-                # Proper error handling detection would require AST analysis
-                # which is beyond scope of a simple reality check
-
-                
                 # Check for potential hardcoded credentials
                 credential_patterns = [
                     r'password\s*=\s*["\'][^"\']+["\']',
@@ -270,14 +265,14 @@ class RealityGlassesSensor:
         """
         try:
             # Check if pytest is available
-            result = subprocess.run(
+            version_result = subprocess.run(
                 ["python", "-m", "pytest", "--version"],
                 capture_output=True,
                 text=True,
                 timeout=10
             )
             
-            if result.returncode != 0:
+            if version_result.returncode != 0:
                 return RealityCheck(
                     name="Test Status",
                     status="WARNING",
@@ -287,12 +282,15 @@ class RealityGlassesSensor:
                     timestamp=datetime.now(timezone.utc).isoformat()
                 )
             
+            # Extract pytest version
+            pytest_version = version_result.stdout.strip().split('\n')[0] if version_result.stdout else "pytest"
+            
             # Count test files
             test_files = list(self.repo_root.glob("tests/test_*.py")) + \
                         list(self.repo_root.glob("test_*.py"))
             
             # Try to collect tests (don't run them, just count)
-            result = subprocess.run(
+            collect_result = subprocess.run(
                 ["python", "-m", "pytest", "--collect-only", "-q"],
                 capture_output=True,
                 text=True,
@@ -302,7 +300,7 @@ class RealityGlassesSensor:
             
             # Extract test count from output
             # Look in both stdout and stderr for the count
-            output = result.stdout + "\n" + result.stderr
+            output = collect_result.stdout + "\n" + collect_result.stderr
             test_count = 0
             
             # Look for patterns like "5 tests collected" or "29 tests collected, 2 errors"
@@ -325,10 +323,10 @@ class RealityGlassesSensor:
                 message=message,
                 details={
                     "pytest_available": True,
-                    "pytest_version": "pytest" if result.returncode == 0 else "pytest (with collection errors)",
+                    "pytest_version": pytest_version,
                     "test_files": len(test_files),
                     "tests_collected": test_count,
-                    "collection_errors": result.returncode != 0
+                    "collection_errors": collect_result.returncode != 0
                 },
                 timestamp=datetime.now(timezone.utc).isoformat()
             )
