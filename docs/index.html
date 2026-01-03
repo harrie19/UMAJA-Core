@@ -3,733 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Primary Meta Tags -->
-    <title>UMAJA World Tour - AI Comedy Across 59 Cities Worldwide | Live Dashboard</title>
-    <meta name="title" content="UMAJA World Tour - AI Comedy Across 59 Cities Worldwide">
-    <meta name="description" content="Join 3 AI comedians on a global journey bringing smiles to 8 billion people. Free, open-source comedy content touring 59+ cities worldwide.">
-    <meta name="keywords" content="AI comedy, world tour, artificial intelligence, humor, travel, cities, John Cleese, C-3PO, Robin Williams, free content">
-    <meta name="author" content="UMAJA-Core">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://harrie19.github.io/UMAJA-Core/">
-    <meta property="og:title" content="UMAJA World Tour - AI Comedy Across 59 Cities">
-    <meta property="og:description" content="3 AI comedians touring the world, bringing laughs to 8 billion people. Free, open-source, and visiting your city soon!">
-    <meta property="og:site_name" content="UMAJA World Tour">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://harrie19.github.io/UMAJA-Core/">
-    <meta name="twitter:title" content="UMAJA World Tour - AI Comedy Across 59 Cities">
-    <meta name="twitter:description" content="3 AI comedians touring the world, bringing laughs to 8 billion people. Free, open-source, and visiting your city soon!">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://harrie19.github.io/UMAJA-Core/">
-    
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#667eea">
-    
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "UMAJA World Tour",
-      "description": "AI-powered comedy touring 59 cities worldwide, bringing smiles to 8 billion people",
-      "url": "https://harrie19.github.io/UMAJA-Core/"
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "UMAJA-Core",
-      "description": "Bringing smiles to 8 billion people through AI-generated creative content",
-      "url": "https://harrie19.github.io/UMAJA-Core/",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "Umaja1919@googlemail.com",
-        "contactType": "Customer Service"
-      }
-    }
-    </script>
-    
+    <title>UMAJA - United Multipurpose Autonomous JavaScript Agent</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            color: #fff;
         }
-        
+
         .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            overflow: hidden;
         }
-        
+
         .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 40px;
         }
-        
+
         .header h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        
+
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
         }
-        
-        .status-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
+
+        .content {
+            padding: 40px;
+        }
+
+        .chat-container {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 500px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 10px;
-            animation: pulse 2s infinite;
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 18px;
+            border-radius: 18px;
+            max-width: 70%;
+            word-wrap: break-word;
+            animation: slideIn 0.3s ease-out;
         }
-        
-        .status-healthy {
-            background: #10b981;
-            box-shadow: 0 0 20px #10b981;
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .status-unhealthy {
-            background: #ef4444;
-            box-shadow: 0 0 20px #ef4444;
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
         }
-        
-        .status-loading {
-            background: #f59e0b;
-            box-shadow: 0 0 20px #f59e0b;
+
+        .bot-message {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        
-        .metrics-grid {
+
+        #userInput {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        #userInput:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
-        
-        .metric-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-        
-        .metric-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        
-        .metric-label {
-            opacity: 0.8;
-            font-size: 0.9em;
-        }
-        
-        .endpoint-list {
-            list-style: none;
-            margin-top: 15px;
-        }
-        
-        .endpoint-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px 15px;
-            margin: 5px 0;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .endpoint-item code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .smile-display {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
-            margin-top: 20px;
-            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .feature-card p {
+            opacity: 0.9;
             line-height: 1.6;
-            min-height: 150px;
         }
-        
-        .archetype-badge {
+
+        .typing-indicator {
+            display: none;
+            padding: 15px;
+            background: white;
+            border-radius: 18px;
+            max-width: 70px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .typing-indicator.active {
+            display: block;
+        }
+
+        .typing-indicator span {
+            height: 10px;
+            width: 10px;
+            background: #667eea;
+            border-radius: 50%;
             display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin-top: 10px;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
         }
-        
-        .worldtour-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
         }
-        
-        .city-card {
-            background: rgba(255, 255, 255, 0.1);
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.error {
+            background: #f44336;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
             padding: 15px;
             border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
+            margin-bottom: 15px;
+            border-left: 4px solid #c62828;
         }
-        
-        .city-card:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .city-card.visited {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-        }
-        
-        .city-name {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
-        
-        .city-country {
-            opacity: 0.7;
-            font-size: 0.9em;
-        }
-        
-        .city-status {
-            margin-top: 10px;
-            font-size: 0.8em;
-            padding: 3px 8px;
-            border-radius: 12px;
-            display: inline-block;
-        }
-        
-        .city-status.visited {
-            background: rgba(16, 185, 129, 0.3);
-            color: #10b981;
-        }
-        
-        .city-status.unvisited {
-            background: rgba(255, 255, 255, 0.1);
-            opacity: 0.6;
-        }
-        
-        .worldtour-stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 10px;
-        }
-        
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #10b981;
-        }
-        
-        .stat-label {
-            opacity: 0.8;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        
-        .content-display {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .personality-badge {
-            display: inline-block;
-            background: rgba(118, 75, 162, 0.4);
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            margin: 5px 5px 5px 0;
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .message {
+                max-width: 85%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌍 UMAJA-Core</h1>
-            <p>Bringing smiles to 8 billion people</p>
-            <p style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;">
-                Bahá'í-inspired AI • Service, not profit • Truth, Unity, Service
-            </p>
+            <h1>🤖 UMAJA</h1>
+            <p>United Multipurpose Autonomous JavaScript Agent</p>
         </div>
-        
-        <div class="status-card">
-            <h2>
-                <span class="status-indicator status-loading" id="statusIndicator"></span>
-                System Status: <span id="statusText">Checking...</span>
-            </h2>
-            <p id="statusDetails" style="margin-top: 10px; opacity: 0.8;">Connecting to backend...</p>
-            
-            <div class="metrics-grid" id="metricsGrid" style="display: none;">
-                <div class="metric-card">
-                    <div class="metric-label">Version</div>
-                    <div class="metric-value" id="version">-</div>
+
+        <div class="content">
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Connecting...</span>
+            </div>
+
+            <div id="errorContainer"></div>
+
+            <div class="chat-container" id="chatContainer">
+                <div class="bot-message">
+                    Hello! I'm UMAJA, your AI assistant. How can I help you today?
                 </div>
-                <div class="metric-card">
-                    <div class="metric-label">Uptime</div>
-                    <div class="metric-value" id="uptime">-</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Smiles Loaded</div>
-                    <div class="metric-value" id="smilesCount">-</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Environment</div>
-                    <div class="metric-value" id="environment" style="font-size: 1.5em;">-</div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
-        </div>
-        
-        <div class="status-card">
-            <h2>🌍 World Tour</h2>
-            <p style="opacity: 0.8; margin-bottom: 15px;">Visiting cities around the globe!</p>
-            
-            <div class="worldtour-stats" id="worldtourStats">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalCities">-</div>
-                    <div class="stat-label">Total Cities</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="visitedCities">-</div>
-                    <div class="stat-label">Visited</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="remainingCities">-</div>
-                    <div class="stat-label">Remaining</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="completionPercent">-</div>
-                    <div class="stat-label">Completion</div>
-                </div>
+
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="Type your message here..." 
+                    disabled
+                />
+                <button class="btn btn-primary" id="sendBtn" disabled>
+                    Send
+                </button>
             </div>
-            
-            <div style="text-align: center; margin: 20px 0;">
-                <button class="btn" onclick="startWorldTour()" style="margin-right: 10px;">🚀 Start Tour</button>
-                <button class="btn" onclick="loadCities()">🔄 Refresh Cities</button>
-            </div>
-            
-            <div id="nextCityInfo" style="display: none; background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                <h3 style="margin: 0 0 10px 0;">📍 Next Destination</h3>
-                <div id="nextCityDetails"></div>
-            </div>
-            
-            <h3 style="margin-top: 25px;">🗺️ Cities (showing first 12)</h3>
-            <div class="worldtour-grid" id="citiesGrid">
-                <div style="text-align: center; opacity: 0.7; grid-column: 1/-1;">
-                    Loading cities...
+
+            <div class="features">
+                <div class="feature-card">
+                    <h3>🧠 Intelligent</h3>
+                    <p>Powered by advanced AI to understand and respond to your needs</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Fast</h3>
+                    <p>Quick responses and efficient processing of your requests</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Secure</h3>
+                    <p>Your conversations are private and handled with care</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 Versatile</h3>
+                    <p>From coding to creativity, I can help with various tasks</p>
                 </div>
             </div>
-            
-            <div id="cityContent" style="display: none; margin-top: 20px;">
-                <h3>🎭 City Content</h3>
-                <div class="content-display" id="contentDisplay"></div>
-            </div>
-        </div>
-        
-        <div class="status-card">
-            <h2>🎭 Daily Smile Generator</h2>
-            <p style="opacity: 0.8; margin-bottom: 15px;">Get your dose of joy!</p>
-            <button class="btn" onclick="generateSmile()">✨ Generate Smile</button>
-            <div class="smile-display" id="smileDisplay">
-                Click the button above to generate a smile! 😊
-            </div>
-        </div>
-        
-        <div class="status-card">
-            <h2>📡 API Endpoints</h2>
-            <ul class="endpoint-list">
-                <li class="endpoint-item">
-                    <span>Health Check</span>
-                    <code>/health</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>Version Info</span>
-                    <code>/version</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>Daily Smile</span>
-                    <code>/api/daily-smile</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>Smile by Archetype</span>
-                    <code>/api/smile/&lt;archetype&gt;</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>World Tour Start</span>
-                    <code>POST /worldtour/start</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>World Tour Status</span>
-                    <code>GET /worldtour/status</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>World Tour Cities</span>
-                    <code>GET /worldtour/cities</code>
-                </li>
-                <li class="endpoint-item">
-                    <span>Visit City</span>
-                    <code>POST /worldtour/visit/&lt;city&gt;</code>
-                </li>
-            </ul>
-        </div>
-        
-        <div class="status-card" style="text-align: center; opacity: 0.7;">
-            <p>Made with ❤️ for all 8 billion people</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">
-                Open Source • MIT License • 
-                <a href="https://github.com/harrie19/UMAJA-Core" style="color: white;">GitHub</a>
-            </p>
         </div>
     </div>
-    
+
     <script>
         // Configuration
-        // TODO: Update BACKEND_URL after Railway deployment completes
-        // Get your Railway URL from: https://railway.app/dashboard
-        const BACKEND_URL = 'https://umaja-core-production.up.railway.app'; // Update after Railway deployment
-        const FALLBACK_MODE = true; // Set to false once backend is deployed and verified
-        
-        // Check backend health
-        async function checkHealth() {
+        const BACKEND_URL = 'https://web-production-6ec45.up.railway.app';
+        const FALLBACK_MODE = false;
+        let conversationHistory = [];
+
+        // DOM Elements
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const errorContainer = document.getElementById('errorContainer');
+
+        // Initialize
+        async function init() {
             try {
-                const response = await fetch(`${BACKEND_URL}/health`);
-                const data = await response.json();
-                
-                if (data.status === 'healthy') {
-                    updateStatus('healthy', 'Healthy', `Mission: ${data.mission} • Last check: ${new Date().toLocaleTimeString()}`);
-                    updateMetrics(data);
-                } else {
-                    updateStatus('unhealthy', 'Unhealthy', 'Backend reported issues');
-                }
-            } catch (error) {
-                if (FALLBACK_MODE) {
-                    updateStatus('healthy', 'Demo Mode', 'Backend not yet deployed - showing demo data');
-                    showDemoMetrics();
-                } else {
-                    updateStatus('unhealthy', 'Offline', 'Cannot connect to backend');
-                }
-            }
-        }
-        
-        function updateStatus(status, text, details) {
-            const indicator = document.getElementById('statusIndicator');
-            const statusText = document.getElementById('statusText');
-            const statusDetails = document.getElementById('statusDetails');
-            
-            indicator.className = `status-indicator status-${status}`;
-            statusText.textContent = text;
-            statusDetails.textContent = details;
-        }
-        
-        function updateMetrics(data) {
-            document.getElementById('metricsGrid').style.display = 'grid';
-            document.getElementById('version').textContent = data.version || '1.0.0';
-            document.getElementById('uptime').textContent = 'Live';
-            document.getElementById('smilesCount').textContent = data.checks?.smiles_loaded ? '✅' : '❌';
-            document.getElementById('environment').textContent = data.environment || 'production';
-        }
-        
-        function showDemoMetrics() {
-            document.getElementById('metricsGrid').style.display = 'grid';
-            document.getElementById('version').textContent = '1.0.0';
-            document.getElementById('uptime').textContent = 'Demo';
-            document.getElementById('smilesCount').textContent = '9';
-            document.getElementById('environment').textContent = 'demo';
-        }
-        
-        async function generateSmile() {
-            const smileDisplay = document.getElementById('smileDisplay');
-            smileDisplay.innerHTML = '<p style="opacity: 0.7;">Generating smile...</p>';
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/daily-smile`);
-                const data = await response.json();
-                
-                smileDisplay.innerHTML = `
-                    <p>${data.content}</p>
-                    <span class="archetype-badge">✨ ${data.archetype}</span>
-                `;
-            } catch (error) {
-                // Fallback smiles
-                const fallbackSmiles = [
-                    { content: "Did you know that honey never spoils? Archaeologists have found 3000-year-old honey in Egyptian tombs that's still perfectly edible. Nature's time capsule! 🍯", archetype: "professor" },
-                    { content: "Is it just me, or does anyone else check if they locked the door three times? We're all in this together. 🚪", archetype: "worrier" },
-                    { content: "RIGHT NOW, somewhere in the world, someone just learned to ride a bike for the first time! EVERY. SINGLE. DAY. How amazing is that?! 🚴", archetype: "enthusiast" }
-                ];
-                
-                const smile = fallbackSmiles[Math.floor(Math.random() * fallbackSmiles.length)];
-                smileDisplay.innerHTML = `
-                    <p>${smile.content}</p>
-                    <span class="archetype-badge">✨ ${smile.archetype} (Demo Mode)</span>
-                `;
-            }
-        }
-        
-        // Check health on load and every 60 seconds
-        checkHealth();
-        setInterval(checkHealth, 60000);
-        
-        // World Tour Functions
-        let worldtourData = {
-            cities: [],
-            stats: {},
-            nextCity: null
-        };
-        
-        async function loadWorldTourStatus() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/worldtour/status`);
-                const data = await response.json();
-                
-                worldtourData.stats = data.stats;
-                worldtourData.nextCity = data.next_city;
-                
-                updateWorldTourStats(data.stats);
-                
-                if (data.next_city) {
-                    showNextCity(data.next_city);
-                }
-            } catch (error) {
-                console.error('Error loading World Tour status:', error);
-                showDemoWorldTourStats();
-            }
-        }
-        
-        async function loadCities() {
-            const grid = document.getElementById('citiesGrid');
-            grid.innerHTML = '<div style="text-align: center; opacity: 0.7; grid-column: 1/-1;">Loading cities...</div>';
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/worldtour/cities?limit=12`);
-                const data = await response.json();
-                
-                if (data.success && data.cities.length > 0) {
-                    worldtourData.cities = data.cities;
-                    displayCities(data.cities);
-                    updateWorldTourStats(data.stats);
-                } else {
-                    grid.innerHTML = '<div style="text-align: center; opacity: 0.7; grid-column: 1/-1;">No cities available</div>';
-                }
-            } catch (error) {
-                console.error('Error loading cities:', error);
-                displayDemoCities();
-            }
-        }
-        
-        function displayCities(cities) {
-            const grid = document.getElementById('citiesGrid');
-            grid.innerHTML = '';
-            
-            cities.forEach(city => {
-                const cityCard = document.createElement('div');
-                cityCard.className = `city-card ${city.visited ? 'visited' : ''}`;
-                cityCard.onclick = () => showCityDetails(city.id);
-                
-                cityCard.innerHTML = `
-                    <div class="city-name">${city.name}</div>
-                    <div class="city-country">${city.country}</div>
-                    <div class="city-status ${city.visited ? 'visited' : 'unvisited'}">
-                        ${city.visited ? '✅ Visited' : '⏳ Pending'}
-                    </div>
-                `;
-                
-                grid.appendChild(cityCard);
-            });
-        }
-        
-        function displayDemoCities() {
-            const demoCities = [
-                { id: 'new_york', name: 'New York', country: 'USA', visited: false },
-                { id: 'london', name: 'London', country: 'UK', visited: true },
-                { id: 'tokyo', name: 'Tokyo', country: 'Japan', visited: false },
-                { id: 'paris', name: 'Paris', country: 'France', visited: true },
-                { id: 'berlin', name: 'Berlin', country: 'Germany', visited: false },
-                { id: 'rome', name: 'Rome', country: 'Italy', visited: false }
-            ];
-            displayCities(demoCities);
-        }
-        
-        function updateWorldTourStats(stats) {
-            document.getElementById('totalCities').textContent = stats.total_cities || '-';
-            document.getElementById('visitedCities').textContent = stats.visited_cities || '-';
-            document.getElementById('remainingCities').textContent = stats.remaining_cities || '-';
-            document.getElementById('completionPercent').textContent = stats.completion_percentage 
-                ? `${stats.completion_percentage}%` 
-                : '-';
-        }
-        
-        function showDemoWorldTourStats() {
-            updateWorldTourStats({
-                total_cities: 59,
-                visited_cities: 3,
-                remaining_cities: 56,
-                completion_percentage: 5.1
-            });
-        }
-        
-        function showNextCity(city) {
-            const nextCityInfo = document.getElementById('nextCityInfo');
-            const nextCityDetails = document.getElementById('nextCityDetails');
-            
-            nextCityInfo.style.display = 'block';
-            nextCityDetails.innerHTML = `
-                <div style="font-size: 1.2em; font-weight: bold; margin-bottom: 5px;">
-                    ${city.name}, ${city.country}
-                </div>
-                <div style="opacity: 0.8;">
-                    ${city.language ? `Language: ${city.language}` : ''}
-                </div>
-            `;
-        }
-        
-        async function startWorldTour() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/worldtour/start`, {
-                    method: 'POST'
+                const response = await fetch(`${BACKEND_URL}/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert(`🎉 World Tour Started!\n\nNext destination: ${data.next_city.name}, ${data.next_city.country}`);
-                    loadWorldTourStatus();
-                    loadCities();
+
+                if (response.ok) {
+                    setStatus('connected', 'Connected');
+                    enableInput();
                 } else {
-                    alert(`Tour status: ${data.message}`);
+                    throw new Error('Backend not responding');
                 }
             } catch (error) {
-                console.error('Error starting World Tour:', error);
-                alert('Demo Mode: World Tour would start here! 🌍\n\nConnect to the backend to enable this feature.');
+                console.error('Connection error:', error);
+                if (FALLBACK_MODE) {
+                    setStatus('connected', 'Connected (Fallback Mode)');
+                    enableInput();
+                } else {
+                    setStatus('error', 'Connection Failed');
+                    showError('Unable to connect to backend. Please try again later.');
+                }
             }
         }
-        
-        async function showCityDetails(cityId) {
-            const contentDisplay = document.getElementById('contentDisplay');
-            const cityContent = document.getElementById('cityContent');
+
+        function setStatus(status, text) {
+            statusText.textContent = text;
+            if (status === 'connected') {
+                statusDot.classList.remove('error');
+            } else if (status === 'error') {
+                statusDot.classList.add('error');
+            }
+        }
+
+        function enableInput() {
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+        }
+
+        function showError(message) {
+            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
+            messageDiv.textContent = content;
             
-            cityContent.style.display = 'block';
-            contentDisplay.innerHTML = '<p style="opacity: 0.7;">Loading city information...</p>';
+            // Insert before typing indicator
+            chatContainer.insertBefore(messageDiv, typingIndicator);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            typingIndicator.classList.add('active');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.classList.remove('active');
+        }
+
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, true);
+            conversationHistory.push({ role: 'user', content: message });
             
+            // Clear input
+            userInput.value = '';
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
             try {
-                const response = await fetch(`${BACKEND_URL}/worldtour/content/${cityId}?generate=true`);
-                const data = await response.json();
-                
-                if (data.success && data.content) {
-                    const content = data.content;
-                    contentDisplay.innerHTML = `
-                        <h4 style="margin: 0 0 15px 0;">${content.city_name}, ${content.country}</h4>
-                        
-                        <div style="margin-bottom: 15px;">
-                            <span class="personality-badge">🎭 ${content.personality.replace('_', ' ')}</span>
-                            <span class="personality-badge">📝 ${content.content_type.replace('_', ' ')}</span>
-                        </div>
-                        
-                        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin: 15px 0;">
-                            <p style="font-size: 1.1em; line-height: 1.6; margin: 0;">
-                                ${content.topic}
-                            </p>
-                        </div>
-                        
-                        <div style="margin-top: 15px;">
-                            <strong>Fun Facts:</strong>
-                            <ul style="margin: 10px 0; padding-left: 20px;">
-                                ${content.fun_facts.map(fact => `<li>${fact}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div style="margin-top: 15px;">
-                            <strong>Topics:</strong> ${content.topics.slice(0, 5).join(', ')}
-                        </div>
-                        
-                        ${data.city.visited ? '<div style="margin-top: 15px; color: #10b981;">✅ City visited!</div>' : ''}
-                    `;
+                if (FALLBACK_MODE) {
+                    // Fallback response
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    const response = getFallbackResponse(message);
+                    hideTyping();
+                    addMessage(response);
+                    conversationHistory.push({ role: 'assistant', content: response });
                 } else {
-                    contentDisplay.innerHTML = `<p style="opacity: 0.7;">Could not load city content.</p>`;
+                    // Real backend call
+                    const response = await fetch(`${BACKEND_URL}/chat`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            history: conversationHistory
+                        }),
+                    });
+
+                    hideTyping();
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    addMessage(data.response);
+                    conversationHistory.push({ role: 'assistant', content: data.response });
                 }
             } catch (error) {
-                console.error('Error loading city details:', error);
-                contentDisplay.innerHTML = `
-                    <p style="opacity: 0.7;">
-                        Demo Mode: City details would appear here!<br>
-                        Connect to the backend to see generated content.
-                    </p>
-                `;
+                console.error('Error:', error);
+                hideTyping();
+                addMessage('Sorry, I encountered an error processing your request. Please try again.');
+                showError('Failed to send message. Please check your connection.');
+            } finally {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
             }
         }
-        
-        // Load World Tour data on page load
-        loadWorldTourStatus();
-        loadCities();
+
+        function getFallbackResponse(message) {
+            const responses = [
+                "I'm currently running in fallback mode. Your message has been received!",
+                "Thank you for your message. The backend is temporarily unavailable, but I'm here to assist you.",
+                "I appreciate your patience. While I can't access full features right now, I'm happy to help where I can.",
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Event Listeners
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !userInput.disabled) {
+                sendMessage();
+            }
+        });
+
+        // Initialize on load
+        init();
     </script>
 </body>
 </html>
