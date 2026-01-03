@@ -2,7 +2,7 @@
 UMAJA-Core Minimal Server - Bringing smiles to 8 billion people
 Bahá'í principle: Service, not profit
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -634,18 +634,12 @@ def ai_agents_endpoint():
 @app.route('/sitemap.xml')
 def sitemap():
     """Serve sitemap.xml for SEO"""
-    from flask import send_from_directory
-    import os
-    
     docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs')
     return send_from_directory(docs_dir, 'sitemap.xml', mimetype='application/xml')
 
 @app.route('/robots.txt')
 def robots():
     """Serve robots.txt for AI crawlers"""
-    from flask import send_from_directory
-    import os
-    
     docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs')
     return send_from_directory(docs_dir, 'robots.txt', mimetype='text/plain')
 
