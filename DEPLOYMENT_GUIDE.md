@@ -140,68 +140,11 @@ UMAJA-Core is a modern web application designed for high availability and scalab
 
 3. **Configure Build Settings**
    
-   Create `.github/workflows/deploy.yml`:
-   ```yaml
-   name: Deploy to GitHub Pages
-
-   on:
-     push:
-       branches: [ main ]
-     pull_request:
-       branches: [ main ]
-     workflow_dispatch:
-
-   permissions:
-     contents: read
-     pages: write
-     id-token: write
-
-   concurrency:
-     group: "pages"
-     cancel-in-progress: false
-
-   jobs:
-     build:
-       runs-on: ubuntu-latest
-       steps:
-         - name: Checkout
-           uses: actions/checkout@v4
-
-         - name: Setup Node.js
-           uses: actions/setup-node@v4
-           with:
-             node-version: '18'
-             cache: 'npm'
-
-         - name: Install dependencies
-           run: npm ci
-
-         - name: Build
-           run: npm run build
-           env:
-             NODE_ENV: production
-             VITE_API_URL: ${{ secrets.API_URL }}
-             VITE_CDN_URL: ${{ secrets.CDN_URL }}
-
-         - name: Setup Pages
-           uses: actions/configure-pages@v4
-
-         - name: Upload artifact
-           uses: actions/upload-pages-artifact@v3
-           with:
-             path: './dist'
-
-     deploy:
-       environment:
-         name: github-pages
-         url: ${{ steps.deployment.outputs.page_url }}
-       runs-on: ubuntu-latest
-       needs: build
-       steps:
-         - name: Deploy to GitHub Pages
-           id: deployment
-           uses: actions/deploy-pages@v4
-   ```
+   The repository already has deployment workflows configured:
+   - **GitHub Pages**: `.github/workflows/pages-deploy.yml` - automatically deploys the dashboard on every push to main
+   - **Railway Backend**: `.github/workflows/railway-deploy.yml` - handles automatic Railway backend deployments
+   
+   No additional workflow creation is needed.
 
 ### Step 2: Custom Domain Configuration
 
