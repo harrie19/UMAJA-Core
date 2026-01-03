@@ -239,6 +239,8 @@
             }
         }
     </style>
+    <!-- Configuration Script -->
+    <script src="config.js"></script>
 </head>
 <body>
     <div class="container">
@@ -317,53 +319,90 @@
 
     <script>
         // Configuration
-        // Backend URL - Railway Production Deployment
-        // Verify this URL matches your actual Railway deployment at: https://railway.app/dashboard
-        // This is the current configured URL (update if your Railway URL is different):
-        // Previous wrong URL: https://web-production-6ec45.up.railway.app (DO NOT USE)
-        const BACKEND_URL = 'https://umaja-core-production.up.railway.app';
+        // Backend URL is now loaded from config.js based on environment detection
+        // Fallback to production URL if config not loaded
+        const BACKEND_URL = window.UMAJAConfig?.backendURL || 'https://umaja-core-production.up.railway.app';
         let isBackendAvailable = false;
+        
+        // Retry configuration
+        const MAX_RETRIES = 3;
+        const INITIAL_RETRY_DELAY = 1000; // 1 second
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            checkBackendHealth();
+            checkBackendHealthWithRetry();
             getWorldTourStatus();
         });
 
-        // Check backend health
-        async function checkBackendHealth() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/health`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
+        // Sleep utility for retry delays
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
-                if (response.ok) {
-                    const data = await response.json();
-                    isBackendAvailable = true;
+        // Check backend health with exponential backoff retry
+        async function checkBackendHealthWithRetry() {
+            let lastError = null;
+            
+            for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+                try {
+                    // Update status to show retry attempt
+                    if (attempt > 0) {
+                        document.getElementById('backendStatus').textContent = `Retrying... (${attempt}/${MAX_RETRIES}) ⏳`;
+                        console.log(`Retry attempt ${attempt}/${MAX_RETRIES}`);
+                    }
                     
-                    // Update status
-                    document.getElementById('backendStatus').textContent = 'Online ✅';
-                    document.getElementById('backendStatusDot').classList.remove('error', 'loading');
+                    const response = await fetch(`${BACKEND_URL}/health`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' },
+                        signal: AbortSignal.timeout(5000) // 5 second timeout
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        isBackendAvailable = true;
+                        
+                        // Update status
+                        document.getElementById('backendStatus').textContent = 'Online ✅';
+                        document.getElementById('backendStatusDot').classList.remove('error', 'loading');
+                        
+                        // Update system info
+                        document.getElementById('backendVersion').textContent = data.version || '2.1.0';
+                        document.getElementById('environment').textContent = data.environment || 'production';
+                        document.getElementById('archetypes').textContent = 
+                            data.checks?.archetypes_available?.join(', ') || 'professor, worrier, enthusiast';
+                        
+                        console.log(`✅ Backend connected${attempt > 0 ? ' after ' + attempt + ' retries' : ''}`);
+                        return; // Success!
+                    } else {
+                        throw new Error(`Backend responded with status ${response.status}`);
+                    }
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`Backend health check attempt ${attempt + 1}/${MAX_RETRIES} failed:`, error.message);
                     
-                    // Update system info
-                    document.getElementById('backendVersion').textContent = data.version || '2.1.0';
-                    document.getElementById('environment').textContent = data.environment || 'production';
-                    document.getElementById('archetypes').textContent = 
-                        data.checks?.archetypes_available?.join(', ') || 'professor, worrier, enthusiast';
-                } else {
-                    throw new Error('Backend responded with error');
+                    // If not the last attempt, wait with exponential backoff
+                    if (attempt < MAX_RETRIES - 1) {
+                        const delay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
+                        console.log(`Waiting ${delay}ms before retry...`);
+                        await sleep(delay);
+                    }
                 }
-            } catch (error) {
-                console.error('Backend health check failed:', error);
-                console.error(`Unable to connect to: ${BACKEND_URL}/health`);
-                console.error('Possible causes: 1) Backend not deployed 2) Wrong URL 3) CORS issue 4) Network problem');
-                console.error('Verify Railway deployment at: https://railway.app/dashboard');
-                isBackendAvailable = false;
-                document.getElementById('backendStatus').textContent = 'Offline ❌';
-                document.getElementById('backendStatusDot').classList.add('error');
-                document.getElementById('backendStatusDot').classList.remove('loading');
             }
+            
+            // All retries failed
+            console.error('Backend health check failed after all retries:', lastError);
+            console.error(`Unable to connect to: ${BACKEND_URL}/health`);
+            console.error('Possible causes: 1) Backend not deployed 2) Wrong URL 3) CORS issue 4) Network problem');
+            console.error('Verify Railway deployment at: https://railway.app/dashboard');
+            isBackendAvailable = false;
+            document.getElementById('backendStatus').textContent = 'Offline ❌';
+            document.getElementById('backendStatusDot').classList.add('error');
+            document.getElementById('backendStatusDot').classList.remove('loading');
+        }
+
+        // Legacy function for compatibility - now calls retry version
+        async function checkBackendHealth() {
+            await checkBackendHealthWithRetry();
         }
 
         // Get daily smile

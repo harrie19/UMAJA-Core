@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMAJA-Core Status Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .status-online {
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .status-offline {
+            background: #f44336;
+            box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+        }
+
+        .status-checking {
+            background: #ff9800;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric {
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .history {
+            margin-top: 20px;
+        }
+
+        .history-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+        }
+
+        .history-item.success {
+            border-left-color: #4caf50;
+        }
+
+        .history-item.failure {
+            border-left-color: #f44336;
+        }
+
+        .timestamp {
+            font-size: 0.85em;
+            color: #888;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+    <!-- Load configuration -->
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 UMAJA-Core Status</h1>
+            <p>Real-time monitoring and health history</p>
+        </div>
+
+        <div class="status-card">
+            <h2>
+                <span class="status-indicator status-checking" id="statusIndicator"></span>
+                <span id="statusText">Checking...</span>
+            </h2>
+            
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-label">Backend URL</div>
+                    <div class="metric-value" style="font-size: 0.9em;" id="backendUrl">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Response Time</div>
+                    <div class="metric-value" id="responseTime">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Version</div>
+                    <div class="metric-value" id="version">—</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Environment</div>
+                    <div class="metric-value" id="environment">—</div>
+                </div>
+            </div>
+
+            <button class="refresh-btn" onclick="checkHealth()">🔄 Refresh Status</button>
+        </div>
+
+        <div class="status-card">
+            <h2>📊 Health Check History</h2>
+            <div class="history" id="history">
+                <p style="color: #888; text-align: center; padding: 20px;">No history yet. Click refresh to start monitoring.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = window.UMAJAConfig?.backendURL || 'https://umaja-core-production.up.railway.app';
+        const MAX_HISTORY = 20;
+        let healthHistory = [];
+
+        // Load history from localStorage
+        function loadHistory() {
+            const saved = localStorage.getItem('umajaHealthHistory');
+            if (saved) {
+                healthHistory = JSON.parse(saved);
+                renderHistory();
+            }
+        }
+
+        // Save history to localStorage
+        function saveHistory() {
+            localStorage.setItem('umajaHealthHistory', JSON.stringify(healthHistory));
+        }
+
+        // Add entry to history
+        function addToHistory(success, responseTime, error = null) {
+            const entry = {
+                timestamp: new Date().toISOString(),
+                success: success,
+                responseTime: responseTime,
+                error: error
+            };
+
+            healthHistory.unshift(entry);
+            
+            // Keep only last MAX_HISTORY items
+            if (healthHistory.length > MAX_HISTORY) {
+                healthHistory = healthHistory.slice(0, MAX_HISTORY);
+            }
+
+            saveHistory();
+            renderHistory();
+        }
+
+        // Render history
+        function renderHistory() {
+            const historyContainer = document.getElementById('history');
+            
+            if (healthHistory.length === 0) {
+                historyContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No history yet.</p>';
+                return;
+            }
+
+            historyContainer.innerHTML = healthHistory.map(entry => {
+                const date = new Date(entry.timestamp);
+                const timeStr = date.toLocaleTimeString();
+                const dateStr = date.toLocaleDateString();
+                
+                return `
+                    <div class="history-item ${entry.success ? 'success' : 'failure'}">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${entry.success ? '✅ Online' : '❌ Offline'}</strong>
+                                ${entry.responseTime ? `<span style="margin-left: 10px; color: #666;">${entry.responseTime}</span>` : ''}
+                            </div>
+                            <div class="timestamp">${timeStr} ${dateStr}</div>
+                        </div>
+                        ${entry.error ? `<div style="margin-top: 5px; color: #f44336; font-size: 0.9em;">${entry.error}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Check health
+        async function checkHealth() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const responseTimeEl = document.getElementById('responseTime');
+            const versionEl = document.getElementById('version');
+            const environmentEl = document.getElementById('environment');
+            const backendUrlEl = document.getElementById('backendUrl');
+
+            // Update UI to checking state
+            statusIndicator.className = 'status-indicator status-checking';
+            statusText.textContent = 'Checking...';
+            backendUrlEl.textContent = BACKEND_URL;
+
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: AbortSignal.timeout(10000)
+                });
+
+                const responseTime = Date.now() - startTime;
+                const responseTimeStr = `${responseTime}ms`;
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update UI
+                    statusIndicator.className = 'status-indicator status-online';
+                    statusText.textContent = 'Online ✅';
+                    responseTimeEl.textContent = responseTimeStr;
+                    versionEl.textContent = data.version || '—';
+                    environmentEl.textContent = data.environment || '—';
+
+                    // Add to history
+                    addToHistory(true, responseTimeStr);
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                const responseTime = Date.now() - startTime;
+                
+                // Update UI
+                statusIndicator.className = 'status-indicator status-offline';
+                statusText.textContent = 'Offline ❌';
+                responseTimeEl.textContent = `${responseTime}ms (timeout)`;
+                versionEl.textContent = '—';
+                environmentEl.textContent = '—';
+
+                // Add to history
+                addToHistory(false, `${responseTime}ms`, error.message);
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadHistory();
+            checkHealth();
+            
+            // Auto-refresh every 60 seconds
+            setInterval(checkHealth, 60000);
+        });
+    </script>
+</body>
+</html>
