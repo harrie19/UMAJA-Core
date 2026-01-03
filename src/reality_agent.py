@@ -280,25 +280,34 @@ class RealityGlassesSensor:
             )
             
             # Extract test count from output
+            # Look in both stdout and stderr for the count
+            output = result.stdout + "\n" + result.stderr
             test_count = 0
-            if result.returncode == 0:
-                # Look for patterns like "5 tests collected"
-                match = re.search(r'(\d+)\s+tests?\s+collected', result.stdout)
-                if match:
-                    test_count = int(match.group(1))
             
-            status = "OK" if test_count > 0 else "WARNING"
+            # Look for patterns like "5 tests collected" or "29 tests collected, 2 errors"
+            match = re.search(r'(\d+)\s+tests?\s+collected', output)
+            if match:
+                test_count = int(match.group(1))
+            
+            # Determine status
+            if test_count > 0:
+                status = "OK"
+                message = f"pytest available, {test_count} tests found"
+            else:
+                status = "WARNING"
+                message = "pytest available but no tests could be collected"
             
             return RealityCheck(
                 name="Test Status",
                 status=status,
                 confidence=1.0,
-                message=f"pytest available, {test_count} tests found",
+                message=message,
                 details={
                     "pytest_available": True,
-                    "pytest_version": result.stdout.strip(),
+                    "pytest_version": "pytest" if result.returncode == 0 else "pytest (with collection errors)",
                     "test_files": len(test_files),
-                    "tests_collected": test_count
+                    "tests_collected": test_count,
+                    "collection_errors": result.returncode != 0
                 },
                 timestamp=datetime.now(timezone.utc).isoformat()
             )
