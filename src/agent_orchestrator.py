@@ -401,12 +401,17 @@ class AgentOrchestrator:
         """Speichere aktuellen State"""
         state_file = self.data_dir / "orchestrator_state.json"
         
+        # Convert agents to JSON-serializable format
+        agents_dict = {}
+        for agent_id, agent in self.agents.items():
+            agent_dict = asdict(agent)
+            # Convert AgentType enum to string
+            agent_dict['type'] = agent.type.value
+            agents_dict[agent_id] = agent_dict
+        
         state = {
             "stats": self.stats,
-            "agents": {
-                agent_id: asdict(agent)
-                for agent_id, agent in self.agents.items()
-            },
+            "agents": agents_dict,
             "saved_at": datetime.utcnow().isoformat()
         }
         

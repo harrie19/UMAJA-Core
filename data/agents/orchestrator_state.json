@@ -1,0 +1,103 @@
+{
+  "stats": {
+    "total_agents": 9,
+    "active_agents": 0,
+    "total_tasks": 5,
+    "completed_tasks": 5,
+    "failed_tasks": 0,
+    "started_at": "2026-01-03T16:51:31.026621"
+  },
+  "agents": {
+    "content_generator_1_1767459091": {
+      "id": "content_generator_1_1767459091",
+      "type": "content_generator",
+      "status": "stopped",
+      "tasks_completed": 1,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.027036",
+      "last_heartbeat": "2026-01-03T16:51:36.052456",
+      "current_task": null
+    },
+    "translator_2_1767459091": {
+      "id": "translator_2_1767459091",
+      "type": "translator",
+      "status": "stopped",
+      "tasks_completed": 0,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.027394",
+      "last_heartbeat": "2026-01-03T16:51:36.047663",
+      "current_task": null
+    },
+    "quality_checker_3_1767459091": {
+      "id": "quality_checker_3_1767459091",
+      "type": "quality_checker",
+      "status": "stopped",
+      "tasks_completed": 1,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.027740",
+      "last_heartbeat": "2026-01-03T16:51:36.048328",
+      "current_task": null
+    },
+    "distributor_4_1767459091": {
+      "id": "distributor_4_1767459091",
+      "type": "distributor",
+      "status": "stopped",
+      "tasks_completed": 0,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.028087",
+      "last_heartbeat": "2026-01-03T16:51:36.047875",
+      "current_task": null
+    },
+    "analytics_5_1767459091": {
+      "id": "analytics_5_1767459091",
+      "type": "analytics",
+      "status": "stopped",
+      "tasks_completed": 1,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.028355",
+      "last_heartbeat": "2026-01-03T16:51:36.048256",
+      "current_task": null
+    },
+    "content_generator_6_1767459091": {
+      "id": "content_generator_6_1767459091",
+      "type": "content_generator",
+      "status": "stopped",
+      "tasks_completed": 1,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.028622",
+      "last_heartbeat": "2026-01-03T16:51:36.052352",
+      "current_task": null
+    },
+    "content_generator_7_1767459091": {
+      "id": "content_generator_7_1767459091",
+      "type": "content_generator",
+      "status": "stopped",
+      "tasks_completed": 0,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.028901",
+      "last_heartbeat": "2026-01-03T16:51:37.030105",
+      "current_task": null
+    },
+    "analytics_8_1767459091": {
+      "id": "analytics_8_1767459091",
+      "type": "analytics",
+      "status": "stopped",
+      "tasks_completed": 0,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.029162",
+      "last_heartbeat": "2026-01-03T16:51:36.048010",
+      "current_task": null
+    },
+    "content_generator_9_1767459091": {
+      "id": "content_generator_9_1767459091",
+      "type": "content_generator",
+      "status": "stopped",
+      "tasks_completed": 1,
+      "tasks_failed": 0,
+      "created_at": "2026-01-03T16:51:31.029444",
+      "last_heartbeat": "2026-01-03T16:51:36.052550",
+      "current_task": null
+    }
+  },
+  "saved_at": "2026-01-03T16:51:38.031837"
+}

@@ -31,13 +31,17 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from agent_orchestrator import AgentOrchestrator, AgentType
 
+# Ensure log directory exists
+log_dir = Path(__file__).parent.parent / "data" / "agents"
+log_dir.mkdir(parents=True, exist_ok=True)
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler('data/agents/autonomous_mode.log')
+        logging.FileHandler(log_dir / 'autonomous_mode.log')
     ]
 )
 logger = logging.getLogger(__name__)

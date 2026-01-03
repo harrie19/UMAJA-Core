@@ -195,8 +195,7 @@ class TestAutonomousMode(unittest.TestCase):
         
         self.assertEqual(len(content_generators), 3)
     
-    @patch('sys.path.insert')
-    def test_mock_content_generation_handler(self, mock_path):
+    def test_mock_content_generation_handler(self):
         """Test content generation handler with mocked dependencies"""
         # Mock the handler function
         def mock_handler(data):
