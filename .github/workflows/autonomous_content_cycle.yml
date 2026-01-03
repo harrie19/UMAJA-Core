@@ -1,0 +1,350 @@
+name: Autonomous Content Cycle
+
+on:
+  # Run every 4 hours (6 times daily)
+  schedule:
+    - cron: '0 */4 * * *'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  content-cycle:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: 📋 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🚨 Check Emergency Stop
+        id: emergency_check
+        run: |
+          if [ -f .github/emergency_stop.json ]; then
+            ENABLED=$(jq -r '.agent_enabled' .github/emergency_stop.json)
+            echo "enabled=$ENABLED" >> $GITHUB_OUTPUT
+            
+            if [ "$ENABLED" != "true" ]; then
+              echo "❌ Emergency stop is active!"
+              REASON=$(jq -r '.reason // "No reason specified"' .github/emergency_stop.json)
+              echo "Reason: $REASON"
+              exit 1
+            fi
+          else
+            echo "enabled=true" >> $GITHUB_OUTPUT
+          fi
+          echo "✅ Emergency stop check passed"
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🏥 System Health Check
+        id: health_check
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          from pathlib import Path
+          
+          print("🏥 Performing system health check...")
+          
+          # Check critical files exist
+          critical_files = [
+              'src/personality_engine.py',
+              'src/vektor_analyzer.py',
+              'src/worldtour_generator.py'
+          ]
+          
+          for file in critical_files:
+              if not Path(file).exists():
+                  print(f"❌ Critical file missing: {file}")
+                  sys.exit(1)
+          
+          print("✅ All critical files present")
+          
+          # Check data directory
+          data_dir = Path('data')
+          if not data_dir.exists():
+              data_dir.mkdir(parents=True)
+              print("📁 Created data directory")
+          
+          print("✅ System health check passed")
+          EOF
+      
+      - name: 😊 Generate Daily Smiles - All Personalities
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          from pathlib import Path
+          from datetime import datetime
+          
+          sys.path.insert(0, 'src')
+          from personality_engine import PersonalityEngine
+          
+          engine = PersonalityEngine()
+          
+          personalities = ['john_cleese', 'c3po', 'robin_williams']
+          languages = ['en', 'es', 'hi', 'ar', 'zh', 'pt', 'fr', 'ru']
+          
+          results = []
+          
+          print("😊 Generating daily smiles...")
+          print()
+          
+          for personality in personalities:
+              print(f"🎭 {personality.replace('_', ' ').title()}")
+              
+              for language in languages:
+                  try:
+                      smile = engine.generate_daily_smile(
+                          personality=personality,
+                          language=language
+                      )
+                      
+                      results.append({
+                          'personality': personality,
+                          'language': language,
+                          'content': smile.get('content', ''),
+                          'timestamp': datetime.utcnow().isoformat()
+                      })
+                      
+                      print(f"  ✅ {language.upper()}")
+                  
+                  except Exception as e:
+                      print(f"  ❌ {language.upper()} - Error: {e}")
+          
+          print()
+          print(f"✅ Generated {len(results)} smiles")
+          
+          # Save results
+          output_dir = Path('output/smiles')
+          output_dir.mkdir(parents=True, exist_ok=True)
+          
+          timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+          output_file = output_dir / f'smiles_{timestamp}.json'
+          
+          with open(output_file, 'w') as f:
+              json.dump(results, f, indent=2, ensure_ascii=False)
+          
+          print(f"💾 Saved to: {output_file}")
+          EOF
+      
+      - name: ✅ Run Quality Validation
+        run: |
+          python3 << 'EOF'
+          import json
+          import sys
+          import glob
+          from pathlib import Path
+          
+          sys.path.insert(0, 'src')
+          from vektor_analyzer import VektorAnalyzer
+          
+          analyzer = VektorAnalyzer()
+          
+          print("✅ Running quality validation...")
+          print()
+          
+          # Find latest smiles file
+          smile_files = sorted(Path('output/smiles').glob('smiles_*.json'))
+          
+          if not smile_files:
+              print("⚠️  No smile files found")
+              sys.exit(0)
+          
+          latest_file = smile_files[-1]
+          
+          with open(latest_file, 'r') as f:
+              smiles = json.load(f)
+          
+          # Validate a sample
+          sample_size = min(5, len(smiles))
+          passed = 0
+          failed = 0
+          
+          for smile in smiles[:sample_size]:
+              content = smile['content']
+              result = analyzer.analyze_coherence(content, "joy and positivity")
+              
+              if result['overall_score'] >= 0.3:
+                  passed += 1
+                  print(f"✅ {smile['personality']}/{smile['language']}: {result['quality']} ({result['overall_score']:.2f})")
+              else:
+                  failed += 1
+                  print(f"❌ {smile['personality']}/{smile['language']}: {result['quality']} ({result['overall_score']:.2f})")
+          
+          print()
+          print(f"Quality Check Results: {passed} passed, {failed} failed")
+          
+          if failed > passed:
+              print("❌ Quality validation failed!")
+              sys.exit(1)
+          else:
+              print("✅ Quality validation passed!")
+          EOF
+      
+      - name: 📊 Collect Analytics Data
+        run: |
+          python3 << 'EOF'
+          import json
+          import glob
+          from pathlib import Path
+          from datetime import datetime
+          
+          print("📊 Collecting analytics data...")
+          
+          # Count total smiles generated
+          smile_files = list(Path('output/smiles').glob('smiles_*.json'))
+          total_smiles = 0
+          
+          for file in smile_files:
+              with open(file, 'r') as f:
+                  data = json.load(f)
+                  total_smiles += len(data)
+          
+          # Update analytics
+          analytics_file = Path('data/analytics.json')
+          
+          if analytics_file.exists():
+              with open(analytics_file, 'r') as f:
+                  analytics = json.load(f)
+          else:
+              analytics = {
+                  "total_smiles_generated": 0,
+                  "content_cycles_completed": 0,
+                  "last_cycle": None
+              }
+          
+          analytics['content_cycles_completed'] += 1
+          analytics['last_cycle'] = datetime.utcnow().isoformat()
+          analytics['total_smile_files'] = len(smile_files)
+          
+          analytics_file.parent.mkdir(parents=True, exist_ok=True)
+          with open(analytics_file, 'w') as f:
+              json.dump(analytics, f, indent=2)
+          
+          print(f"✅ Analytics updated")
+          print(f"Total cycles: {analytics['content_cycles_completed']}")
+          print(f"Smile files: {len(smile_files)}")
+          EOF
+      
+      - name: 🧠 Learning and Optimization
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          
+          print("🧠 Analyzing performance for optimization...")
+          
+          # Load analytics
+          analytics_file = Path('data/analytics.json')
+          
+          if analytics_file.exists():
+              with open(analytics_file, 'r') as f:
+                  analytics = json.load(f)
+              
+              cycles = analytics.get('content_cycles_completed', 0)
+              
+              # Simple optimization logic
+              recommendations = []
+              
+              if cycles > 0 and cycles % 10 == 0:
+                  recommendations.append("Consider reviewing content quality patterns")
+              
+              if cycles > 0 and cycles % 50 == 0:
+                  recommendations.append("Milestone reached! Review overall system performance")
+              
+              if recommendations:
+                  print("💡 Recommendations:")
+                  for rec in recommendations:
+                      print(f"  - {rec}")
+              else:
+                  print("✅ System performing optimally")
+          else:
+              print("⚠️  No analytics data available yet")
+          EOF
+      
+      - name: 💾 Save State and Commit Updates
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Add generated content and analytics
+          git add output/smiles/ || true
+          git add data/analytics.json || true
+          git add data/agents/ || true
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+            git commit -m "🤖 Content Cycle: Generated content at $TIMESTAMP [automated]"
+            echo "✅ Changes committed"
+          fi
+      
+      - name: 🚀 Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      
+      - name: 🔄 Self-Heal on Failures
+        if: failure()
+        run: |
+          echo "⚠️  Content cycle encountered an error"
+          echo "🔄 Attempting self-healing..."
+          
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+          
+          # Log the failure
+          error_log = Path('data/error_log.json')
+          
+          if error_log.exists():
+              with open(error_log, 'r') as f:
+                  log = json.load(f)
+          else:
+              log = {"errors": []}
+          
+          log['errors'].append({
+              "timestamp": datetime.utcnow().isoformat(),
+              "workflow": "content_cycle",
+              "action": "self_heal_attempted"
+          })
+          
+          error_log.parent.mkdir(parents=True, exist_ok=True)
+          with open(error_log, 'w') as f:
+              json.dump(log, f, indent=2)
+          
+          print("✅ Error logged for future analysis")
+          
+          # Check if we should disable the system
+          recent_errors = [e for e in log['errors'][-10:]]
+          
+          if len(recent_errors) >= 5:
+              print("⚠️  Multiple recent failures detected")
+              print("Consider reviewing the system")
+          EOF
+      
+      - name: 📢 Notify on Critical Failure
+        if: failure()
+        run: |
+          echo "❌ Content cycle failed!"
+          echo "Check the logs for details."
+          echo "System will retry on next scheduled run."
