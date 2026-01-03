@@ -52,13 +52,19 @@ jobs:
           EXIT_CODE=$?
           echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
           
-          # Find the latest JSON report
-          LATEST_JSON=$(ls -t data/reality_checks/*.json | head -1)
-          echo "report_path=$LATEST_JSON" >> $GITHUB_OUTPUT
-          
-          # Extract overall status
-          OVERALL_STATUS=$(python -c "import json; print(json.load(open('$LATEST_JSON'))['overall_status'])")
-          echo "overall_status=$OVERALL_STATUS" >> $GITHUB_OUTPUT
+          # Find the latest JSON report (with error handling)
+          if ls data/reality_checks/*.json 1> /dev/null 2>&1; then
+            LATEST_JSON=$(ls -t data/reality_checks/*.json | head -1)
+            echo "report_path=$LATEST_JSON" >> $GITHUB_OUTPUT
+            
+            # Extract overall status
+            OVERALL_STATUS=$(python -c "import json; print(json.load(open('$LATEST_JSON'))['overall_status'])")
+            echo "overall_status=$OVERALL_STATUS" >> $GITHUB_OUTPUT
+          else
+            echo "report_path=" >> $GITHUB_OUTPUT
+            echo "overall_status=ERROR" >> $GITHUB_OUTPUT
+            echo "❌ No report files found!"
+          fi
           
           # Exit with agent's exit code
           exit $EXIT_CODE

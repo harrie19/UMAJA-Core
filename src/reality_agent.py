@@ -159,15 +159,32 @@ class RealityGlassesSensor:
                 relative_path = py_file.relative_to(self.repo_root)
                 
                 # Check for naive datetime usage (without timezone)
-                # Look for datetime.now() without timezone parameter
-                if re.search(r'datetime\.now\(\)', content):
-                    # Verify it's not using timezone by checking the line doesn't contain timezone
-                    lines_with_naive = []
-                    for line in content.split('\n'):
-                        if 'datetime.now()' in line and 'timezone' not in line:
-                            lines_with_naive.append(line)
-                    if lines_with_naive:
-                        issues["naive_datetime"].append(str(relative_path))
+                # Look for datetime.now() calls that don't include timezone parameter
+                has_naive = False
+                for line in content.split('\n'):
+                    # Skip comments
+                    code_part = line.split('#')[0] if '#' in line else line
+                    
+                    # Skip lines that have datetime.now in strings (like in this check itself!)
+                    if "datetime.now(" in code_part and ("'" in code_part or '"' in code_part):
+                        # Check if it's in a string literal - simple heuristic
+                        if "'datetime.now" in code_part or '"datetime.now' in code_part:
+                            continue
+                    
+                    # Check if line contains datetime.now() without timezone in the call
+                    if 'datetime.now(' in code_part:
+                        # Extract the full call
+                        if re.search(r'datetime\.now\(\s*\)', code_part):
+                            # datetime.now() with no arguments - definitely naive
+                            has_naive = True
+                            break
+                        elif 'timezone' not in code_part:
+                            # datetime.now(...) but no timezone in the code - likely naive
+                            has_naive = True
+                            break
+                
+                if has_naive:
+                    issues["naive_datetime"].append(str(relative_path))
                 
                 # Check for TODO comments
                 todo_matches = re.findall(r'#\s*TODO:?\s*(.+)', content, re.IGNORECASE)

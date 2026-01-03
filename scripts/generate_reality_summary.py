@@ -6,6 +6,7 @@ Used by .github/workflows/reality-check.yml
 
 import json
 import os
+import sys
 import glob
 from pathlib import Path
 
@@ -28,9 +29,12 @@ def main():
     summary_path = os.environ.get('GITHUB_STEP_SUMMARY', '')
     if not summary_path:
         print("GITHUB_STEP_SUMMARY not set, writing to stdout")
-        summary_path = '/dev/stdout'
+        # Use sys.stdout for cross-platform compatibility
+        summary = sys.stdout
+    else:
+        summary = open(summary_path, 'a')
     
-    with open(summary_path, 'a') as summary:
+    try:
         # Header
         summary.write("# 🥽 Reality Check Report\n\n")
         summary.write(f"**Timestamp:** {data['timestamp']}\n")
@@ -71,6 +75,11 @@ def main():
         summary.write("- ✅ **REALITY** - Used sensors, not assumptions\n\n")
         
         summary.write(f"📄 **Report:** `{Path(latest_file).name}`\n")
+    
+    finally:
+        # Close file if we opened it (not stdout)
+        if summary_path:
+            summary.close()
     
     print(f"Summary generated from: {latest_file}")
 
