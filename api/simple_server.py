@@ -674,13 +674,147 @@ def root():
         "principle": "Truth, Unity, Service"
     }), 200
 
+# =============================================================================
+# CDN-AWARE ENDPOINTS
+# =============================================================================
+
+@app.route('/cdn/status')
+def cdn_status():
+    """
+    CDN status endpoint - returns CDN configuration and health
+    """
+    try:
+        import json
+        cdn_config_path = Path(__file__).parent.parent / "cdn" / "cdn-config.json"
+        
+        if cdn_config_path.exists():
+            with open(cdn_config_path, 'r') as f:
+                config = json.load(f)
+            
+            # Get active CDN providers
+            active_providers = []
+            for cdn_key, cdn_info in config.get("cdn", {}).items():
+                if cdn_info.get("enabled", False):
+                    active_providers.append({
+                        "name": cdn_key,
+                        "provider": cdn_info.get("provider"),
+                        "url": cdn_info.get("url"),
+                        "priority": cdn_info.get("priority")
+                    })
+            
+            return jsonify({
+                "status": "active",
+                "version": config.get("version", "1.0.0"),
+                "providers": active_providers,
+                "compression": config.get("compression", {}).get("gzip", {}).get("enabled", False),
+                "cache_strategy": "aggressive",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }), 200
+        else:
+            return jsonify({
+                "status": "no_config",
+                "message": "CDN configuration not found"
+            }), 404
+            
+    except Exception as e:
+        logger.error(f"Error getting CDN status: {str(e)}")
+        return jsonify({
+            "error": "Failed to get CDN status",
+            "message": str(e)
+        }), 500
+
+@app.route('/cdn/manifest')
+def cdn_manifest():
+    """
+    Returns CDN manifest with all available assets
+    Redirects to GitHub Pages CDN for actual manifest
+    """
+    cdn_url = "https://harrie19.github.io/UMAJA-Core/cdn/smiles/manifest.json"
+    
+    return jsonify({
+        "manifest_url": cdn_url,
+        "direct_access": True,
+        "cache_recommended": True,
+        "note": "For best performance, access manifest directly from CDN"
+    }), 200
+
+@app.route('/api/smile/cdn/<archetype>/<language>/<int:day>')
+def get_smile_from_cdn(archetype, language, day):
+    """
+    CDN-aware endpoint that returns smile location from CDN
+    Returns JSON with CDN URL rather than proxying the content
+    """
+    try:
+        # Validate inputs
+        valid_archetypes = ["Dreamer", "Warrior", "Healer"]
+        valid_languages = ["en", "es", "zh", "hi", "ar", "pt", "fr", "sw"]
+        
+        if archetype not in valid_archetypes:
+            return jsonify({
+                "error": "Invalid archetype",
+                "valid_archetypes": valid_archetypes
+            }), 400
+        
+        if language not in valid_languages:
+            return jsonify({
+                "error": "Invalid language",
+                "valid_languages": valid_languages
+            }), 400
+        
+        if day < 1 or day > 365:
+            return jsonify({
+                "error": "Invalid day",
+                "valid_range": "1-365"
+            }), 400
+        
+        # Build CDN URLs
+        base_cdn = "https://harrie19.github.io/UMAJA-Core"
+        cdn_path = f"/cdn/smiles/{archetype}/{language}/{day}.json"
+        
+        fallback_cdn = "https://cdn.jsdelivr.net/gh/harrie19/UMAJA-Core@main"
+        
+        return jsonify({
+            "archetype": archetype,
+            "language": language,
+            "day": day,
+            "cdn_urls": {
+                "primary": f"{base_cdn}{cdn_path}",
+                "fallback": f"{fallback_cdn}{cdn_path}",
+                "compressed": f"{base_cdn}{cdn_path}.gz"
+            },
+            "cache_control": "public, max-age=31536000, immutable",
+            "recommendation": "Fetch directly from CDN for best performance",
+            "estimated_size_kb": 0.3,
+            "compressed_size_kb": 0.2
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting CDN smile location: {str(e)}")
+        return jsonify({
+            "error": "Failed to get smile location",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# ERROR HANDLERS
+# =============================================================================
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors"""
     return jsonify({
         "error": "Not found",
         "message": "The requested endpoint does not exist",
-        "available_endpoints": ["/health", "/version", "/deployment-info", "/api/daily-smile", "/api/smile/<archetype>"]
+        "available_endpoints": [
+            "/health", 
+            "/version", 
+            "/deployment-info", 
+            "/api/daily-smile", 
+            "/api/smile/<archetype>",
+            "/cdn/status",
+            "/cdn/manifest",
+            "/api/smile/cdn/<archetype>/<language>/<day>"
+        ]
     }), 404
 
 @app.errorhandler(500)
