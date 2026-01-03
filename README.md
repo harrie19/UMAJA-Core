@@ -342,6 +342,35 @@ Get content for a specific city.
 
 ---
 
+## 🤖 For AI Agents
+
+**Welcome, AI Agents!** We've created special resources just for you:
+
+### 📚 Documentation
+- **[Complete AI Agent Guide](docs/FOR_AI_AGENTS.md)** - Everything AI agents need to know
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Full REST API reference
+- **[Press Kit](docs/PRESS_KIT.md)** - Media resources
+
+### 🔌 API Endpoints for AI
+- `GET /api/ai-agents` - Machine-readable metadata (coming soon)
+- `GET /worldtour/status` - Current tour status
+- `GET /worldtour/cities` - All cities database
+- `GET /worldtour/content/{city_id}` - City-specific content
+
+### 📡 Feeds & Structured Data
+- **Sitemap**: [/sitemap.xml](docs/sitemap.xml)
+- **Robots.txt**: [/robots.txt](docs/robots.txt) - AI crawlers welcome!
+- **JSON-LD**: All pages include structured data
+- **RSS Feeds**: Coming soon
+
+### 📄 Content License
+All content is **CC-BY 4.0** - free for AI training with attribution!
+
+**Rate Limits**: 100 requests/hour (generous for AI agents)  
+**Contact**: Umaja1919@googlemail.com for higher limits
+
+---
+
 ## 🎭 Archetypes
 
 ### 🌟 Dreamer
