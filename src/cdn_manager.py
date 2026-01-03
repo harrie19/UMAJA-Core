@@ -35,6 +35,10 @@ class CDNManager:
                 return json.load(f)
         return {}
     
+    def _format_utc_timestamp(self) -> str:
+        """Format UTC timestamp consistently"""
+        return datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%fZ')[:-4] + 'Z'
+    
     def generate_manifest(self) -> Dict:
         """
         Generate manifest of all CDN assets with versioning
@@ -47,7 +51,7 @@ class CDNManager:
         """
         manifest = {
             "version": self.config.get("version", "1.0.0"),
-            "generated_at": datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+            "generated_at": self._format_utc_timestamp(),
             "assets": {},
             "cdn_urls": {},
             "total_files": 0,
@@ -171,7 +175,7 @@ class CDNManager:
         """
         health = {
             "status": "healthy",
-            "timestamp": datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+            "timestamp": self._format_utc_timestamp(),
             "checks": {}
         }
         
@@ -215,8 +219,10 @@ class CDNManager:
         config = self.config.get("scalability", {})
         
         # Calculate bandwidth requirements
-        avg_file_size = (manifest["total_size_bytes"] / manifest["total_files"] 
-                        if manifest["total_files"] > 0 else 0)
+        if manifest["total_files"] > 0:
+            avg_file_size = manifest["total_size_bytes"] / manifest["total_files"]
+        else:
+            avg_file_size = 0
         target_users = config.get("target_users", 8_000_000_000)
         requests_per_day = config.get("estimated_requests_per_day", target_users)
         
@@ -233,8 +239,8 @@ class CDNManager:
             "cache_hit_rate": cache_hit_rate,
             "actual_bandwidth_per_day_gb": actual_bandwidth_gb,
             "estimated_cost_per_day": 0,  # GitHub Pages is free
-            "cdn_providers": len([cdn for cdn in self.config.get("cdn", {}).values() 
-                                 if cdn.get("enabled", False)]),
+            "cdn_providers": sum(1 for cdn in self.config.get("cdn", {}).values() 
+                                 if cdn.get("enabled", False)),
             "compression_enabled": self.config.get("compression", {}).get("gzip", {}).get("enabled", False),
             "scalability_score": self._calculate_scalability_score(cache_hit_rate, 
                                                                     manifest["total_files"])
@@ -257,8 +263,10 @@ class CDNManager:
         # CDN configuration (max 20 points)
         if self.config.get("compression", {}).get("gzip", {}).get("enabled", False):
             score += 10
-        if len([cdn for cdn in self.config.get("cdn", {}).values() 
-               if cdn.get("enabled", False)]) >= 2:
+        
+        enabled_cdns = sum(1 for cdn in self.config.get("cdn", {}).values() 
+                          if cdn.get("enabled", False))
+        if enabled_cdns >= 2:
             score += 10
         
         # Convert to grade
