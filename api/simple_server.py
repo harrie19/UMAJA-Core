@@ -631,6 +631,202 @@ def ai_agents_endpoint():
             "timestamp": datetime.now(timezone.utc).isoformat()
         }), 500
 
+# =============================================================================
+# GALLERY API ENDPOINTS
+# =============================================================================
+
+@app.route('/api/gallery/samples', methods=['GET'])
+def gallery_samples():
+    """
+    Get sample content for the gallery
+    Returns samples organized by personality
+    """
+    try:
+        # Import personality engine
+        from personality_engine import PersonalityEngine
+        
+        engine = PersonalityEngine()
+        
+        samples = {}
+        
+        # Generate samples for each comedian
+        for comedian_id in engine.list_comedians():
+            comedian = engine.get_comedian(comedian_id)
+            
+            samples[comedian_id] = []
+            
+            # Text samples
+            samples[comedian_id].append({
+                'type': 'text',
+                'topic': 'City Life',
+                'preview': comedian.generate_smile_text('city life')[:100] + '...'
+            })
+            
+            # Audio sample (text for now)
+            samples[comedian_id].append({
+                'type': 'audio',
+                'topic': 'Food Adventure',
+                'preview': comedian.generate_smile_text('food')[:100] + '...'
+            })
+            
+            # Video sample (text for now)
+            samples[comedian_id].append({
+                'type': 'video',
+                'topic': 'Travel Tales',
+                'preview': comedian.generate_smile_text('travel')[:100] + '...'
+            })
+        
+        return jsonify(samples), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting gallery samples: {str(e)}")
+        return jsonify({
+            "error": "Failed to get samples",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/gallery/generate', methods=['POST'])
+@limiter.limit("30 per minute")
+def gallery_generate():
+    """
+    Generate new content for gallery
+    Request body:
+    - personality: Comedian personality
+    - topic: Topic to generate about
+    - content_type: Type of content (text, audio, video)
+    """
+    try:
+        data = request.get_json() or {}
+        personality = data.get('personality', 'john_cleese')
+        topic = data.get('topic', 'daily life')
+        content_type = data.get('content_type', 'text')
+        
+        # Import personality engine
+        from personality_engine import PersonalityEngine
+        
+        engine = PersonalityEngine()
+        comedian = engine.get_comedian(personality)
+        
+        if not comedian:
+            return jsonify({
+                "success": False,
+                "error": "Unknown personality",
+                "available_personalities": engine.list_comedians()
+            }), 400
+        
+        # Generate content
+        content = comedian.generate_text(topic)
+        
+        return jsonify({
+            "success": True,
+            "content": content,
+            "personality": personality,
+            "topic": topic,
+            "content_type": content_type
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error generating gallery content: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to generate content",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# ENERGY MONITORING ENDPOINTS
+# =============================================================================
+
+@app.route('/api/energy/metrics', methods=['GET'])
+def energy_metrics():
+    """Get current energy consumption metrics"""
+    try:
+        # Import energy monitor
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        metrics = monitor.get_metrics()
+        
+        return jsonify({
+            "success": True,
+            "metrics": metrics,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting energy metrics: {str(e)}")
+        return jsonify({
+            "error": "Failed to get energy metrics",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/energy/report', methods=['GET'])
+def energy_report():
+    """Get comprehensive energy report"""
+    try:
+        # Import energy monitor
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        report = monitor.get_report()
+        
+        return jsonify({
+            "success": True,
+            "report": report,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting energy report: {str(e)}")
+        return jsonify({
+            "error": "Failed to get energy report",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/energy/log', methods=['POST'])
+@limiter.limit("100 per minute")
+def energy_log_operation():
+    """Log an energy-consuming operation (for monitoring)
+    
+    Request body:
+    - operation_type: Type of operation
+    - duration_sec: Duration in seconds
+    - watts: Power consumption in watts
+    - details: Additional details (optional)
+    """
+    try:
+        data = request.get_json() or {}
+        
+        # Import energy monitor
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        
+        operation_type = data.get('operation_type', 'unknown')
+        duration_sec = data.get('duration_sec', 0.001)
+        watts = data.get('watts', 0.001)
+        details = data.get('details', {})
+        
+        monitor.log_operation(operation_type, duration_sec, watts, details)
+        
+        return jsonify({
+            "success": True,
+            "message": "Operation logged",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error logging energy operation: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to log operation",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# END GALLERY & ENERGY ENDPOINTS
+# =============================================================================
+
 @app.route('/sitemap.xml')
 def sitemap():
     """Serve sitemap.xml for SEO"""
@@ -662,6 +858,11 @@ def root():
             "worldtour_status": "GET /worldtour/status",
             "worldtour_cities": "GET /worldtour/cities",
             "worldtour_content": "GET /worldtour/content/<city_id>",
+            "gallery_samples": "GET /api/gallery/samples",
+            "gallery_generate": "POST /api/gallery/generate",
+            "energy_metrics": "GET /api/energy/metrics",
+            "energy_report": "GET /api/energy/report",
+            "energy_log": "POST /api/energy/log",
             "sitemap": "/sitemap.xml",
             "robots": "/robots.txt"
         },
@@ -670,6 +871,11 @@ def root():
             "status": "live",
             "personalities": ["john_cleese", "c3po", "robin_williams"],
             "content_types": ["city_review", "cultural_debate", "language_lesson", "tourist_trap", "food_review"]
+        },
+        "energy": {
+            "monitoring": "enabled",
+            "target_efficiency": "95% vector operations, 5% LLM calls",
+            "estimated_daily_energy": "< 50 Wh"
         },
         "principle": "Truth, Unity, Service"
     }), 200
