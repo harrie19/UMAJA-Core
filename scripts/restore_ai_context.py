@@ -25,8 +25,16 @@ def load_session_state():
     try:
         with open(state_file, 'r', encoding='utf-8') as f:
             return json.load(f)
+    except FileNotFoundError:
+        print(f"❌ Error: Session state file not found at {state_file}")
+        print("   Check if .ai_session_state.json exists in the repository root.")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"❌ Error: Invalid JSON in session state file: {e}")
+        print("   Check if .ai_session_state.json contains valid JSON.")
+        return None
     except Exception as e:
-        print(f"❌ Error loading session state: {e}")
+        print(f"❌ Error loading session state ({type(e).__name__}): {e}")
         return None
 
 
@@ -54,8 +62,13 @@ def load_latest_snapshot():
                         snapshot_lines.append(line)
                 return "\n".join(snapshot_lines)
             return content[:2000]  # Return first 2000 chars if no latest snapshot found
+    except FileNotFoundError:
+        print(f"❌ Error: Context snapshots file not found at {snapshot_file}")
+        print("   Check if docs/AI_CONTEXT_SNAPSHOTS.md exists.")
+        return None
     except Exception as e:
-        print(f"❌ Error loading snapshot: {e}")
+        print(f"❌ Error loading snapshot ({type(e).__name__}): {e}")
+        print("   Check if docs/AI_CONTEXT_SNAPSHOTS.md is readable.")
         return None
 
 
@@ -77,8 +90,13 @@ def load_recent_log_entries(hours=24):
                         return f"## {section}"
             # Return last 1500 chars if today's section not found
             return content[-1500:]
+    except FileNotFoundError:
+        print(f"❌ Error: Mission log file not found at {log_file}")
+        print("   Check if docs/MISSION_LOG.md exists.")
+        return None
     except Exception as e:
-        print(f"❌ Error loading mission log: {e}")
+        print(f"❌ Error loading mission log ({type(e).__name__}): {e}")
+        print("   Check if docs/MISSION_LOG.md is readable.")
         return None
 
 

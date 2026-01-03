@@ -120,7 +120,7 @@ def test_memory_system_integration():
     # Check memory system components are tracked
     metrics = state.get("metrics", {})
     assert metrics.get("memory_system_components") == 4, "Should have 4 memory components"
-    assert metrics.get("context_preservation_active") == True, "Context preservation should be active"
+    assert metrics.get("context_preservation_active") is True, "Context preservation should be active"
     
     # Run restore script
     result = subprocess.run(
