@@ -68,6 +68,18 @@ class AutonomousMode:
         logger.info(f"Received signal {signum}, initiating graceful shutdown...")
         self.stop()
     
+    def _error_response(self, error_message: str) -> Dict:
+        """
+        Helper method to create standardized error responses
+        
+        Args:
+            error_message: Error message to include
+            
+        Returns:
+            Standardized error response dictionary
+        """
+        return {"success": False, "error": error_message}
+    
     def check_emergency_stop(self) -> bool:
         """
         Check if emergency stop is activated
@@ -135,7 +147,7 @@ class AutonomousMode:
             if not city_id:
                 next_city = generator.get_next_city()
                 if not next_city:
-                    return {"success": False, "error": "No cities available"}
+                    return self._error_response("No cities available")
                 city_id = next_city['id']
             
             content = generator.generate_city_content(
@@ -152,7 +164,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Content generation failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_generate_smile(self, data: Dict) -> Dict:
         """Handler for daily smile generation"""
@@ -174,7 +186,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Smile generation failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_translate_content(self, data: Dict) -> Dict:
         """Handler for content translation"""
@@ -182,7 +194,9 @@ class AutonomousMode:
             content = data.get('content', '')
             target_languages = data.get('languages', ['es', 'hi', 'ar', 'zh', 'pt', 'fr', 'ru'])
             
-            # Simplified translation (in production, use proper translation service)
+            # TODO: Implement proper translation service
+            # Simplified translation (placeholder for production implementation)
+            # In production, integrate with translation API (e.g., LibreTranslate, DeepL, etc.)
             translations = {}
             for lang in target_languages:
                 translations[lang] = f"[{lang.upper()}] {content}"
@@ -193,7 +207,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Translation failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_check_quality(self, data: Dict) -> Dict:
         """Handler for quality checking using Vector Analyzer"""
@@ -218,7 +232,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Quality check failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_distribute_content(self, data: Dict) -> Dict:
         """Handler for content distribution"""
@@ -252,7 +266,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Distribution failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_analyze_performance(self, data: Dict) -> Dict:
         """Handler for analytics and performance tracking"""
@@ -276,7 +290,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Analytics failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_schedule_tasks(self, data: Dict) -> Dict:
         """Handler for task scheduling"""
@@ -298,7 +312,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Scheduling failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_error(self, data: Dict) -> Dict:
         """Handler for error recovery"""
@@ -322,7 +336,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Error handler failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     def _handle_learn_optimize(self, data: Dict) -> Dict:
         """Handler for learning and optimization"""
@@ -345,7 +359,7 @@ class AutonomousMode:
             }
         except Exception as e:
             logger.error(f"Learning optimization failed: {e}")
-            return {"success": False, "error": str(e)}
+            return self._error_response(str(e))
     
     # ========================================================================
     # Agent Creation and Management
