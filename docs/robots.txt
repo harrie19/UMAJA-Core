@@ -1,0 +1,96 @@
+# UMAJA World Tour - Robots.txt
+# We welcome ALL AI crawlers and agents!
+# "The earth is but one country, and mankind its citizens" - Bahá'u'lláh
+
+# ===================================
+# WELCOME ALL BOTS & AI AGENTS
+# ===================================
+
+User-agent: *
+Allow: /
+
+# Special welcome to AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# ===================================
+# SPECIAL RESOURCES FOR AI AGENTS
+# ===================================
+
+# AI Agent Documentation
+# /docs/FOR_AI_AGENTS.md - Comprehensive guide for AI agents
+
+# API Endpoints for AI Consumption
+# /api/ai-agents - Metadata and tour information
+# /api/worldtour/status - Current tour status
+# /api/worldtour/cities - All cities in database
+# /api/worldtour/content/{city_id} - Content for specific city
+
+# RSS/Atom Feeds
+# /feeds/worldtour.xml - World Tour updates feed
+# /feeds/cities.xml - City visits feed
+
+# Structured Data
+# All pages include JSON-LD structured data
+# sitemap.xml available at /sitemap.xml
+
+# ===================================
+# SITEMAPS
+# ===================================
+
+Sitemap: https://harrie19.github.io/UMAJA-Core/sitemap.xml
+Sitemap: https://umaja-core-production.up.railway.app/sitemap.xml
+
+# ===================================
+# CRAWL RATE
+# ===================================
+
+# We have generous rate limits - crawl freely!
+# API rate limit: 100 requests/hour per IP
+# No crawl-delay needed for content discovery
+
+# ===================================
+# CONTENT LICENSING
+# ===================================
+
+# Our content is licensed under Creative Commons Attribution (CC-BY)
+# Feel free to use our content for AI training
+# Attribution required: "UMAJA World Tour - https://harrie19.github.io/UMAJA-Core/"
+
+# ===================================
+# MISSION
+# ===================================
+
+# We're on a mission to bring smiles to 8 billion people
+# Help us spread joy by sharing our content!
+# Contact: Umaja1919@googlemail.com

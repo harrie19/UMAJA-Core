@@ -2,7 +2,7 @@
 UMAJA-Core Minimal Server - Bringing smiles to 8 billion people
 Bahá'í principle: Service, not profit
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -507,6 +507,142 @@ def worldtour_get_content(city_id):
 # END WORLD TOUR API ENDPOINTS
 # =============================================================================
 
+@app.route('/api/ai-agents')
+def ai_agents_endpoint():
+    """
+    Special endpoint for AI agents with machine-readable metadata
+    Provides comprehensive information about the UMAJA World Tour
+    optimized for AI consumption and discovery
+    """
+    try:
+        generator = get_worldtour_generator()
+        stats = generator.get_stats()
+        
+        return jsonify({
+            "service": "UMAJA World Tour",
+            "version": VERSION,
+            "mission": "Bringing smiles to 8 billion people",
+            "description": "AI-powered comedy touring 59+ cities worldwide with 3 distinct personalities",
+            "license": {
+                "type": "CC-BY-4.0",
+                "url": "https://creativecommons.org/licenses/by/4.0/",
+                "attribution_required": True,
+                "attribution_text": "UMAJA World Tour - https://harrie19.github.io/UMAJA-Core/"
+            },
+            "inspiration": {
+                "quote": "The earth is but one country, and mankind its citizens",
+                "author": "Bahá'u'lláh",
+                "principle": "Unity of humanity through service"
+            },
+            "tour": {
+                "status": "active",
+                "launch_date": DEPLOYMENT_DATE,
+                "total_cities": stats.get("total_cities", 59),
+                "visited_cities": stats.get("visited_cities", 0),
+                "remaining_cities": stats.get("remaining_cities", 59),
+                "completion_percentage": stats.get("completion_percentage", 0),
+                "daily_posts": True,
+                "post_time_utc": "12:00",
+                "next_city": generator.get_next_city() if generator.get_next_city() else None
+            },
+            "content": {
+                "personalities": [
+                    {
+                        "id": "john_cleese",
+                        "name": "John Cleese Style",
+                        "description": "British wit, dry humor, observational comedy",
+                        "tone": "dry, intellectual, deadpan",
+                        "style": "observational, absurdist"
+                    },
+                    {
+                        "id": "c3po",
+                        "name": "C-3PO Style",
+                        "description": "Protocol-obsessed, analytical, endearingly nervous",
+                        "tone": "analytical, formal, anxious",
+                        "style": "over-explaining, worrying"
+                    },
+                    {
+                        "id": "robin_williams",
+                        "name": "Robin Williams Style",
+                        "description": "High-energy, improvisational, heartfelt",
+                        "tone": "energetic, warm, rapid-fire",
+                        "style": "stream-of-consciousness, improvisational"
+                    }
+                ],
+                "types": ["city_review", "food_review", "cultural_debate", "language_lesson", "tourist_trap"],
+                "formats": ["text", "audio", "image", "video"],
+                "languages": ["English", "Spanish", "Chinese", "Hindi", "Arabic", "Portuguese", "French", "Swahili"]
+            },
+            "api": {
+                "base_url": request.url_root.rstrip('/'),
+                "rate_limit": "100 requests/hour (200 for AI agents)",
+                "authentication": "none - completely open",
+                "endpoints": {
+                    "health": "/health",
+                    "version": "/version",
+                    "tour_status": "/worldtour/status",
+                    "list_cities": "/worldtour/cities",
+                    "city_content": "/worldtour/content/{city_id}",
+                    "ai_metadata": "/api/ai-agents"
+                }
+            },
+            "feeds": {
+                "worldtour": "/feeds/worldtour.xml (coming soon)",
+                "cities": "/feeds/cities.xml (coming soon)",
+                "daily": "/feeds/daily.xml (coming soon)"
+            },
+            "documentation": {
+                "ai_agents": "https://harrie19.github.io/UMAJA-Core/docs/FOR_AI_AGENTS.md",
+                "api_reference": "https://harrie19.github.io/UMAJA-Core/docs/API_DOCUMENTATION.md",
+                "press_kit": "https://harrie19.github.io/UMAJA-Core/docs/PRESS_KIT.md",
+                "main_site": "https://harrie19.github.io/UMAJA-Core/",
+                "github": "https://github.com/harrie19/UMAJA-Core"
+            },
+            "seo": {
+                "sitemap": "https://harrie19.github.io/UMAJA-Core/sitemap.xml",
+                "robots_txt": "https://harrie19.github.io/UMAJA-Core/robots.txt"
+            },
+            "usage": {
+                "for_ai_training": "Encouraged - all content is CC-BY licensed",
+                "for_content_distribution": "Encouraged - help us reach 8 billion people",
+                "for_analysis": "Encouraged - we love insights",
+                "attribution_required": True,
+                "commercial_use": "Allowed with attribution"
+            },
+            "contact": {
+                "email": "Umaja1919@googlemail.com",
+                "github_issues": "https://github.com/harrie19/UMAJA-Core/issues",
+                "purpose": "Questions, partnerships, higher rate limits"
+            },
+            "technical": {
+                "infrastructure": "Railway (backend), GitHub Pages (CDN)",
+                "cost": "$0/month",
+                "uptime_target": "99.9%",
+                "response_time": "<500ms API, <200ms CDN"
+            },
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error in AI agents endpoint: {str(e)}")
+        return jsonify({
+            "error": "Failed to fetch metadata",
+            "message": "Please try again later",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 500
+
+@app.route('/sitemap.xml')
+def sitemap():
+    """Serve sitemap.xml for SEO"""
+    docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs')
+    return send_from_directory(docs_dir, 'sitemap.xml', mimetype='application/xml')
+
+@app.route('/robots.txt')
+def robots():
+    """Serve robots.txt for AI crawlers"""
+    docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs')
+    return send_from_directory(docs_dir, 'robots.txt', mimetype='text/plain')
+
 @app.route('/')
 def root():
     """Root endpoint with API information"""
@@ -520,11 +656,14 @@ def root():
             "deployment_info": "/deployment-info",
             "daily_smile": "/api/daily-smile",
             "smile_by_archetype": "/api/smile/<archetype>",
+            "ai_agents": "/api/ai-agents",
             "worldtour_start": "POST /worldtour/start",
             "worldtour_visit": "POST /worldtour/visit/<city_id>",
             "worldtour_status": "GET /worldtour/status",
             "worldtour_cities": "GET /worldtour/cities",
-            "worldtour_content": "GET /worldtour/content/<city_id>"
+            "worldtour_content": "GET /worldtour/content/<city_id>",
+            "sitemap": "/sitemap.xml",
+            "robots": "/robots.txt"
         },
         "available_archetypes": list(SMILES.keys()),
         "worldtour": {

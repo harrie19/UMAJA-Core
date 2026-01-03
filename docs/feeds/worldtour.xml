@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  
+  <channel>
+    <title>UMAJA World Tour</title>
+    <link>https://harrie19.github.io/UMAJA-Core/</link>
+    <description>AI-powered comedy touring 59 cities worldwide, bringing smiles to 8 billion people</description>
+    <language>en-us</language>
+    <copyright>Copyright 2026 UMAJA-Core. Licensed under CC-BY 4.0</copyright>
+    <managingEditor>Umaja1919@googlemail.com (UMAJA Team)</managingEditor>
+    <webMaster>Umaja1919@googlemail.com (UMAJA Team)</webMaster>
+    <pubDate>Fri, 03 Jan 2026 12:00:00 GMT</pubDate>
+    <lastBuildDate>Fri, 03 Jan 2026 12:00:00 GMT</lastBuildDate>
+    <category>Comedy</category>
+    <category>Artificial Intelligence</category>
+    <category>Travel</category>
+    <category>Entertainment</category>
+    <generator>UMAJA-Core 2.1.0</generator>
+    <docs>https://harrie19.github.io/UMAJA-Core/docs/FOR_AI_AGENTS.md</docs>
+    <ttl>60</ttl>
+    
+    <atom:link href="https://harrie19.github.io/UMAJA-Core/feeds/worldtour.xml" rel="self" type="application/rss+xml" />
+    
+    <image>
+      <url>https://harrie19.github.io/UMAJA-Core/assets/logo.png</url>
+      <title>UMAJA World Tour</title>
+      <link>https://harrie19.github.io/UMAJA-Core/</link>
+      <width>144</width>
+      <height>144</height>
+    </image>
+    
+    <!-- Example Item - Template for future city visits -->
+    <item>
+      <title>UMAJA World Tour Visits Cairo, Egypt 🇪🇬</title>
+      <link>https://harrie19.github.io/UMAJA-Core/worldtour/cairo</link>
+      <description>
+        Our 3 AI comedians just visited Cairo! Experience British wit, android anxiety, and high-energy improvisation 
+        as they explore pyramids, cuisine, and Egyptian culture. Watch hilarious city reviews, food commentary, 
+        and cultural observations.
+      </description>
+      <content:encoded><![CDATA[
+        <h2>🌍 Cairo, Egypt - Day 5 of World Tour</h2>
+        <p>Today, our three AI comedians visited the magnificent city of Cairo, bringing their unique perspectives to Egyptian culture, food, and the iconic pyramids!</p>
+        
+        <h3>🎩 John Cleese Style on Cairo:</h3>
+        <blockquote>"Now, the curious thing about the pyramids is that they've been standing for 4,500 years, yet somehow my WiFi can't last 45 minutes..."</blockquote>
+        
+        <h3>🤖 C-3PO Style on Cairo Traffic:</h3>
+        <blockquote>"I must inform you that Cairo traffic appears to operate on approximately 723 unwritten rules, none of which I can comprehend. The probability of arriving on time is... concerning."</blockquote>
+        
+        <h3>🎪 Robin Williams Style on Egyptian Food:</h3>
+        <blockquote>"KOSHARI! It's like someone said, 'You know what? Let's take EVERY CARB and throw a PARTY!' Rice! Pasta! Lentils! IT'S BEAUTIFUL CHAOS!"</blockquote>
+        
+        <p><strong>View full content:</strong> <a href="https://umaja-core-production.up.railway.app/worldtour/content/cairo">Cairo Content</a></p>
+        <p><strong>Statistics:</strong> 5 cities visited, 54 remaining (8.5% complete)</p>
+      ]]></content:encoded>
+      <author>Umaja1919@googlemail.com (UMAJA Team)</author>
+      <category>World Tour</category>
+      <category>Cairo</category>
+      <category>Egypt</category>
+      <guid isPermaLink="true">https://harrie19.github.io/UMAJA-Core/worldtour/cairo</guid>
+      <pubDate>Fri, 03 Jan 2026 12:00:00 GMT</pubDate>
+      <dc:creator>UMAJA AI Comedians</dc:creator>
+    </item>
+    
+    <item>
+      <title>UMAJA World Tour Visits Jakarta, Indonesia 🇮🇩</title>
+      <link>https://harrie19.github.io/UMAJA-Core/worldtour/jakarta</link>
+      <description>
+        Day 4: Jakarta gets the UMAJA treatment! Three AI personalities explore Indonesian culture, 
+        street food, and the bustling metropolis with their signature comedy styles.
+      </description>
+      <content:encoded><![CDATA[
+        <h2>🌍 Jakarta, Indonesia - Day 4 of World Tour</h2>
+        <p>Jakarta welcomed our AI comedians with open arms (and incredible street food)!</p>
+        
+        <h3>Highlights from today's visit:</h3>
+        <ul>
+          <li>🏙️ City observations from three unique perspectives</li>
+          <li>🍜 Indonesian cuisine gets the comedy treatment</li>
+          <li>🚦 Traffic commentary (it's a theme!)</li>
+          <li>🌴 Cultural insights wrapped in humor</li>
+        </ul>
+        
+        <p><strong>View full content:</strong> <a href="https://umaja-core-production.up.railway.app/worldtour/content/jakarta">Jakarta Content</a></p>
+      ]]></content:encoded>
+      <author>Umaja1919@googlemail.com (UMAJA Team)</author>
+      <category>World Tour</category>
+      <category>Jakarta</category>
+      <category>Indonesia</category>
+      <guid isPermaLink="true">https://harrie19.github.io/UMAJA-Core/worldtour/jakarta</guid>
+      <pubDate>Thu, 02 Jan 2026 12:00:00 GMT</pubDate>
+      <dc:creator>UMAJA AI Comedians</dc:creator>
+    </item>
+    
+    <item>
+      <title>🚀 UMAJA World Tour Launches - 59 Cities, 3 AI Comedians, Infinite Smiles</title>
+      <link>https://harrie19.github.io/UMAJA-Core/</link>
+      <description>
+        The UMAJA World Tour officially launches today! Join us on a journey to bring smiles to all 8 billion people 
+        through AI-generated comedy touring 59 cities worldwide. Featuring John Cleese, C-3PO, and Robin Williams style personalities.
+      </description>
+      <content:encoded><![CDATA[
+        <h2>🎉 UMAJA World Tour Launch!</h2>
+        <p><em>"The earth is but one country, and mankind its citizens" — Bahá'u'lláh</em></p>
+        
+        <h3>Our Mission</h3>
+        <p>Bring daily smiles to all 8 billion people through AI-powered creative content. Zero cost. Maximum joy.</p>
+        
+        <h3>Meet Our Comedians</h3>
+        <ul>
+          <li>🎩 <strong>John Cleese Style</strong>: British wit, dry humor, observational comedy</li>
+          <li>🤖 <strong>C-3PO Style</strong>: Protocol-obsessed, analytical, endearingly nervous</li>
+          <li>🎪 <strong>Robin Williams Style</strong>: High-energy, improvisational, heartfelt</li>
+        </ul>
+        
+        <h3>The Tour</h3>
+        <p>59 cities worldwide, daily posts at 12:00 UTC, multi-format content (text, audio, images, video)</p>
+        
+        <h3>Join Us</h3>
+        <ul>
+          <li>🌐 Website: <a href="https://harrie19.github.io/UMAJA-Core/">harrie19.github.io/UMAJA-Core/</a></li>
+          <li>🔧 API: <a href="https://umaja-core-production.up.railway.app">umaja-core-production.up.railway.app</a></li>
+          <li>💻 GitHub: <a href="https://github.com/harrie19/UMAJA-Core">github.com/harrie19/UMAJA-Core</a></li>
+          <li>📧 Contact: Umaja1919@googlemail.com</li>
+        </ul>
+        
+        <p><strong>Everything is free and open source!</strong> Licensed under CC-BY 4.0.</p>
+      ]]></content:encoded>
+      <author>Umaja1919@googlemail.com (UMAJA Team)</author>
+      <category>Launch</category>
+      <category>Announcement</category>
+      <guid isPermaLink="true">https://harrie19.github.io/UMAJA-Core/launch</guid>
+      <pubDate>Thu, 02 Jan 2026 00:00:00 GMT</pubDate>
+      <dc:creator>UMAJA Team</dc:creator>
+    </item>
+    
+  </channel>
+</rss>
