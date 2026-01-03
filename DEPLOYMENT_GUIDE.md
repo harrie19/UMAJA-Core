@@ -141,7 +141,7 @@ UMAJA-Core is a modern web application designed for high availability and scalab
 3. **Configure Build Settings**
    
    The repository already has deployment workflows configured:
-   - **GitHub Pages**: `.github/workflows/pages-deploy.yml` - automatically deploys the dashboard on every push to main
+   - **GitHub Pages**: `.github/workflows/pages-deploy.yml` - automatically deploys the dashboard when changes are made to the `docs/**` directory
    - **Railway Backend**: `.github/workflows/railway-deploy.yml` - handles automatic Railway backend deployments
    
    No additional workflow creation is needed.

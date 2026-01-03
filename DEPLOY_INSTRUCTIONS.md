@@ -155,7 +155,7 @@ Before starting the deployment process, ensure you have:
    - **Source**: Select "GitHub Actions" (recommended) or "Deploy from a branch"
    
    **Option A: Using GitHub Actions (Recommended)**
-   - The repository already has `.github/workflows/pages-deploy.yml` configured for automatic GitHub Pages deployment on every push to main.
+   - The repository already has `.github/workflows/pages-deploy.yml` configured for automatic GitHub Pages deployment when changes are made to the `docs/**` directory.
    
    **For Railway Deployment:**
    - Use `.github/workflows/railway-deploy.yml` which handles automatic Railway deployments.
