@@ -1,0 +1,77 @@
+name: CDN Update & Optimization
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cdn/smiles/**'
+      - 'scripts/generate_daily_smile.py'
+  workflow_dispatch:
+  schedule:
+    # Run daily at 00:00 UTC to update manifest
+    - cron: '0 0 * * *'
+
+jobs:
+  update-cdn:
+    name: Update CDN Assets
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🔄 Generate CDN manifest
+        run: |
+          python src/cdn_manager.py manifest
+          echo "✅ Manifest generated"
+      
+      - name: 🗜️ Compress CDN assets
+        run: |
+          python src/cdn_manager.py compress
+          echo "✅ Assets compressed"
+      
+      - name: 📊 Generate scalability report
+        run: |
+          python src/cdn_manager.py report > cdn_report.json
+          cat cdn_report.json
+          echo "✅ Report generated"
+      
+      - name: 🏥 Health check
+        run: |
+          python src/cdn_manager.py health
+          echo "✅ Health check passed"
+      
+      - name: 📤 Commit changes
+        id: commit
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add cdn/
+          git diff --staged --quiet || git commit -m "🤖 Auto-update CDN: manifest and compression [skip ci]"
+          echo "changes_made=$?" >> $GITHUB_OUTPUT
+      
+      - name: 🚀 Push changes
+        if: steps.commit.outputs.changes_made == '0'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      
+      - name: 📝 Summary
+        run: |
+          echo "## CDN Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Scalability Report" >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat cdn_report.json >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
