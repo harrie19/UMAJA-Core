@@ -91,3 +91,8 @@ data/analytics.json
 # Deployment artifacts
 deployment_report.json
 deployment_metrics.json
+
+# Reality Agent reports (keep directory structure only)
+data/reality_checks/*.json
+data/reality_checks/*.md
+!data/reality_checks/.gitkeep
