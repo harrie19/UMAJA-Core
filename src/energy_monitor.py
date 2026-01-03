@@ -3,6 +3,7 @@ Energy Monitor for UMAJA-Core
 Tracks energy consumption and cost metrics as outlined in VECTOR_UNIVERSE_ENERGIE.md
 """
 
+import os
 import time
 import logging
 from datetime import datetime, timezone
@@ -39,9 +40,9 @@ class EnergyMonitor:
     Implements energy tracking as described in VECTOR_UNIVERSE_ENERGIE.md
     """
     
-    # Cost and CO2 constants (can be overridden)
-    COST_PER_KWH = 0.12  # $0.12/kWh
-    CO2_PER_KWH = 0.45   # 0.45 kg CO2/kWh
+    # Cost and CO2 constants (configurable via environment)
+    COST_PER_KWH = float(os.environ.get('ENERGY_COST_PER_KWH', 0.12))  # $0.12/kWh default
+    CO2_PER_KWH = float(os.environ.get('ENERGY_CO2_PER_KWH', 0.45))   # 0.45 kg CO2/kWh default
     
     # Energy constants for operations
     VECTOR_OPERATION_WH = 0.0000003  # Vector similarity check

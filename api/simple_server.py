@@ -643,7 +643,6 @@ def gallery_samples():
     """
     try:
         # Import personality engine
-        sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
         from personality_engine import PersonalityEngine
         
         engine = PersonalityEngine()
@@ -703,7 +702,6 @@ def gallery_generate():
         content_type = data.get('content_type', 'text')
         
         # Import personality engine
-        sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
         from personality_engine import PersonalityEngine
         
         engine = PersonalityEngine()
@@ -744,7 +742,6 @@ def energy_metrics():
     """Get current energy consumption metrics"""
     try:
         # Import energy monitor
-        sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
         from energy_monitor import get_energy_monitor
         
         monitor = get_energy_monitor()
@@ -768,7 +765,6 @@ def energy_report():
     """Get comprehensive energy report"""
     try:
         # Import energy monitor
-        sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
         from energy_monitor import get_energy_monitor
         
         monitor = get_energy_monitor()
@@ -802,7 +798,6 @@ def energy_log_operation():
         data = request.get_json() or {}
         
         # Import energy monitor
-        sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
         from energy_monitor import get_energy_monitor
         
         monitor = get_energy_monitor()

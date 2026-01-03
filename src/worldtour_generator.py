@@ -304,12 +304,16 @@ class WorldtourGenerator:
                     style_intensity=0.8
                 )
                 generated_text = content_data['text']
+                # Personality engine uses templates, not LLM, so this is vector-based
+                used_llm = False
             except Exception as e:
                 logger.warning(f"Personality engine failed: {e}, using fallback")
                 generated_text = self._generate_fallback_content(city, personality, content_type, topic)
+                used_llm = False
         else:
             # Fallback if personality engine not available
             generated_text = self._generate_fallback_content(city, personality, content_type, topic)
+            used_llm = False
         
         # Track energy consumption
         if track_energy:
