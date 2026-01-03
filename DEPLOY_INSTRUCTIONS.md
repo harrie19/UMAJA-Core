@@ -155,39 +155,10 @@ Before starting the deployment process, ensure you have:
    - **Source**: Select "GitHub Actions" (recommended) or "Deploy from a branch"
    
    **Option A: Using GitHub Actions (Recommended)**
-   - Create `.github/workflows/deploy.yml`:
+   - The repository already has `.github/workflows/pages-deploy.yml` configured for automatic GitHub Pages deployment when changes are made to the `docs/**` directory.
    
-   ```yaml
-   name: Deploy to GitHub Pages
-   
-   on:
-     push:
-       branches: [ main ]
-     workflow_dispatch:
-   
-   jobs:
-     build-and-deploy:
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v3
-         
-         - name: Setup Node.js
-           uses: actions/setup-node@v3
-           with:
-             node-version: '18'
-             
-         - name: Install and Build
-           run: |
-             cd frontend
-             npm ci
-             npm run build
-             
-         - name: Deploy to GitHub Pages
-           uses: peaceiris/actions-gh-pages@v3
-           with:
-             github_token: ${{ secrets.GITHUB_TOKEN }}
-             publish_dir: ./frontend/build
-   ```
+   **For Railway Deployment:**
+   - Use `.github/workflows/railway-deploy.yml` which handles automatic Railway deployments.
 
    **Option B: Deploy from Branch**
    - Source: Select branch (e.g., `gh-pages`)
