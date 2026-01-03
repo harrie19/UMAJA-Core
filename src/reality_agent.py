@@ -159,8 +159,15 @@ class RealityGlassesSensor:
                 relative_path = py_file.relative_to(self.repo_root)
                 
                 # Check for naive datetime usage (without timezone)
-                if re.search(r'datetime\.now\(\)(?!\s*,\s*timezone)', content):
-                    issues["naive_datetime"].append(str(relative_path))
+                # Look for datetime.now() without timezone parameter
+                if re.search(r'datetime\.now\(\)', content):
+                    # Verify it's not using timezone by checking the line doesn't contain timezone
+                    lines_with_naive = []
+                    for line in content.split('\n'):
+                        if 'datetime.now()' in line and 'timezone' not in line:
+                            lines_with_naive.append(line)
+                    if lines_with_naive:
+                        issues["naive_datetime"].append(str(relative_path))
                 
                 # Check for TODO comments
                 todo_matches = re.findall(r'#\s*TODO:?\s*(.+)', content, re.IGNORECASE)
@@ -170,12 +177,10 @@ class RealityGlassesSensor:
                         "count": len(todo_matches)
                     })
                 
-                # Check for try blocks without except
-                # Simple pattern: look for try: without corresponding except
-                try_count = len(re.findall(r'\btry\s*:', content))
-                except_count = len(re.findall(r'\bexcept\b', content))
-                if try_count > except_count:
-                    issues["missing_error_handling"].append(str(relative_path))
+                # Note: Removed flawed try/except counting check
+                # Proper error handling detection would require AST analysis
+                # which is beyond scope of a simple reality check
+
                 
                 # Check for potential hardcoded credentials
                 credential_patterns = [
@@ -207,13 +212,12 @@ class RealityGlassesSensor:
         total_issues = (
             len(issues["naive_datetime"]) +
             len(issues["todos"]) +
-            len(issues["missing_error_handling"]) +
             len(issues["hardcoded_credentials"])
         )
         
         if len(issues["hardcoded_credentials"]) > 0:
             status = "CRITICAL"
-        elif len(issues["naive_datetime"]) > 5 or len(issues["missing_error_handling"]) > 3:
+        elif len(issues["naive_datetime"]) > 5:
             status = "WARNING"
         elif total_issues > 0:
             status = "WARNING"
