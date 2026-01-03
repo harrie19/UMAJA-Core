@@ -6,7 +6,7 @@ This guide explains how to configure and verify the backend URL for the UMAJA-Co
 ## Current Configuration
 
 **File:** `docs/index.html`  
-**Line:** ~323  
+**Line:** 324  
 **Current URL:** `https://umaja-core-production.up.railway.app`
 
 ```javascript
@@ -30,7 +30,7 @@ const BACKEND_URL = 'https://umaja-core-production.up.railway.app';
 If the URL is different from what's configured:
 
 1. Open `docs/index.html`
-2. Find the line with `const BACKEND_URL =` (around line 323)
+2. Find the line with `const BACKEND_URL =` (line 324)
 3. Update it to match your Railway deployment URL:
 
 ```javascript
@@ -104,7 +104,7 @@ After updating, visit [https://harrie19.github.io/UMAJA-Core/](https://harrie19.
 **Error:** `Access to fetch at 'https://...' from origin 'https://harrie19.github.io' has been blocked by CORS policy`
 
 **Solution:**
-Backend CORS is already configured to allow all origins in `api/simple_server.py`:
+Backend CORS is already configured to allow all origins in `api/simple_server.py` (currently line 35, search for `CORS(app)`):
 ```python
 from flask_cors import CORS
 app = Flask(__name__)
@@ -138,9 +138,11 @@ If you see the old wrong URL, update it immediately in `docs/index.html`.
 
 When updating the backend URL, verify these files:
 
-1. **docs/index.html** (line ~323) - Dashboard configuration
+1. **docs/index.html** (line 324) - Dashboard configuration
 2. **docs/index.html** (line ~309) - API Health link in footer
-3. **api/simple_server.py** (line 35) - CORS configuration
+3. **api/simple_server.py** (line 35) - CORS configuration (search for `CORS(app)`)
+
+Note: Line numbers may change as code evolves. Use search to locate exact lines.
 
 ## Testing Workflow
 
