@@ -4,7 +4,6 @@ UMAJA Reality Agent - Proactive System Monitor
 Philosophy: Reality Glasses (Verify, Don't Assume)
 """
 
-import os
 import re
 import json
 import logging
@@ -112,7 +111,7 @@ class RealityGlassesSensor:
         
         patterns = {
             'naive_datetime': {
-                'pattern': r'datetime\.now\(\)(?!\s*\.replace)',
+                'pattern': r'datetime\.now\(\)(?!\s*[\.\(])',
                 'severity': 'HIGH',
                 'message': 'Naive datetime (missing timezone)'
             },
@@ -254,6 +253,15 @@ class UMAJARealityAgent:
         self.results_dir = Path(__file__).parent.parent / "data" / "reality_checks"
         self.results_dir.mkdir(parents=True, exist_ok=True)
     
+    def _determine_overall_status(self, statuses: List[str]) -> str:
+        """Determine overall status from check statuses"""
+        if 'ERROR' in statuses or 'CRITICAL' in statuses:
+            return 'CRITICAL'
+        elif 'WARNING' in statuses:
+            return 'WARNING'
+        else:
+            return 'HEALTHY'
+    
     def run_all_checks(self) -> Dict[str, Any]:
         """Run all reality checks and generate report"""
         logger.info("🥽 Starting Reality Agent checks...")
@@ -269,13 +277,7 @@ class UMAJARealityAgent:
         
         # Determine overall status
         statuses = [check['status'] for check in checks.values()]
-        
-        if 'ERROR' in statuses or 'CRITICAL' in statuses:
-            overall_status = 'CRITICAL'
-        elif 'WARNING' in statuses:
-            overall_status = 'WARNING'
-        else:
-            overall_status = 'HEALTHY'
+        overall_status = self._determine_overall_status(statuses)
         
         report = {
             'timestamp': timestamp.isoformat(),
