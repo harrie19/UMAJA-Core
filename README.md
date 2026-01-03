@@ -25,35 +25,60 @@ Bring personalized daily inspiration to **8 billion people** at **$0 cost** thro
 
 ---
 
-## 🧠 AI Memory System
+## 🧠 AI Memory Persistence System
 
-Never re-explain context! Load full story instantly:
+**Never lose context again!** Restore full AI context across sessions instantly.
+
+### Quick Start
 
 ```bash
-python scripts/remember_me.py
+# Restore full context for AI agents
+python scripts/restore_ai_context.py
+
+# Compact output (for quick reference)
+python scripts/restore_ai_context.py --compact
+
+# JSON format (for programmatic use)
+python scripts/restore_ai_context.py --format json
 ```
 
-This loads your complete context into any AI session:
-- **Identity & Mission**: Who you are and what UMAJA-Core aims to achieve
-- **Bahá'í Principles**: The spiritual foundation guiding development
-- **Project History**: Key milestones and decisions
-- **Current Status**: Latest progress and what's being worked on
+### What Gets Restored
 
-**Why use it?**
-- ⚡ **Instant Context**: AI understands your mission immediately
-- 🎯 **No Repetition**: Never explain your vision again
-- 🔄 **Consistency**: All AI helpers start with the same knowledge
-- 📈 **Productivity**: Get straight to work, skip the intro
+- ✅ **Current Mission**: Active tasks and goals
+- ✅ **Key Decisions**: Important choices and rationale
+- ✅ **Repository State**: Current status, PRs, deployments
+- ✅ **User Preferences**: Communication style, protocols
+- ✅ **Recent History**: Last 24h of actions from mission log
+- ✅ **Context Snapshots**: Periodic conversation summaries
 
-**Platform-Specific Usage:**
+### Memory System Components
+
+The system consists of 4 files that work together:
+
+1. **`.ai_session_state.json`** - Current mission status and key decisions (root)
+2. **`docs/MISSION_LOG.md`** - Append-only timeline of ALL actions
+3. **`docs/AI_CONTEXT_SNAPSHOTS.md`** - Periodic conversation summaries
+4. **`scripts/restore_ai_context.py`** - Context restoration script
+
+### Why Use It?
+
+- ⚡ **Instant Recovery**: Resume work after session restarts or token limit resets
+- 🎯 **No Re-explaining**: AI knows full history immediately
+- 🔄 **Continuity**: Seamless transitions between sessions
+- 📈 **Productivity**: Skip the "what were we doing?" conversation
+- 🛡️ **Safety**: Never lose important context or decisions
+
+### Legacy Memory System
+
+For identity and mission context (alternative approach):
+
 ```bash
-# For GitHub Copilot
+# Load complete identity context
+python scripts/remember_me.py
+
+# Platform-specific
 python scripts/remember_me.py --platform copilot
-
-# For ChatGPT
 python scripts/remember_me.py --platform chatgpt
-
-# For Claude
 python scripts/remember_me.py --platform claude
 ```
 
