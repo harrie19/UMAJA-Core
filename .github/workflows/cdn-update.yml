@@ -16,6 +16,9 @@ jobs:
     name: Update CDN Assets
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Required for committing and pushing changes
+    
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
