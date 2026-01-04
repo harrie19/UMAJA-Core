@@ -68,7 +68,7 @@ export default function VoiceInput({ onTranscript, onError }: VoiceInputProps) {
       
       {transcript && (
         <div className="mt-3 p-3 bg-gray-100 rounded-lg">
-          <p className="text-sm text-gray-700 italic">"{transcript}"</p>
+          <p className="text-sm text-gray-700 italic">&ldquo;{transcript}&rdquo;</p>
         </div>
       )}
     </div>

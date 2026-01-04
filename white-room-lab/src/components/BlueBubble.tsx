@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useSphere } from '@react-three/cannon';
@@ -20,7 +20,7 @@ export default function BlueBubble({ position, onFormChange }: BlueBubbleProps) 
   const materialRef = useRef<THREE.MeshStandardMaterial>(null);
   
   // Physics body for the bubble
-  const [ref, api] = useSphere(() => ({
+  const [ref] = useSphere(() => ({
     mass: 0, // Float in place
     position,
     args: [1], // radius
@@ -61,16 +61,18 @@ export default function BlueBubble({ position, onFormChange }: BlueBubbleProps) 
       setTimeout(() => setSpeechBubbleText(null), 3000);
     }, 1000);
   };
+  
+  const setRefs = useCallback((node: THREE.Mesh) => {
+    // @ts-ignore
+    meshRef.current = node;
+    // @ts-ignore
+    ref.current = node;
+  }, [ref]);
 
   return (
     <group>
-      {/* @ts-ignore */}
       <mesh
-        ref={(node) => {
-          meshRef.current = node;
-          // @ts-ignore
-          ref.current = node;
-        }}
+        ref={setRefs}
         onClick={handleClick}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
