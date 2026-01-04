@@ -1,0 +1,131 @@
+name: UMAJA Autonomous Agent
+
+on:
+  # Scheduled daily at 07:00 UTC
+  schedule:
+    - cron: '0 7 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Enable debug logging'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  agent-cycle:
+    name: Run Autonomous Agent Cycle
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🌅 Restore Agent Memory from Cache
+        id: cache-memory
+        uses: actions/cache/restore@v3
+        with:
+          path: .agent-memory/
+          key: umaja-agent-memory-${{ github.sha }}
+          restore-keys: |
+            umaja-agent-memory-
+      
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 📁 Create Memory Directory
+        run: |
+          mkdir -p .agent-memory
+          echo "Memory directory ready for agent"
+      
+      - name: 🤖 Execute Autonomous Agent
+        id: agent-execution
+        run: |
+          echo "Starting autonomous agent cycle..."
+          python src/autonomous_agent.py --memory-path .agent-memory/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEBUG: ${{ inputs.debug || 'false' }}
+        continue-on-error: true
+      
+      - name: 📊 Generate Execution Report
+        if: always()
+        run: |
+          echo "=" >> $GITHUB_STEP_SUMMARY
+          echo "# 🤖 Autonomous Agent Cycle Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run Date:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f .agent-memory/state.json ]; then
+            echo "## Agent State" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat .agent-memory/state.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ -f .agent-memory/rule_bank.json ]; then
+            echo "## Rule Bank Summary" >> $GITHUB_STEP_SUMMARY
+            echo "Rules loaded and active" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "## Execution Result" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.agent-execution.outcome }}" == "success" ]; then
+            echo "✅ Agent cycle completed successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Agent cycle encountered issues" >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: 💾 Save Agent Memory to Cache
+        if: always()
+        uses: actions/cache/save@v3
+        with:
+          path: .agent-memory/
+          key: umaja-agent-memory-${{ github.sha }}-${{ github.run_number }}
+      
+      - name: 📤 Upload Memory as Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-memory-${{ github.run_number }}
+          path: |
+            .agent-memory/**/*
+          retention-days: 90
+      
+      - name: ✅ Agent Cycle Complete
+        if: success()
+        run: |
+          echo "🎉 Autonomous agent cycle completed successfully!"
+          echo ""
+          echo "Next steps:"
+          echo "1. Memory persisted in GitHub Actions cache"
+          echo "2. Decision history recorded"
+          echo "3. Rule Bank updated with learnings"
+          echo "4. Ready for next cycle"
+          echo ""
+          echo "'The earth is but one country, and mankind its citizens'"
+          echo "- Bahá'u'lláh"
+      
+      - name: ❌ Agent Cycle Failed
+        if: failure()
+        run: |
+          echo "⚠️ Autonomous agent cycle encountered issues."
+          echo "Please check the logs above for details."
+          echo "Memory has been preserved for debugging."
+          exit 1
