@@ -830,7 +830,9 @@
       "Hello"
     ],
     "language": "Local",
-    "visited": false
+    "visited": true,
+    "visit_date": "2026-01-04T12:44:31.427080",
+    "video_views": 0
   },
   "lagos": {
     "name": "Lagos",
