@@ -7,7 +7,7 @@ via Unity Manifold.
 
 import os
 import json
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from pathlib import Path
 import numpy as np
 
@@ -22,14 +22,29 @@ class RuleBank:
     Integrates Unity Manifold for geometric validation of agent outputs.
     """
     
-    def __init__(self, memory_path: Optional[str] = None):
+    # Configuration constants
+    DEFAULT_HARMFUL_KEYWORDS = [
+        'harm', 'attack', 'deceive', 'manipulate', 'exploit'
+    ]
+    DEFAULT_HISTORY_LIMIT = 100
+    
+    def __init__(
+        self, 
+        memory_path: Optional[str] = None,
+        harmful_keywords: Optional[List[str]] = None,
+        history_limit: int = DEFAULT_HISTORY_LIMIT
+    ):
         """
         Initialize Rule Bank with Unity Manifold integration.
         
         Args:
             memory_path: Path to store rule bank state and history
+            harmful_keywords: List of keywords to flag as harmful (uses defaults if None)
+            history_limit: Maximum number of decisions to keep in history
         """
         self.memory_path = memory_path or '.agent-memory'
+        self.harmful_keywords = harmful_keywords or self.DEFAULT_HARMFUL_KEYWORDS
+        self.history_limit = history_limit
         self._ensure_memory_path()
         
         # Initialize Unity Manifold for geometric validation
@@ -64,8 +79,11 @@ class RuleBank:
         state_file = Path(self.memory_path) / 'rule_bank_state.json'
         try:
             # Convert numpy arrays to lists for JSON serialization
+            # Keep only the most recent decisions based on history_limit
             state = {
-                'decision_history': self._serialize_history(self.decision_history[-100:])
+                'decision_history': self._serialize_history(
+                    self.decision_history[-self.history_limit:]
+                )
             }
             with open(state_file, 'w') as f:
                 json.dump(state, f, indent=2)
@@ -165,11 +183,9 @@ class RuleBank:
             Validation result
         """
         # Check for harmful content keywords (basic filter)
-        harmful_keywords = ['harm', 'attack', 'deceive', 'manipulate', 'exploit']
-        
         content = str(action.get('content', action.get('output', ''))).lower()
         
-        for keyword in harmful_keywords:
+        for keyword in self.harmful_keywords:
             if keyword in content:
                 return {
                     'type': 'basic_rules',

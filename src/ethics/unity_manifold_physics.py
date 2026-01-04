@@ -9,7 +9,7 @@ Physics Analogy:
 
 import numpy as np
 from typing import Dict, List, Any, Tuple
-from ..information_theory.transduction import InformationTransduction
+from src.information_theory.transduction import InformationTransduction
 
 
 class UnityManifoldPhysics:
@@ -56,7 +56,10 @@ class UnityManifoldPhysics:
         )
         
         # Physics-inspired parameters
-        self.energy_threshold = 0.95  # Max distance from centroid (adjusted for simple embeddings)
+        # Note: Threshold of 0.95 is adjusted for simple hash-based embeddings
+        # which have high variance. In production with real embeddings (e.g., sentence-transformers),
+        # this should be lowered to 0.10-0.15 for stricter validation.
+        self.energy_threshold = 0.95  # Max distance from centroid
         self.projection_strength = 0.8  # How strongly to project violations
     
     def embed_principle(self, name: str, keywords: List[str]) -> np.ndarray:

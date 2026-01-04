@@ -9,6 +9,7 @@ Shows how Bahá'í principles are implemented as geometric constraints.
 
 import sys
 import os
+import numpy as np
 from pathlib import Path
 
 # Add parent directory to path
@@ -204,5 +205,4 @@ of the vector space itself, not hard-coded rules.
 
 
 if __name__ == "__main__":
-    import numpy as np  # Need this for the demos
     main()

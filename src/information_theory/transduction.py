@@ -29,6 +29,9 @@ class InformationTransduction:
         
         Information flow: Digital (text) → Vector (embedding)
         
+        Note: Uses deterministic hash-based embedding for consistency across runs.
+        In production, replace with sentence-transformers or similar for better quality.
+        
         Args:
             text: Input text to embed
             
@@ -37,16 +40,20 @@ class InformationTransduction:
         """
         # Use simple bag-of-words style embedding for now
         # In production, this would use the existing UMAJA embedding infrastructure
+        import hashlib
+        
         if not text:
             return np.zeros(self.embedding_dim)
         
-        # Simple hash-based embedding for deterministic behavior
+        # Deterministic hash-based embedding
         words = text.lower().split()
         vector = np.zeros(self.embedding_dim)
         
         for word in words:
-            # Use hash to map words to vector dimensions
-            hash_val = hash(word) % self.embedding_dim
+            # Use SHA256 for deterministic cross-run consistency
+            hash_bytes = hashlib.sha256(word.encode('utf-8')).digest()
+            hash_int = int.from_bytes(hash_bytes[:8], byteorder='big')
+            hash_val = hash_int % self.embedding_dim
             vector[hash_val] += 1.0
         
         # Normalize
@@ -62,11 +69,15 @@ class InformationTransduction:
         
         Information flow: Vector → Semantic (text)
         
+        Note: This operation is inherently lossy. Perfect text reconstruction
+        from embeddings is not possible. This method returns a placeholder
+        indicating the semantic direction of the vector.
+        
         Args:
             vector: Vector to decode
             
         Returns:
-            Approximate text representation
+            Approximate text representation (placeholder format)
         """
         # Inverse operation (approximation)
         # In practice, this is lossy - we can't perfectly reconstruct text
