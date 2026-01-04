@@ -96,14 +96,21 @@ jobs:
       
       - name: 📦 Upload APK artifact
         uses: actions/upload-artifact@v4
-        if: success()
+        if: success() && hashFiles('flutter_app/build/app/outputs/flutter-apk/*.apk') != ''
         with:
           name: app-${{ github.event.inputs.build_type || 'debug' }}.apk
-          path: |
-            flutter_app/build/app/outputs/flutter-apk/*.apk
-            placeholder/build/app/outputs/flutter-apk/README.txt
+          path: flutter_app/build/app/outputs/flutter-apk/*.apk
           retention-days: 30
-          if-no-files-found: warn
+          if-no-files-found: ignore
+      
+      - name: 📦 Upload placeholder (no Flutter app yet)
+        uses: actions/upload-artifact@v4
+        if: success() && hashFiles('flutter_app/build/app/outputs/flutter-apk/*.apk') == ''
+        with:
+          name: flutter-app-not-created-yet
+          path: placeholder/build/app/outputs/flutter-apk/README.txt
+          retention-days: 7
+          if-no-files-found: ignore
       
       - name: 📊 Build summary
         if: success()

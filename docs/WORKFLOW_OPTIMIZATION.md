@@ -6,9 +6,9 @@ This document explains the optimization measures implemented to reduce GitHub Ac
 
 ## Problem Statement
 
-The repository was consuming excessive GitHub Actions minutes:
-- **602 workflow runs** in a short period
-- Estimated **60% of monthly quota consumed in 4 days**
+The repository was consuming excessive GitHub Actions minutes during a short period:
+- **602 workflow runs in 4 days**
+- Estimated **60% of monthly quota consumed in just 4 days**
 - Risk of hitting rate limits during critical development phases
 - Resource-heavy workflows running on schedules that were not essential during Flutter app development
 
