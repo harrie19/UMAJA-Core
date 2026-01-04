@@ -33,8 +33,8 @@ export function DNAHelix(): JSX.Element {
   const height = 2;
   const radius = 0.3;
 
-  const bases = [];
-  const backbones = [];
+  const bases: JSX.Element[] = [];
+  const backbones: JSX.Element[] = [];
 
   for (let i = 0; i < basePairs; i++) {
     const y = (i / basePairs) * height - height / 2;
@@ -116,8 +116,8 @@ export function NeuralNetwork(): JSX.Element {
     { nodes: 2, x: 1.5 },
   ];
 
-  const nodes = [];
-  const connections = [];
+  const nodes: JSX.Element[] = [];
+  const connections: JSX.Element[] = [];
 
   layers.forEach((layer, layerIndex) => {
     const yStart = -(layer.nodes - 1) * 0.5 * 0.5;
@@ -225,8 +225,8 @@ export function Molecule(): JSX.Element {
 export function City(): JSX.Element {
   const gridSize = 10;
   const spacing = 0.4;
-  const buildings = [];
-  const streets = [];
+  const buildings: JSX.Element[] = [];
+  const streets: JSX.Element[] = [];
 
   for (let x = 0; x < gridSize; x++) {
     for (let z = 0; z < gridSize; z++) {

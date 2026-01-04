@@ -54,16 +54,13 @@ export default function ChatInterface({ onCommand }: ChatInterfaceProps) {
       } else {
         aiResponse = `Ich verstehe nicht genau, in was ich mich verwandeln soll. Kannst du es anders formulieren?`;
       }
-    } else if (parsed.intent === 'build') {
+    } else if (parsed.intent === 'create') {
       aiResponse = `Ich möchte ${parsed.target} bauen. Dafür brauche ich ein CAD-Werkzeug. Darf ich es installieren?`;
       if (onCommand) {
         onCommand({ type: 'permission_request', action: 'install_cad_tool', target: parsed.target });
       }
-    } else if (parsed.intent === 'simulate') {
-      aiResponse = `Simulation von ${parsed.target} wird vorbereitet...`;
-      if (onCommand) {
-        onCommand({ type: 'simulate', target: parsed.target });
-      }
+    } else if (parsed.intent === 'help') {
+      aiResponse = `Hier sind meine Fähigkeiten:\n- Verwandlungen (DNA, Neural Network, Molecule, City, Galaxy)\n- Bauen und Erstellen\n- Simulationen\n\nSag mir einfach, was du möchtest!`;
     } else {
       aiResponse = `Ich habe verstanden: "${parsed.target}". Was möchtest du damit machen?`;
     }

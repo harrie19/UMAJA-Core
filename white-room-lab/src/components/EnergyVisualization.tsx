@@ -56,6 +56,7 @@ export default function EnergyVisualization() {
     }
 
     setParticles(newParticles);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [energyData?.timestamp]);
 
   // Animate particles
