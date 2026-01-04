@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
 import BlueBubble from '@/components/BlueBubble';
 import WhiteRoom from '@/components/WhiteRoom';
@@ -97,9 +97,6 @@ export default function WhiteRoomLab() {
           maxDistance={50}
           maxPolarAngle={Math.PI / 2}
         />
-        
-        {/* Studio Lighting Environment */}
-        <Environment preset="studio" />
       </Canvas>
       
       {/* UI Overlay */}
