@@ -10,6 +10,8 @@ on:
 
 jobs:
   content-cycle:
+    # Temporarily disabled during Flutter app development to conserve GitHub Actions minutes
+    if: false
     runs-on: ubuntu-latest
     
     permissions:

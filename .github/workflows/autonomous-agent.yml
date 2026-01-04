@@ -12,14 +12,11 @@ permissions:
 
 jobs:
   intelligent_review:
+    # Temporarily disabled during Flutter app development to conserve GitHub Actions minutes
+    # Original condition was: github.actor != 'github-actions[bot]' && github.actor != 'copilot-swe-agent[bot]' && !contains(github.event.head_commit.message, '[skip-ci]')
+    if: false
     name: AI-Powered PR Review
     runs-on: ubuntu-latest
-    
-    # CRITICAL: Prevent infinite loops
-    if: |
-      github.actor != 'github-actions[bot]' &&
-      github.actor != 'copilot-swe-agent[bot]' &&
-      !contains(github.event.head_commit.message, '[skip-ci]')
     
     steps:
       - name: Checkout Repository

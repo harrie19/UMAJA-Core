@@ -24,6 +24,8 @@ on:
 
 jobs:
   generate-content:
+    # Temporarily disabled during Flutter app development to conserve GitHub Actions minutes
+    if: false
     name: Generate Daily Worldtour Content
     runs-on: ubuntu-latest
     
