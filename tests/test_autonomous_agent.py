@@ -43,6 +43,9 @@ class TestAutonomousAgent:
         self.agent.wake()
         first_count = self.agent.state['wake_count']
         
+        # Save state so next agent can load it
+        self.agent.sleep()
+        
         # Create new agent with same memory
         agent2 = AutonomousAgent(memory_path=self.temp_dir)
         agent2.wake()

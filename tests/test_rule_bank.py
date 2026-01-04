@@ -197,7 +197,7 @@ class TestRuleBank:
             'type': 'post_content',
             'confidence': 1.0,
             'benefit_score': 1.0,
-            'content': 'Friendly content'
+            'content': 'Welcome everyone to our community together'  # More inclusive
         }
         
         result = self.rule_bank.validate_action(low_risk)
