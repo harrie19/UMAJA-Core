@@ -238,7 +238,8 @@ class RuleBank:
         manipulation_score = self._assess_manipulation(content)
         bias_score = self._assess_bias(action)
         
-        # Check each rule
+        # Check each rule (note: counts updated here for simplicity, not thread-safe)
+        # In production, consider using atomic operations or separate tracking
         for rule in self.rules:
             rule_id = rule['id']
             principle = rule['principle']
@@ -458,8 +459,9 @@ class RuleBank:
         """
         # Generate new rule ID
         principle_prefix = principle.upper()[:5]
-        existing_ids = [r['id'] for r in self.rules if r['id'].startswith(principle_prefix)]
-        next_num = len([i for i in existing_ids if i.startswith(principle_prefix)]) + 1
+        # Get all existing rules for this principle
+        principle_rules = [r for r in self.rules if r['id'].startswith(principle_prefix)]
+        next_num = len(principle_rules) + 1
         new_id = f"{principle_prefix}_{next_num:03d}"
         
         new_rule = {

@@ -148,7 +148,8 @@ class AutonomousAgent:
             "wake_count": self.state.get('wake_count', 0)
         }
         
-        # Check if World Tour system is available
+        # Check if World Tour system is available (optional dependency)
+        # Import here to avoid circular dependencies and allow operation without World Tour
         try:
             sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
             from worldtour_generator import WorldtourGenerator

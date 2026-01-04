@@ -81,10 +81,13 @@ class ReasoningMiddleware:
         validation = self.rule_bank.validate_action(action)
         
         # 3. Determine action status
-        # Check for critical violations first
+        # Build rule lookup for efficiency
+        rule_severity_map = {r['id']: r.get('severity', 'MEDIUM') for r in self.rule_bank.rules}
+        
+        # Check for critical violations
         critical_violations = [
             r_id for r_id in validation.get('violated_rules', [])
-            if any(r['id'] == r_id and r.get('severity') == 'CRITICAL' for r in self.rule_bank.rules)
+            if rule_severity_map.get(r_id) == 'CRITICAL'
         ]
         
         num_violations = len(validation.get('violated_rules', []))
