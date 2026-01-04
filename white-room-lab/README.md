@@ -4,13 +4,34 @@ Welcome to the White Room Lab! This is a revolutionary 3D web-based laboratory w
 
 ## 🌟 Features
 
-- **3D Interactive Environment**: Fully immersive white room with realistic lighting and physics
-- **AI Formwandler Agent**: Blue Bubble can transform into ANY form (human, DNA, turbine, galaxy, etc.)
+### ✅ Implemented and Working
+
+- **3D Interactive Environment**: Fully immersive white room with realistic lighting
+- **AI Formwandler Agent (Blue Bubble)**: Can transform into 6+ forms (DNA, Neural Network, Molecule, City, Galaxy, and more)
 - **Natural Language Interface**: Chat with the AI using German or English commands
+- **Voice Input**: Voice commands using Web Speech API (browser-dependent)
+- **GitHub PR Visualization**: Real-time 3D network of pull requests from this repository
+- **Energy Monitor**: Live energy flow visualization with particle system
+- **Vector Agent Swarm**: 15 autonomous agents that move and communicate
+- **World Tour Globe**: Interactive 3D Earth with visited cities
+- **System Monitoring**: Live FPS, object count, and system status
 - **Permission System**: AI asks permission before installing tools or accessing resources
-- **Voice Input**: Optional voice commands using Web Speech API
-- **Real-time Physics**: Powered by Cannon.js for realistic simulations
-- **System Monitoring**: Live FPS, object count, and simulation status
+
+### 📊 Transformations Available
+
+1. **DNA Helix** - Double helix with 20 base pairs, rotating animation
+2. **Neural Network** - 3-layer network (4-6-2) with animated signal flow
+3. **Water Molecule (H2O)** - Chemically accurate with 104.5° bond angle
+4. **Procedural City** - 10x10 grid with 100 random-height buildings
+5. **Spiral Galaxy** - 10,000 particles in logarithmic spiral arms
+6. **Blue Bubble** - Default pulsating sphere form
+
+### 🎨 Visualizations
+
+- **GitHub PRs** - Live data from harrie19/UMAJA-Core displayed as 3D network
+- **Energy Monitor** - Real-time power metrics with particle effects
+- **Agent Swarm** - 15 mini-agents with dynamic connections
+- **World Tour** - 3D rotating Earth with 8 city pins and visit tracking
 
 ## 🚀 Quick Start
 
@@ -68,34 +89,35 @@ vercel
 
 ### Example Commands
 
-#### Transform Commands
+#### Transform Commands (Working ✅)
 - `"Verwandle dich in DNA"` - Transform to DNA helix
-- `"Transform into human"` - Transform to human form
-- `"Sei eine Turbine"` - Become a turbine
+- `"Zeig mir ein neuronales Netzwerk"` - Show neural network
+- `"Werde zu einem Molekül"` / `"Show me H2O"` - Water molecule
+- `"Bau eine Stadt"` / `"Build a city"` - Procedural city
+- `"Zeig mir eine Galaxie"` / `"Show me a galaxy"` - Spiral galaxy
+- `"Transform into bubble"` - Return to default form
 
-#### Build Commands
-- `"Baue eine Gasturbine"` - Build a gas turbine
-- `"Erstelle ein Molekül"` - Create a molecule
-- `"Build a neural network"` - Build a neural network
+#### Query Commands (Working ✅)
+- `"Hilfe"` / `"Help"` - Show available commands
+- `"Was kannst du?"` / `"What can you do?"` - Show capabilities
 
-#### Simulate Commands
-- `"Simuliere Luftstrom"` - Simulate air flow
-- `"Test the turbine"` - Test turbine simulation
-
-#### Query Commands
-- `"Zeig mir PRs"` - Show GitHub pull requests
-- `"Was ist deine aktuelle Form?"` - What is your current form?
+#### Visualization Viewing (Always Visible)
+- GitHub PRs are visible at position (0, 3, -5)
+- Energy Monitor at position (5, 2, -5)
+- Vector Swarm at position (0, 0, 0)
+- World Tour Globe at position (-5, 0, -5)
 
 ## 🏗️ Architecture
 
 ### Technology Stack
 
-- **Framework**: Next.js 14 with TypeScript
+- **Framework**: Next.js 14 with TypeScript (strict mode)
 - **3D Graphics**: Three.js + React Three Fiber + Drei
-- **Physics**: Cannon-es + @react-three/cannon
-- **Animation**: Framer Motion (planned)
+- **Physics**: @react-three/cannon + Cannon-es (basic integration)
+- **Animation**: React Three Fiber useFrame
 - **Styling**: Tailwind CSS
-- **Deployment**: Vercel-ready
+- **Deployment**: Vercel-ready (zero-config)
+- **APIs**: GitHub API, Mock WebSocket for energy data
 
 ### Project Structure
 
@@ -112,16 +134,18 @@ white-room-lab/
 │   │   ├── ChatInterface.tsx        # Natural language interaction
 │   │   ├── PermissionManager.tsx    # ACCEPT/REJECT system
 │   │   ├── VoiceInput.tsx           # Voice recognition
-│   │   └── SystemStatus.tsx         # Real-time metrics
+│   │   ├── SystemStatus.tsx         # Real-time metrics
+│   │   ├── PRVisualization.tsx      # ✨ GitHub PR 3D network
+│   │   ├── EnergyVisualization.tsx  # ✨ Energy monitor with particles
+│   │   ├── VectorSwarm.tsx          # ✨ Agent swarm visualization
+│   │   └── WorldTourGlobe.tsx       # ✨ 3D Earth with cities
 │   ├── lib/
-│   │   ├── transforms.ts            # Morphing animations
+│   │   ├── transforms.tsx           # ✨ 6 working 3D transformations
 │   │   ├── voice.ts                 # Web Speech API wrapper
-│   │   ├── physics.ts               # Physics utilities
-│   │   └── commands.ts              # NLP command parser
+│   │   ├── commands.ts              # ✨ NLP command parser
+│   │   └── umaja-api.ts             # ✨ API integration layer
 │   └── types/
 │       └── index.ts                 # TypeScript definitions
-├── public/
-│   └── models/                      # 3D models (GLTF)
 ├── docs/                            # Documentation
 ├── package.json
 ├── tsconfig.json
@@ -200,39 +224,72 @@ The White Room Lab integrates with the main UMAJA-Core system:
 - [Transform Guide](docs/TRANSFORMS.md) - Available forms
 - [Integration Guide](docs/INTEGRATION.md) - UMAJA-Core integration
 
-## 🐛 Known Issues
+## 🐛 Known Status & Limitations
 
-- Voice input not supported in all browsers (Safari limited support)
-- Some 3D models need to be added to `/public/models/`
-- Transform animations are placeholder (smooth morphing in progress)
+### ✅ Working Features
+- All 6 transformations render correctly
+- GitHub PR API integration (real data)
+- Energy monitor with live updates
+- Vector swarm with movement
+- World tour globe with rotation
+- Command parsing (German + English)
+- Voice input (browser-dependent)
+- Build system (0 errors)
 
-## 🚧 Roadmap
+### ⚠️ Known Limitations
+- Voice input not supported in all browsers (Safari has limited support)
+- Transformations are displayed but not yet integrated with Blue Bubble morphing
+- Some placeholder transformations (Turbine, Tool, Vehicle, Human, Bugs Bunny) not implemented
+- Real physics simulations not yet implemented (basic collision only)
 
-### Week 1 (Current) ✅
+### 🚧 Planned Enhancements
+- Smooth morphing animations between forms
+- Integration of transformations with Blue Bubble
+- Form Library UI browser
+- Scene Controls component
+- Additional transformations
+- Advanced physics simulations
+
+## 🚧 Status & Roadmap
+
+### ✅ Phase 1: Foundation (Complete)
 - [x] Core 3D environment
 - [x] Blue Bubble agent
-- [x] Chat interface
+- [x] Chat interface with command parsing
 - [x] Permission system
 - [x] System status display
-- [x] Basic command parsing
+- [x] Voice input integration
 
-### Week 2 (Planned)
-- [ ] Object creation & CAD integration
-- [ ] Fluid dynamics simulation
-- [ ] Advanced transform animations
-- [ ] More form types (DNA, turbine, etc.)
+### ✅ Phase 2: Visualizations (Complete)
+- [x] GitHub PR visualization (3D network)
+- [x] Energy monitor with particles
+- [x] Vector agent swarm
+- [x] World tour 3D globe
 
-### Week 3 (Planned)
-- [ ] Molecular visualization
-- [ ] Neural network visualization
-- [ ] City builder
-- [ ] Cosmic structures
+### ✅ Phase 3: Transformations (Partial - 6 of 11)
+- [x] DNA Helix
+- [x] Neural Network
+- [x] Water Molecule (H2O)
+- [x] Procedural City
+- [x] Spiral Galaxy
+- [x] Blue Bubble (default)
+- [ ] Turbine (placeholder)
+- [ ] Tool/Hammer (placeholder)
+- [ ] Vehicle/Car (placeholder)
+- [ ] Human (placeholder)
+- [ ] Bugs Bunny (placeholder)
 
-### Week 4 (Planned)
-- [ ] Performance optimization
-- [ ] Advanced materials (PBR)
-- [ ] Multiplayer support (optional)
-- [ ] VR/AR ready
+### 🚧 Phase 4: Integration & Polish (In Progress)
+- [ ] Morphing animations between forms
+- [ ] Form Library UI
+- [ ] Scene Controls
+- [ ] Complete remaining transformations
+
+### 🔮 Phase 5: Advanced Features (Planned)
+- [ ] WebRTC collaboration
+- [ ] VR/AR support
+- [ ] Advanced physics simulations
+- [ ] AI co-creation agent
 
 ## 🤝 Contributing
 
