@@ -91,3 +91,11 @@ data/analytics.json
 # Deployment artifacts
 deployment_report.json
 deployment_metrics.json
+
+# ============================================
+# AUTONOMOUS AGENT MEMORY
+# ============================================
+
+# Agent memory (managed via GitHub Actions cache)
+.agent-memory/
+# Note: Memory is persisted via GitHub Actions cache, not git
