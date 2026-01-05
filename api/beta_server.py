@@ -6,7 +6,12 @@ from flask import Flask, request, jsonify, render_template, session, redirect
 from flask_cors import CORS
 import os
 import sys
+import logging
 from pathlib import Path
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -14,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 from beta_tracker import BetaTracker
 from personality_engine import PersonalityEngine
 from freemium_model import FreemiumModel
+from beta_config import CONTACT_EMAIL, GITHUB_REPO, PRIVACY_POLICY_URL
 
 app = Flask(__name__, 
             template_folder='../templates',
@@ -24,6 +30,15 @@ app.secret_key = os.urandom(24)
 tracker = BetaTracker()
 personality_engine = PersonalityEngine()
 pricing = FreemiumModel()
+
+# Template context processor to inject config into all templates
+@app.context_processor
+def inject_config():
+    return {
+        'contact_email': CONTACT_EMAIL,
+        'github_repo': GITHUB_REPO,
+        'privacy_url': PRIVACY_POLICY_URL
+    }
 
 
 @app.route('/')
@@ -81,18 +96,21 @@ def generate_content():
         if comedian:
             result = comedian.generate_text(topic, length)
         else:
-            # Fallback to simple generation
+            # Log missing personality for debugging
+            logger.warning(f"Personality '{actual_personality}' not found, using fallback")
             result = {
-                'text': f"Generated content about {topic} in {personality_id} style",
+                'text': f"I'm still learning about {topic}! This personality is being developed. "
+                       f"Try another personality or check back soon.",
                 'personality': personality_id,
-                'tone': 'friendly'
+                'tone': 'apologetic'
             }
         
         # Track the interaction
         tracker.track_interaction(session_id, 'content_generated', {
             'personality': personality_id,
             'topic': topic,
-            'length': length
+            'length': length,
+            'fallback_used': comedian is None
         })
         
         return jsonify({
@@ -102,6 +120,7 @@ def generate_content():
             'tone': result.get('tone')
         })
     except Exception as e:
+        logger.error(f"Error generating content: {str(e)}")
         return jsonify({
             'error': str(e),
             'success': False
