@@ -61,7 +61,7 @@ See PR39_ANALYSIS.md for complete technical details.
 
 If the unique features (voting, queue, analytics) are desired, create a new issue:
 
-**Title:** "Add worldtour voting and queue features"
+**Title:** "Implement worldtour voting system and content queue features"
 
 **Body:**
 ```markdown

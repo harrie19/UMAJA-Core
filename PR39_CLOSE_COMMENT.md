@@ -1,6 +1,6 @@
 # Comment to Post on PR #39
 
-Thank you for this contribution! After careful analysis, I'm recommending this PR be closed because the main branch has already integrated comprehensive worldtour endpoints that provide most of this functionality with additional improvements.
+Thank you for this contribution! After careful analysis, I've found that the main branch has already integrated comprehensive worldtour endpoints that provide most of this functionality with additional improvements. I'm recommending we close this PR and discuss extracting the unique features you've added.
 
 ## What's Already in Main ✅
 
