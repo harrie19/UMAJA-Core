@@ -1017,9 +1017,22 @@ def not_found(error):
             "/deployment-info", 
             "/api/daily-smile", 
             "/api/smile/<archetype>",
+            "/api/ai-agents",
+            "POST /worldtour/start",
+            "POST /worldtour/visit/<city_id>",
+            "GET /worldtour/status",
+            "GET /worldtour/cities",
+            "GET /worldtour/content/<city_id>",
+            "GET /api/gallery/samples",
+            "POST /api/gallery/generate",
+            "GET /api/energy/metrics",
+            "GET /api/energy/report",
+            "POST /api/energy/log",
             "/cdn/status",
             "/cdn/manifest",
-            "/api/smile/cdn/<archetype>/<language>/<day>"
+            "/api/smile/cdn/<archetype>/<language>/<day>",
+            "/sitemap.xml",
+            "/robots.txt"
         ]
     }), 404
 
