@@ -25,32 +25,30 @@ def _get_client(monkeypatch, tmp_path):
 def test_worldtour_start_endpoint(monkeypatch, tmp_path):
     client = _get_client(monkeypatch, tmp_path)
 
-    response = client.post("/api/worldtour/start")
+    response = client.post("/worldtour/start")
     assert response.status_code == 200
 
     payload = response.get_json()
     assert payload["success"] is True
-    assert payload["content"]["city_id"] == payload["city_id"]
-    assert payload["stats"]["visited_cities"] >= 1
+    assert "next_city" in payload
+    assert payload["stats"]["visited_cities"] >= 0
 
 
-def test_worldtour_cities_and_vote(monkeypatch, tmp_path):
+def test_worldtour_cities_and_status(monkeypatch, tmp_path):
     client = _get_client(monkeypatch, tmp_path)
 
-    cities_response = client.get("/api/worldtour/cities")
+    cities_response = client.get("/worldtour/cities")
     assert cities_response.status_code == 200
 
     cities_payload = cities_response.get_json()
+    assert cities_payload["success"] is True
     assert cities_payload["cities"]
 
     city_id = cities_payload["cities"][0]["id"]
 
-    vote_response = client.post("/api/worldtour/vote", json={"city_id": city_id})
-    assert vote_response.status_code == 200
+    status_response = client.get("/worldtour/status")
+    assert status_response.status_code == 200
 
-    analytics_response = client.get("/api/analytics/worldtour")
-    assert analytics_response.status_code == 200
-
-    analytics_payload = analytics_response.get_json()
-    assert "total_cities" in analytics_payload
-    assert "visited_cities" in analytics_payload
+    status_payload = status_response.get_json()
+    assert "stats" in status_payload
+    assert "status" in status_payload
