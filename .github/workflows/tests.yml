@@ -3,8 +3,20 @@ name:  UMAJA Core Tests
 on:
   push: 
     branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'api/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/tests.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'api/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/tests.yml'
   workflow_dispatch: 
 
 jobs:
