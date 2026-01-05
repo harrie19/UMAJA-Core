@@ -264,7 +264,7 @@ checks = [
 1. Ensure server is running: `cd server && node reality-stream.js`
 2. Check port 3002 is not in use: `lsof -i :3002`
 3. Check firewall settings
-4. Verify `REACT_APP_REALITY_STREAM_URL` environment variable
+4. Verify `VITE_REALITY_STREAM_URL` environment variable in `.env`
 
 ### Issue: 3D Scene Not Rendering
 
@@ -356,7 +356,7 @@ npm run build
 
 The system is designed to work with existing Railway backend:
 - URL: `https://umaja-core-production.up.railway.app`
-- Configure in `.env`: `REACT_APP_BACKEND_URL=...`
+- Configure in `.env`: `VITE_BACKEND_URL=...`
 
 ### Docker (Optional)
 

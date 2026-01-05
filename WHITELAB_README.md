@@ -107,7 +107,7 @@ Reality Agent (Python)
 
 Edit `.env` or set environment variable:
 ```bash
-REACT_APP_REALITY_STREAM_URL=http://localhost:3002
+VITE_REALITY_STREAM_URL=http://localhost:3002
 ```
 
 ### Adjust Particle Count
@@ -144,7 +144,7 @@ setInterval(async () => {
 ### WebSocket Connection Failed
 1. Ensure server is running on port 3002
 2. Check firewall settings
-3. Verify `REACT_APP_REALITY_STREAM_URL`
+3. Verify `VITE_REALITY_STREAM_URL` in `.env` file
 
 ### Black Screen
 1. Check browser console (F12)
