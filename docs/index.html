@@ -308,7 +308,7 @@
             <p><strong>🕊️ Built with ❤️ for 8 billion humans 🕊️</strong></p>
             <p style="margin-top: 10px;">
                 <a href="https://github.com/harrie19/UMAJA-Core" target="_blank">GitHub Repository</a> •
-                <a href="https://web-production-6ec45.up.railway.app/health" target="_blank">API Health</a> •
+                <a href="https://umaja-core-production.up.railway.app/health" target="_blank">API Health</a> •
                 <a href="https://github.com/harrie19/UMAJA-Core#readme" target="_blank">Documentation</a>
             </p>
             <p style="margin-top: 15px; color: #888; font-size: 0.9em;">
@@ -321,7 +321,7 @@
         // Configuration
         // Backend URL is now loaded from config.js based on environment detection
         // Fallback to production URL if config not loaded
-        const BACKEND_URL = window.UMAJAConfig?.backendURL || 'https://web-production-6ec45.up.railway.app';
+        const BACKEND_URL = window.UMAJAConfig?.backendURL || 'https://umaja-core-production.up.railway.app';
         let isBackendAvailable = false;
         
         // Retry configuration
