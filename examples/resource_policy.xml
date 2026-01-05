@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceAcquisitionPolicy id="umaja_default_policy" version="1.0">
+  <limits>
+    <cpuUsage max="80%" enforce="true"/>
+    <memoryUsage max="16GB" enforce="true"/>
+    <networkUsage max="100MB/s" enforce="false"/>
+    <diskUsage max="50GB" enforce="true"/>
+  </limits>
+  
+  <prosocialConstraints>
+    <fairUsePolicy enabled="true">
+      <enforcementMechanism>cryptographicProof</enforcementMechanism>
+      <description>Ensure agents use resources fairly and don't monopolize</description>
+    </fairUsePolicy>
+    
+    <emergencyOverride enabled="true">
+      <description>Allow override in critical situations</description>
+      <requiresJustification>true</requiresJustification>
+    </emergencyOverride>
+    
+    <humanOversight required="false">
+      <description>Require human approval for certain actions</description>
+      <triggerThreshold>high_risk</triggerThreshold>
+    </humanOversight>
+  </prosocialConstraints>
+  
+  <monitoring>
+    <auditTrail enabled="true"/>
+    <realTimeAlerts enabled="true"/>
+    <prometheusMetrics enabled="true"/>
+  </monitoring>
+</resourceAcquisitionPolicy>

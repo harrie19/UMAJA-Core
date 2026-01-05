@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:element name="resourceAcquisitionPolicy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="limits" type="LimitsType"/>
+        <xs:element name="prosocialConstraints" type="ProsocialConstraintsType"/>
+        <xs:element name="monitoring" type="MonitoringType" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="version" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="LimitsType">
+    <xs:sequence>
+      <xs:element name="cpuUsage" type="ResourceLimitType"/>
+      <xs:element name="memoryUsage" type="ResourceLimitType"/>
+      <xs:element name="networkUsage" type="ResourceLimitType" minOccurs="0"/>
+      <xs:element name="diskUsage" type="ResourceLimitType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="ResourceLimitType">
+    <xs:attribute name="max" type="xs:string" use="required"/>
+    <xs:attribute name="enforce" type="xs:boolean" default="true"/>
+  </xs:complexType>
+  
+  <xs:complexType name="ProsocialConstraintsType">
+    <xs:sequence>
+      <xs:element name="fairUsePolicy" type="FairUsePolicyType"/>
+      <xs:element name="emergencyOverride" type="EmergencyOverrideType" minOccurs="0"/>
+      <xs:element name="humanOversight" type="HumanOversightType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="FairUsePolicyType">
+    <xs:sequence>
+      <xs:element name="enforcementMechanism" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+  </xs:complexType>
+  
+  <xs:complexType name="EmergencyOverrideType">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="requiresJustification" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="enabled" type="xs:boolean" default="false"/>
+  </xs:complexType>
+  
+  <xs:complexType name="HumanOversightType">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="triggerThreshold" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="required" type="xs:boolean" default="false"/>
+  </xs:complexType>
+  
+  <xs:complexType name="MonitoringType">
+    <xs:sequence>
+      <xs:element name="auditTrail" type="MonitoringFeatureType"/>
+      <xs:element name="realTimeAlerts" type="MonitoringFeatureType"/>
+      <xs:element name="prometheusMetrics" type="MonitoringFeatureType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="MonitoringFeatureType">
+    <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+  </xs:complexType>
+  
+</xs:schema>
