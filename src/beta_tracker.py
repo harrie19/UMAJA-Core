@@ -9,7 +9,7 @@ No tracking, no surveillance, only improvement.
 import uuid
 import json
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 import logging
@@ -46,7 +46,7 @@ class BetaTracker:
         
         session = {
             'session_id': session_id,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'user_agent_hash': hashlib.sha256(user_agent.encode()).hexdigest()[:16] if user_agent else None,
             'beta_version': '1.0.0'
         }
@@ -60,7 +60,7 @@ class BetaTracker:
         """Record explicit user consent"""
         consent = {
             'session_id': session_id,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'agreed_to_beta': consent_data.get('beta', False),
             'agreed_to_analytics': consent_data.get('analytics', False),
             'agreed_to_future_paid': consent_data.get('future_paid', False),
@@ -74,7 +74,7 @@ class BetaTracker:
         """Track user interaction"""
         interaction = {
             'session_id': session_id,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'event_type': event_type,
             'data': data
         }
@@ -86,7 +86,7 @@ class BetaTracker:
         """Record user feedback"""
         feedback = {
             'session_id': session_id,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'rating': feedback_data.get('rating'),
             'comment': feedback_data.get('comment', ''),
             'category': feedback_data.get('category', 'general')
