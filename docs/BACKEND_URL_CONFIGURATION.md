@@ -122,7 +122,7 @@ CORS(app, origins=[
 
 ### Issue: Wrong URL in Configuration
 
-**Previous Wrong URL:** `https://web-production-6ec45.up.railway.app`  
+**Previous Wrong URL:** `https://umaja-core-production.up.railway.app`  
 **Correct URL:** `https://web-production-6ec45.up.railway.app`
 
 If you see the old wrong URL, update it immediately in `docs/index.html`.

@@ -145,7 +145,7 @@ def main():
         print("3. If URL is different, update docs/index.html line 324")
         print("4. Ensure CORS allows: https://harrie19.github.io")
         print("\n💡 Expected URL format: https://web-production-6ec45.up.railway.app")
-        print("⚠️  Previous wrong URL: https://web-production-6ec45.up.railway.app")
+        print("⚠️  Previous wrong URL: https://umaja-core-production.up.railway.app")
         sys.exit(1)
     
     # Test other endpoints (non-critical)
