@@ -13,7 +13,7 @@ This document defines the communication protocols, API specifications, and inter
 UMAJA-Core follows RESTful design principles with the following characteristics:
 
 #### Base URLs
-- **Production:** `https://umaja-core-production.up.railway.app`
+- **Production:** `https://web-production-6ec45.up.railway.app`
 - **GitHub Pages:** `https://harrie19.github.io/UMAJA-Core/`
 
 #### HTTP Methods
@@ -51,7 +51,7 @@ All responses use JSON with consistent structure:
 **Request:**
 ```http
 GET /health HTTP/1.1
-Host: umaja-core-production.up.railway.app
+Host: web-production-6ec45.up.railway.app
 Accept: application/json
 ```
 
@@ -109,7 +109,7 @@ Accept: application/json
 **Request:**
 ```http
 GET /api/daily-smile HTTP/1.1
-Host: umaja-core-production.up.railway.app
+Host: web-production-6ec45.up.railway.app
 Accept: application/json
 ```
 
@@ -137,7 +137,7 @@ Accept: application/json
 **Request:**
 ```http
 GET /api/smile/professor HTTP/1.1
-Host: umaja-core-production.up.railway.app
+Host: web-production-6ec45.up.railway.app
 Accept: application/json
 ```
 
@@ -168,7 +168,7 @@ Accept: application/json
 **Request:**
 ```http
 POST /worldtour/start HTTP/1.1
-Host: umaja-core-production.up.railway.app
+Host: web-production-6ec45.up.railway.app
 Content-Type: application/json
 
 {
@@ -201,7 +201,7 @@ Content-Type: application/json
 **Request:**
 ```http
 GET /worldtour/status HTTP/1.1
-Host: umaja-core-production.up.railway.app
+Host: web-production-6ec45.up.railway.app
 Accept: application/json
 ```
 
@@ -245,7 +245,7 @@ Accept: application/json
 **Request:**
 ```http
 GET /worldtour/cities?status=visited&page=1&per_page=10 HTTP/1.1
-Host: umaja-core-production.up.railway.app
+Host: web-production-6ec45.up.railway.app
 Accept: application/json
 ```
 
@@ -695,7 +695,7 @@ const content = await response.json();
 **Fallback Method (API):**
 ```javascript
 // If CDN fails, use API
-const response = await fetch('https://umaja-core-production.up.railway.app/api/daily-smile');
+const response = await fetch('https://web-production-6ec45.up.railway.app/api/daily-smile');
 const content = await response.json();
 ```
 
@@ -837,7 +837,7 @@ X-API-Replacement: /api/v3/daily-inspiration
 
 ```javascript
 // Connection
-const ws = new WebSocket('wss://umaja-core-production.up.railway.app/ws');
+const ws = new WebSocket('wss://web-production-6ec45.up.railway.app/ws');
 
 // Subscribe to events
 ws.send(JSON.stringify({

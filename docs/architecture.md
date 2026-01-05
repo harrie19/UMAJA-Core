@@ -289,7 +289,7 @@ The core intelligence of UMAJA-Core consists of three layers of autonomous agent
 UMAJA-Core uses a sophisticated dual-deployment architecture for maximum reach at minimal cost:
 
 #### Backend API (Railway)
-**URL:** `https://umaja-core-production.up.railway.app`
+**URL:** `https://web-production-6ec45.up.railway.app`
 
 **Components:**
 - Flask REST API (`api/simple_server.py`)
@@ -325,7 +325,7 @@ PORT=5000
 ```javascript
 const CONFIG = {
   DEPLOYMENT_ENV: 'github_pages',
-  API_URL: 'https://umaja-core-production.up.railway.app',
+  API_URL: 'https://web-production-6ec45.up.railway.app',
   CDN_URL: 'https://harrie19.github.io/UMAJA-Core/cdn',
   FALLBACK_ENABLED: true
 };
@@ -448,7 +448,7 @@ def api_endpoint():
 # CORS configuration
 CORS(app, origins=[
     "https://harrie19.github.io",
-    "https://umaja-core-production.up.railway.app"
+    "https://web-production-6ec45.up.railway.app"
 ])
 
 # Input validation

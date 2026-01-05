@@ -310,7 +310,7 @@ Welcome to the complete UMAJA-Core documentation. This index provides navigation
 ## 🌍 External Resources
 
 - **Live Site:** https://harrie19.github.io/UMAJA-Core/
-- **API Server:** https://umaja-core-production.up.railway.app
+- **API Server:** https://web-production-6ec45.up.railway.app
 - **GitHub Repo:** https://github.com/harrie19/UMAJA-Core
 - **Bahá'í Faith:** https://www.bahai.org
 

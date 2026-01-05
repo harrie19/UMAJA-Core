@@ -219,7 +219,7 @@ def daily_smile():
 # Allowed origins
 ALLOWED_ORIGINS = [
     "https://harrie19.github.io",
-    "https://umaja-core-production.up.railway.app"
+    "https://web-production-6ec45.up.railway.app"
 ]
 
 # CORS setup
