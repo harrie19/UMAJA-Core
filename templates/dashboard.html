@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}UMAJA Dashboard - Your AI Companion{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <div>
+            <h1 style="margin: 0;">🌍 UMAJA Dashboard</h1>
+            <p style="margin: 5px 0; opacity: 0.8;">Beta User - Lifetime Free Access</p>
+        </div>
+        <div class="beta-badge">BETA</div>
+    </div>
+
+    <!-- Personality Selector -->
+    <div class="card">
+        <div class="card-header">🎭 Choose Your Personality</div>
+        <div class="card-body">
+            <div class="personality-selector">
+                <div class="personality-card" data-personality="professor">
+                    <div class="personality-icon">🎓</div>
+                    <div class="personality-name">The Professor</div>
+                    <div class="personality-description">Wise, analytical, loves facts and fascinating insights</div>
+                </div>
+                <div class="personality-card" data-personality="worrier">
+                    <div class="personality-icon">😰</div>
+                    <div class="personality-name">The Worrier</div>
+                    <div class="personality-description">Anxious but relatable, finds humor in life's uncertainties</div>
+                </div>
+                <div class="personality-card" data-personality="enthusiast">
+                    <div class="personality-icon">🎉</div>
+                    <div class="personality-name">The Enthusiast</div>
+                    <div class="personality-description">Energetic, optimistic, celebrates everything!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Generator -->
+    <div class="card">
+        <div class="card-header">✍️ Generate Content</div>
+        <div class="card-body">
+            <form id="generateForm">
+                <div class="form-group">
+                    <label class="form-label">What topic interests you?</label>
+                    <input type="text" class="form-control" id="topic" placeholder="e.g., city life, food, travel, work..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Length</label>
+                    <select class="form-control" id="length">
+                        <option value="short">Short (Quick smile)</option>
+                        <option value="medium" selected>Medium (Story)</option>
+                        <option value="long">Long (Deep dive)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Generate Content 🚀</button>
+            </form>
+
+            <!-- Loading State -->
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p style="text-align: center;">Generating your content...</p>
+            </div>
+
+            <!-- Result Display -->
+            <div id="result" class="hidden">
+                <div class="alert alert-success">
+                    <span class="alert-icon">✨</span>
+                    <div>
+                        <strong>Generated Content:</strong>
+                        <p id="resultContent" style="margin-top: 10px; white-space: pre-wrap;"></p>
+                        <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">
+                            Personality: <span id="resultPersonality"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Dashboard -->
+    <div class="card">
+        <div class="card-header">📊 Your Beta Stats</div>
+        <div class="card-body">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="statGenerations">0</div>
+                    <div class="stat-label">Content Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statPersonalities">0</div>
+                    <div class="stat-label">Personalities Tried</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statDays">1</div>
+                    <div class="stat-label">Days as Beta User</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Form -->
+    <div class="card">
+        <div class="card-header">💬 Send Feedback</div>
+        <div class="card-body">
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label class="form-label">How's your experience? (1-5 stars)</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button type="button" class="rating-btn" data-rating="1">⭐</button>
+                        <button type="button" class="rating-btn" data-rating="2">⭐⭐</button>
+                        <button type="button" class="rating-btn" data-rating="3">⭐⭐⭐</button>
+                        <button type="button" class="rating-btn" data-rating="4">⭐⭐⭐⭐</button>
+                        <button type="button" class="rating-btn" data-rating="5">⭐⭐⭐⭐⭐</button>
+                    </div>
+                    <input type="hidden" id="rating" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">What can we improve?</label>
+                    <textarea class="form-control" id="comment" placeholder="Your honest feedback helps us serve 8 billion people better..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+            </form>
+
+            <div id="feedbackSuccess" class="alert alert-success hidden">
+                <span class="alert-icon">✅</span>
+                <div>Thank you! Your feedback shapes the future of UMAJA.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin: 40px 0; opacity: 0.7;">
+        <p>You're helping build AI for 8 billion people 🌍</p>
+        <p style="font-size: 14px; margin-top: 10px;">
+            <a href="/" style="color: white;">Home</a> | 
+            <a href="https://github.com/harrie19/UMAJA-Core" style="color: white;">GitHub</a> | 
+            <a href="mailto:Umaja1919@googlemail.com" style="color: white;">Support</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let selectedPersonality = 'professor';
+let generationsCount = 0;
+let personalitiesUsed = new Set(['professor']);
+
+// Personality Selection
+document.querySelectorAll('.personality-card').forEach(card => {
+    card.addEventListener('click', async () => {
+        // Visual feedback
+        document.querySelectorAll('.personality-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        
+        selectedPersonality = card.dataset.personality;
+        personalitiesUsed.add(selectedPersonality);
+        
+        // Track personality switch
+        try {
+            await fetch('/api/personality/switch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ personality: selectedPersonality })
+            });
+        } catch (error) {
+            console.error('Error tracking personality switch:', error);
+        }
+        
+        updateStats();
+    });
+});
+
+// Set initial active personality
+document.querySelector('.personality-card[data-personality="professor"]').classList.add('active');
+
+// Content Generation
+document.getElementById('generateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const topic = document.getElementById('topic').value;
+    const length = document.getElementById('length').value;
+    
+    // Show loading
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('result').classList.add('hidden');
+    
+    try {
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                personality: selectedPersonality,
+                topic: topic,
+                length: length
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Display result
+            document.getElementById('resultContent').textContent = result.content;
+            document.getElementById('resultPersonality').textContent = selectedPersonality;
+            document.getElementById('result').classList.remove('hidden');
+            
+            // Update stats
+            generationsCount++;
+            updateStats();
+        } else {
+            alert('Error generating content: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Connection error. Please try again!');
+    } finally {
+        document.getElementById('loading').classList.add('hidden');
+    }
+});
+
+// Rating Buttons
+document.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.rating-btn').forEach(b => b.style.opacity = '0.5');
+        btn.style.opacity = '1';
+        document.getElementById('rating').value = btn.dataset.rating;
+    });
+});
+
+// Feedback Form
+document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const rating = document.getElementById('rating').value;
+    const comment = document.getElementById('comment').value;
+    
+    if (!rating) {
+        alert('Please select a rating!');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                rating: parseInt(rating),
+                comment: comment,
+                category: 'general'
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            document.getElementById('feedbackSuccess').classList.remove('hidden');
+            document.getElementById('feedbackForm').reset();
+            document.querySelectorAll('.rating-btn').forEach(b => b.style.opacity = '0.5');
+            
+            setTimeout(() => {
+                document.getElementById('feedbackSuccess').classList.add('hidden');
+            }, 5000);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Connection error. Please try again!');
+    }
+});
+
+// Update Stats Display
+function updateStats() {
+    document.getElementById('statGenerations').textContent = generationsCount;
+    document.getElementById('statPersonalities').textContent = personalitiesUsed.size;
+}
+
+// Initialize stats
+updateStats();
+</script>
+
+<style>
+.rating-btn {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+}
+
+.rating-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}

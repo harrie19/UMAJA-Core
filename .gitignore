@@ -60,6 +60,9 @@ htmlcov/
 data/request_queue.json
 data/processed_requests.json
 
+# Beta Analytics (anonymous data, but keep local)
+data/beta_analytics/
+
 # ============================================
 # MULTIMEDIA SYSTEM EXCLUSIONS
 # ============================================
