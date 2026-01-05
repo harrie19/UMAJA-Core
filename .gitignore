@@ -10,7 +10,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/ - commented out to allow Flutter app lib directory
 lib64/
 parts/
 sdist/
@@ -71,8 +71,8 @@ static/videos/
 static/purchases/
 static/samples/
 
-# AI Models (too large for git)
-models/
+# AI Models (too large for git) - but allow Flutter lib/models/
+/models/
 *.pth
 *.ckpt
 *.safetensors
