@@ -25,6 +25,42 @@ Bring personalized daily inspiration to **8 billion people** at **$0 cost** thro
 
 ---
 
+## 📢 Recent Updates
+
+### 🎉 Version 2.1.0 - Master Consolidation Release (January 2026)
+
+We've just completed a major consolidation of critical improvements:
+
+#### ⚡ Infrastructure Optimization
+- **87% reduction** in GitHub Actions runtime (300min → 40min/day)
+- Smart workflow triggers with path-based filtering
+- Enhanced caching strategies across all pipelines
+- Optimized resource usage while maintaining quality
+
+#### 📚 Documentation Suite
+- **8 new comprehensive guides** totaling 138KB
+  - [Architecture](docs/architecture.md) - Complete system design
+  - [API Protocols](docs/protocols.md) - Full API specifications
+  - [Safety & Security](docs/safety.md) - Ethical AI guidelines
+  - [System Specifications](docs/system-specification.md) - Technical details
+  - [Implementation Roadmap](docs/implementation-roadmap.md) - Development plan
+  - [Computational Resources](docs/computational-resources.md) - Resource management
+  - [Alignment & Ethics](docs/alignment-ethics.md) - Ethical framework
+  - [Workflow Optimization](docs/WORKFLOW_OPTIMIZATION.md) - CI/CD guide
+- **39+ internal cross-references** for easy navigation
+- Professional structure following industry best practices
+
+#### 🔧 Backend URL Standardization
+- **36 files updated** with correct Railway production URL
+- Consistent across: docs/, scripts/, templates/, configs/
+- Production URL: `https://web-production-6ec45.up.railway.app`
+- All API examples and code samples aligned
+
+#### 📋 Full Details
+See [CHANGELOG.md](CHANGELOG.md) for complete release notes and technical details.
+
+---
+
 ## 🧠 AI Memory System
 
 Never re-explain context! Load full story instantly:

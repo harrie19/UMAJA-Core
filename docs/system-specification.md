@@ -385,7 +385,7 @@ if ($scheme = http) {
 ```python
 ALLOWED_ORIGINS = [
     "https://harrie19.github.io",
-    "https://umaja-core-production.up.railway.app"
+    "https://web-production-6ec45.up.railway.app"
 ]
 
 CORS(app,
@@ -420,7 +420,7 @@ Content-Security-Policy:
   script-src 'self' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
   img-src 'self' data: https:;
-  connect-src 'self' https://umaja-core-production.up.railway.app;
+  connect-src 'self' https://web-production-6ec45.up.railway.app;
   font-src 'self';
   frame-ancestors 'none';
   base-uri 'self';
