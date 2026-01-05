@@ -1,6 +1,6 @@
 """
 UMAJA WORLDTOUR - Worldtour Generator
-City-specific comedy content generation system
+City-specific comedy content generation system with AI comedian personalities
 """
 
 import json
@@ -9,6 +9,10 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Literal, Optional
 import logging
+import sys
+
+# Add src to path for personality engine
+sys.path.insert(0, str(Path(__file__).parent))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -17,7 +21,7 @@ logger = logging.getLogger(__name__)
 class WorldtourGenerator:
     """
     City-specific comedy content generation.
-    Manages a database of cities and generates themed content.
+    Manages a database of cities and generates themed content using AI comedian personalities.
     """
     
     CONTENT_TYPES = ['city_review', 'cultural_debate', 'language_lesson', 'tourist_trap', 'food_review']
@@ -36,32 +40,36 @@ class WorldtourGenerator:
         # Load or initialize cities database
         self.cities = self._load_cities_db()
         
-        # Content type templates
+        # Initialize personality engine
+        try:
+            from personality_engine import PersonalityEngine
+            self.personality_engine = PersonalityEngine()
+            logger.info("Personality engine initialized for World Tour")
+        except Exception as e:
+            logger.warning(f"Could not initialize personality engine: {e}")
+            self.personality_engine = None
+        
+        # Content type templates - enhanced with personality integration
         self.content_templates = {
             'city_review': {
-                'john_cleese': "Now, the curious thing about {city} is that it's rather like {comparison}...",
-                'c3po': "Oh my! {city} presents precisely {number} possible interpretations...",
-                'robin_williams': "So {city} walks into a bar... *laughs* Picture this!"
+                'topics': ['architecture', 'people', 'atmosphere', 'culture', 'lifestyle'],
+                'intro_template': "Let me tell you about {city}..."
             },
             'cultural_debate': {
-                'john_cleese': "The British approach to {topic} versus {city}'s method reveals fascinating absurdities...",
-                'c3po': "By my calculations, {city}'s {topic} violates {number} known protocols!",
-                'robin_williams': "Imagine if {topic} in {city} was a Broadway musical!"
+                'topics': ['food culture', 'social customs', 'communication style', 'work-life balance'],
+                'intro_template': "The fascinating thing about {topic} in {city}..."
             },
             'language_lesson': {
-                'john_cleese': "Learning to say {phrase} in {language} is remarkably similar to gargling marbles...",
-                'c3po': "The linguistic structure of {phrase} exhibits {number} phonetic variations...",
-                'robin_williams': "*switches accent* So you want to say {phrase}? Let me show you..."
+                'topics': ['greetings', 'common phrases', 'pronunciation', 'cultural nuances'],
+                'intro_template': "Learning to say '{phrase}' in {language}..."
             },
             'tourist_trap': {
-                'john_cleese': "The {attraction} in {city} attracts tourists like moths to a particularly overpriced flame...",
-                'c3po': "Warning! {attraction} presents a {number}% probability of tourist confusion!",
-                'robin_williams': "You haven't lived until you've seen {attraction}! *laughs* Or have you?"
+                'topics': ['famous landmarks', 'popular spots', 'hidden gems', 'tourist mistakes'],
+                'intro_template': "About {attraction} in {city}..."
             },
             'food_review': {
-                'john_cleese': "Attempting to eat {food} in {city} requires the coordination of a trained acrobat...",
-                'c3po': "Goodness! {food} contains exactly {number} ingredients, by my analysis...",
-                'robin_williams': "So {food} and I are having a moment... *laughs* It's complicated!"
+                'topics': ['local cuisine', 'street food', 'dining etiquette', 'signature dishes'],
+                'intro_template': "The experience of eating {food} in {city}..."
             }
         }
     
@@ -255,18 +263,23 @@ class WorldtourGenerator:
                             city_id: str,
                             personality: Literal['john_cleese', 'c3po', 'robin_williams'],
                             content_type: Literal['city_review', 'cultural_debate', 
-                                                'language_lesson', 'tourist_trap', 'food_review']) -> Dict:
+                                                'language_lesson', 'tourist_trap', 'food_review'],
+                            track_energy: bool = True) -> Dict:
         """
-        Generate city-specific comedy content.
+        Generate city-specific comedy content using AI comedian personalities.
         
         Args:
             city_id: City identifier
             personality: Comedian personality
             content_type: Type of content to generate
+            track_energy: Whether to track energy consumption
             
         Returns:
             Dictionary with content information
         """
+        import time
+        start_time = time.time()
+        
         if city_id not in self.cities:
             raise ValueError(f"Unknown city: {city_id}")
         
@@ -277,52 +290,56 @@ class WorldtourGenerator:
             raise ValueError(f"Unknown content type: {content_type}")
         
         city = self.cities[city_id]
-        template = self.content_templates[content_type][personality]
         
-        # Generate content based on type
-        if content_type == 'city_review':
-            comparison = random.choice([
-                "a confused tourist with a map",
-                "organized chaos",
-                "a beautiful disaster",
-                "an elaborate stage production"
-            ])
-            topic = template.format(city=city['name'], comparison=comparison)
-            
-        elif content_type == 'cultural_debate':
-            topic_item = random.choice(city['topics'])
-            topic = template.format(
-                city=city['name'],
-                topic=topic_item,
-                number=random.randint(100, 9999)
-            )
-            
-        elif content_type == 'language_lesson':
-            phrase = random.choice(city.get('local_phrases', ['Hello']))
-            topic = template.format(
-                phrase=phrase,
-                city=city['name'],
-                language=city['language'],
-                number=random.randint(2, 20)
-            )
-            
-        elif content_type == 'tourist_trap':
-            attraction = random.choice(city['topics'])
-            topic = template.format(
-                attraction=attraction,
-                city=city['name'],
-                number=random.randint(60, 99)
-            )
-            
-        else:  # food_review
-            food = random.choice([t for t in city['topics'] if any(f in t.lower() 
-                                for f in ['food', 'pizza', 'sushi', 'tea', 'pasta'])] 
-                               or city['topics'])
-            topic = template.format(
-                food=food,
-                city=city['name'],
-                number=random.randint(3, 50)
-            )
+        # Build topic based on content type
+        topic = self._build_topic(city, content_type)
+        
+        # Generate content using personality engine
+        used_llm = False
+        if self.personality_engine:
+            try:
+                content_data = self.personality_engine.generate_worldtour_content(
+                    topic=topic,
+                    personality=personality,
+                    style_intensity=0.8
+                )
+                generated_text = content_data['text']
+                # Personality engine uses templates, not LLM, so this is vector-based
+                used_llm = False
+            except Exception as e:
+                logger.warning(f"Personality engine failed: {e}, using fallback")
+                generated_text = self._generate_fallback_content(city, personality, content_type, topic)
+                used_llm = False
+        else:
+            # Fallback if personality engine not available
+            generated_text = self._generate_fallback_content(city, personality, content_type, topic)
+            used_llm = False
+        
+        # Track energy consumption
+        if track_energy:
+            try:
+                from energy_monitor import get_energy_monitor
+                monitor = get_energy_monitor()
+                
+                duration = time.time() - start_time
+                
+                if used_llm:
+                    # LLM-based generation (expensive)
+                    monitor.log_llm_call(
+                        model='personality_engine',
+                        tokens=len(generated_text.split()),
+                        cached=False,
+                        details={'city': city_id, 'personality': personality}
+                    )
+                else:
+                    # Vector/template-based generation (efficient)
+                    monitor.log_vector_operation(
+                        operation='content_generation',
+                        count=1,
+                        details={'city': city_id, 'personality': personality, 'duration_sec': duration}
+                    )
+            except Exception as e:
+                logger.debug(f"Energy tracking failed: {e}")
         
         return {
             'city_id': city_id,
@@ -331,11 +348,72 @@ class WorldtourGenerator:
             'personality': personality,
             'content_type': content_type,
             'topic': topic,
+            'text': generated_text,
             'topics': city['topics'],
-            'stereotypes': city['stereotypes'],
-            'fun_facts': city['fun_facts'],
-            'language': city['language']
+            'stereotypes': city.get('stereotypes', []),
+            'fun_facts': city.get('fun_facts', []),
+            'language': city.get('language', 'Local'),
+            'generated_at': datetime.now().isoformat(),
+            'generation_time_ms': int((time.time() - start_time) * 1000)
         }
+    
+    def _build_topic(self, city: Dict, content_type: str) -> str:
+        """Build a topic string for content generation"""
+        city_name = city['name']
+        
+        if content_type == 'city_review':
+            aspects = city.get('stereotypes', ['the city'])
+            aspect = random.choice(aspects) if aspects else 'the city'
+            return f"{city_name} and how {aspect}"
+            
+        elif content_type == 'cultural_debate':
+            topic_item = random.choice(city.get('topics', ['culture']))
+            return f"{topic_item} in {city_name}"
+            
+        elif content_type == 'language_lesson':
+            phrases = city.get('local_phrases', ['hello'])
+            phrase = random.choice(phrases) if phrases else 'hello'
+            return f"saying '{phrase}' in {city_name}"
+            
+        elif content_type == 'tourist_trap':
+            attractions = city.get('topics', ['the main attraction'])
+            attraction = random.choice(attractions) if attractions else 'the main attraction'
+            return f"{attraction} in {city_name}"
+            
+        else:  # food_review
+            food_topics = [t for t in city.get('topics', []) 
+                          if any(f in t.lower() for f in ['food', 'pizza', 'sushi', 'tea', 'pasta', 'taco'])]
+            if food_topics:
+                food = random.choice(food_topics)
+            else:
+                food = city.get('topics', ['local food'])[0] if city.get('topics') else 'local food'
+            return f"{food} in {city_name}"
+    
+    def _generate_fallback_content(self, city: Dict, personality: str, 
+                                   content_type: str, topic: str) -> str:
+        """Generate fallback content when personality engine is unavailable"""
+        city_name = city['name']
+        
+        # Use legacy template system
+        templates = {
+            'john_cleese': [
+                f"Now, the curious thing about {topic} is that it's rather like a confused tourist with a map...",
+                f"Rather reminiscent of a British railway announcement, {topic} presents peculiar challenges.",
+                f"If I may observe, {topic} exhibits characteristics not unlike a Ministry meeting."
+            ],
+            'c3po': [
+                f"Oh my! {topic} presents precisely {random.randint(100, 9999)} possible interpretations!",
+                f"By my calculations, {topic} exhibits a {random.randint(60, 99)}% probability of confusion!",
+                f"Goodness gracious! According to my programming, {topic} violates {random.randint(5, 50)} protocols."
+            ],
+            'robin_williams': [
+                f"So {topic}... *laughs* Picture this! It's like if Shakespeare met a food truck!",
+                f"Wait, wait, wait... {topic}? *voice changes* That's AMAZING! Pure genius!",
+                f"You know what's beautiful about {topic}? *whispers* It's humanity right there!"
+            ]
+        }
+        
+        return random.choice(templates.get(personality, templates['john_cleese']))
     
     def mark_city_visited(self, city_id: str, video_url: Optional[str] = None, 
                          views: int = 0):
@@ -346,6 +424,9 @@ class WorldtourGenerator:
             city_id: City identifier
             video_url: URL of the video
             views: Number of views
+            
+        Returns:
+            True if successful, False otherwise
         """
         if city_id in self.cities:
             self.cities[city_id]['visited'] = True
@@ -357,7 +438,6 @@ class WorldtourGenerator:
             self._save_cities_db()
             logger.info(f"Marked {city_id} as visited")
             return True
-        
         return False
     
     def get_next_city(self) -> Optional[Dict]:
@@ -428,6 +508,11 @@ class WorldtourGenerator:
             'total_views': total_views,
             'completion_percentage': round((visited / total_cities) * 100, 1)
         }
+    
+    def get_progress(self) -> str:
+        """Get a formatted progress string."""
+        stats = self.get_stats()
+        return f"{stats['visited_cities']}/{stats['total_cities']} cities visited ({stats['completion_percentage']}%)"
 
 
 # Example usage and testing

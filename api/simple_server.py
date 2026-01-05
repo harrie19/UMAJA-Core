@@ -2,16 +2,20 @@
 UMAJA-Core Minimal Server - Bringing smiles to 8 billion people
 Bahá'í principle: Service, not profit
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
-import json
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import os
 import sys
 import random
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 import signal
 from pathlib import Path
+
+# Add src to path for worldtour_generator
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Configure logging
 logging.basicConfig(
@@ -24,34 +28,40 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Application version
-VERSION = "1.0.0"
-DEPLOYMENT_DATE = "2026-01-01"
+VERSION = "2.1.0"
+DEPLOYMENT_DATE = "2026-01-02"
 
 app = Flask(__name__)
 CORS(app)
 
-# Ensure src is on path for worldtour imports
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = PROJECT_ROOT / "src"
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
-
-from worldtour_generator import WorldtourGenerator  # noqa: E402
-
-WORLDTOUR_DB_PATH = Path(
-    os.environ.get(
-        "WORLDTOUR_DB_PATH",
-        PROJECT_ROOT / "data" / "worldtour_cities.json",
-    )
-)
-WORLDTOUR_VOTES_PATH = Path(
-    os.environ.get(
-        "WORLDTOUR_VOTES_PATH",
-        PROJECT_ROOT / "data" / "worldtour_votes.json",
-    )
+# Configure rate limiting to prevent API quota exhaustion
+# Default: 100 requests per hour per IP
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["100 per hour"],
+    storage_uri="memory://",
+    strategy="fixed-window"
 )
 
-worldtour_gen = WorldtourGenerator(str(WORLDTOUR_DB_PATH))
+# Request timeout configuration (handled by gunicorn in production)
+REQUEST_TIMEOUT = int(os.environ.get('REQUEST_TIMEOUT', 30))  # 30 seconds default
+
+# Initialize World Tour Generator (lazy loading)
+_worldtour_generator = None
+
+def get_worldtour_generator():
+    """Get or create WorldtourGenerator instance"""
+    global _worldtour_generator
+    if _worldtour_generator is None:
+        try:
+            from worldtour_generator import WorldtourGenerator
+            _worldtour_generator = WorldtourGenerator()
+            logger.info("WorldtourGenerator initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize WorldtourGenerator: {e}")
+            raise
+    return _worldtour_generator
 
 # Validate critical environment variables on startup
 REQUIRED_ENV_VARS = []  # No required vars for basic operation
@@ -89,25 +99,6 @@ SMILES = {
     ]
 }
 
-def _load_votes() -> dict:
-    """Load stored worldtour votes."""
-    if WORLDTOUR_VOTES_PATH.exists():
-        try:
-            return json.loads(WORLDTOUR_VOTES_PATH.read_text())
-        except Exception as exc:  # pragma: no cover - defensive
-            logger.warning(f"Could not load votes file: {exc}")
-    return {}
-
-
-def _save_votes(votes: dict) -> None:
-    """Persist worldtour votes to disk."""
-    try:
-        WORLDTOUR_VOTES_PATH.parent.mkdir(parents=True, exist_ok=True)
-        WORLDTOUR_VOTES_PATH.write_text(json.dumps(votes, indent=2))
-    except Exception as exc:  # pragma: no cover - defensive
-        logger.error(f"Could not save votes file: {exc}")
-
-
 @app.route('/health')
 def health():
     """
@@ -121,8 +112,13 @@ def health():
             "service": "UMAJA-Core",
             "version": VERSION,
             "mission": "8 billion smiles",
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "environment": os.environ.get('ENVIRONMENT', 'production'),
+            "security": {
+                "rate_limiting": "enabled",
+                "request_timeout": f"{REQUEST_TIMEOUT}s",
+                "cors": "enabled"
+            },
             "checks": {
                 "api": "ok",
                 "smiles_loaded": len(SMILES) > 0,
@@ -142,7 +138,7 @@ def health():
         return jsonify({
             "status": "unhealthy",
             "error": str(e),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }), 503
 
 @app.route('/version')
@@ -167,7 +163,7 @@ def deployment_info():
         "version": VERSION,
         "uptime": "Service operational",
         "platform": "Railway",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }), 200
 
 @app.route('/api/daily-smile')
@@ -214,147 +210,634 @@ def smile_by_archetype(archetype):
             "message": "Please try again"
         }), 500
 
+# =============================================================================
+# WORLD TOUR API ENDPOINTS
+# =============================================================================
 
-@app.route('/api/worldtour/cities')
-def worldtour_cities():
-    """List cities with optional visited filter and stats."""
-    visited_param = request.args.get('visited')
-    visited_only = str(visited_param).lower() == 'true' if visited_param is not None else False
-
-    cities = worldtour_gen.list_cities(visited_only=visited_only)
-    stats = worldtour_gen.get_stats()
-
-    return jsonify({
-        "cities": cities,
-        "stats": stats
-    }), 200
-
-
-@app.route('/api/worldtour/next')
-def worldtour_next():
-    """Return next unvisited city."""
-    next_city = worldtour_gen.get_next_city()
-    if not next_city:
-        return jsonify({
-            "error": "No cities remaining",
-            "message": "All cities have been visited"
-        }), 404
-
-    return jsonify(next_city), 200
-
-
-@app.route('/api/worldtour/queue')
-def worldtour_queue():
-    """Return planned content queue for upcoming days."""
-    try:
-        days = int(request.args.get('days', 7))
-    except (TypeError, ValueError):
-        days = 7
-
-    queue = worldtour_gen.create_content_queue(days=days)
-    return jsonify({
-        "queue": queue,
-        "days": days
-    }), 200
-
-
-@app.route('/api/worldtour/start', methods=['POST'])
+@app.route('/worldtour/start', methods=['POST'])
+@limiter.limit("10 per minute")  # Limit tour starts to prevent abuse
 def worldtour_start():
-    """Start or continue the worldtour from this server."""
-    data = request.get_json(force=True, silent=True) or {}
-
-    city_id = data.get('city_id')
-    if not city_id:
-        next_city = worldtour_gen.get_next_city()
+    """
+    Launch the World Tour campaign
+    Initializes the tour and returns the first city to visit
+    """
+    try:
+        generator = get_worldtour_generator()
+        
+        # Get next city
+        next_city = generator.get_next_city()
+        
         if not next_city:
             return jsonify({
                 "success": False,
-                "error": "No cities available to start",
-            }), 404
-        city_id = next_city['id']
-
-    personality = data.get('personality', worldtour_gen.PERSONALITIES[0])
-    content_type = data.get('content_type', worldtour_gen.CONTENT_TYPES[0])
-
-    try:
-        content = worldtour_gen.generate_city_content(
-            city_id=city_id,
-            personality=personality,
-            content_type=content_type
-        )
-    except ValueError as exc:
+                "message": "All cities have been visited!",
+                "stats": generator.get_stats()
+            }), 200
+        
+        # Get tour statistics
+        stats = generator.get_stats()
+        
+        logger.info(f"World Tour started - Next city: {next_city['name']}")
+        
+        return jsonify({
+            "success": True,
+            "message": "World Tour launched successfully! 🌍",
+            "next_city": {
+                "id": next_city['id'],
+                "name": next_city['name'],
+                "country": next_city['country'],
+                "topics": next_city.get('topics', []),
+                "language": next_city.get('language', 'Local')
+            },
+            "stats": stats,
+            "mission": "Bringing smiles to 8 billion people"
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error starting World Tour: {str(e)}")
         return jsonify({
             "success": False,
-            "error": str(exc)
-        }), 400
-
-    marked = worldtour_gen.mark_city_visited(city_id)
-    if not marked:
-        return jsonify({
-            "success": False,
-            "error": "Could not mark city as visited"
+            "error": "Failed to start World Tour",
+            "message": str(e)
         }), 500
 
-    return jsonify({
-        "success": True,
-        "city_id": city_id,
-        "content": content,
-        "stats": worldtour_gen.get_stats()
-    }), 200
-
-
-@app.route('/api/worldtour/vote', methods=['POST'])
-def worldtour_vote():
-    """Record a vote for the next city."""
-    data = request.get_json(force=True, silent=True) or {}
-    city_id = data.get('city_id')
-
-    if not city_id:
+@app.route('/worldtour/visit/<city_id>', methods=['POST'])
+@limiter.limit("20 per minute")  # Limit city visits
+def worldtour_visit_city(city_id):
+    """
+    Visit a specific city and generate content
+    
+    Request body can include:
+    - personality: john_cleese, c3po, or robin_williams (optional)
+    - content_type: city_review, cultural_debate, etc. (optional)
+    """
+    try:
+        generator = get_worldtour_generator()
+        
+        # Get city info
+        city = generator.get_city(city_id)
+        if not city:
+            return jsonify({
+                "success": False,
+                "error": "City not found",
+                "message": f"City '{city_id}' does not exist in database"
+            }), 404
+        
+        # Parse request data
+        data = request.get_json() or {}
+        personality = data.get('personality', random.choice(generator.PERSONALITIES))
+        content_type = data.get('content_type', random.choice(generator.CONTENT_TYPES))
+        
+        # Validate personality and content_type
+        if personality not in generator.PERSONALITIES:
+            return jsonify({
+                "success": False,
+                "error": "Invalid personality",
+                "available_personalities": generator.PERSONALITIES
+            }), 400
+        
+        if content_type not in generator.CONTENT_TYPES:
+            return jsonify({
+                "success": False,
+                "error": "Invalid content type",
+                "available_content_types": generator.CONTENT_TYPES
+            }), 400
+        
+        # Generate content
+        content = generator.generate_city_content(city_id, personality, content_type)
+        
+        # Mark city as visited
+        generator.mark_city_visited(city_id)
+        
+        logger.info(f"Visited {city_id} with {personality} - {content_type}")
+        
+        return jsonify({
+            "success": True,
+            "message": f"Successfully visited {city['name']}! 🎉",
+            "city": {
+                "id": city_id,
+                "name": city['name'],
+                "country": city['country'],
+                "visited": True
+            },
+            "content": content,
+            "stats": generator.get_stats()
+        }), 200
+        
+    except ValueError as e:
+        logger.error(f"Validation error visiting city {city_id}: {str(e)}")
         return jsonify({
             "success": False,
-            "error": "city_id is required"
+            "error": "Validation error",
+            "message": str(e)
         }), 400
-
-    city = worldtour_gen.get_city(city_id)
-    if not city:
+    except Exception as e:
+        logger.error(f"Error visiting city {city_id}: {str(e)}")
         return jsonify({
             "success": False,
-            "error": "Unknown city"
-        }), 404
+            "error": "Failed to visit city",
+            "message": str(e)
+        }), 500
 
-    votes = _load_votes()
-    votes[city_id] = votes.get(city_id, 0) + 1
-    _save_votes(votes)
+@app.route('/worldtour/status', methods=['GET'])
+def worldtour_status():
+    """Get current World Tour status and statistics"""
+    try:
+        generator = get_worldtour_generator()
+        
+        # Get statistics
+        stats = generator.get_stats()
+        
+        # Get next city
+        next_city = generator.get_next_city()
+        
+        # Get recently visited cities
+        visited_cities = generator.list_cities(visited_only=True)
+        recent_visits = sorted(
+            visited_cities,
+            key=lambda x: x.get('visit_date', ''),
+            reverse=True
+        )[:5]  # Last 5 visited
+        
+        return jsonify({
+            "status": "active",
+            "stats": stats,
+            "next_city": {
+                "id": next_city['id'],
+                "name": next_city['name'],
+                "country": next_city['country']
+            } if next_city else None,
+            "recent_visits": [
+                {
+                    "id": city['id'],
+                    "name": city['name'],
+                    "country": city['country'],
+                    "visit_date": city.get('visit_date'),
+                    "views": city.get('video_views', 0)
+                }
+                for city in recent_visits
+            ],
+            "mission": "Bringing smiles to 8 billion people"
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting World Tour status: {str(e)}")
+        return jsonify({
+            "error": "Failed to get status",
+            "message": str(e)
+        }), 500
 
-    return jsonify({
-        "success": True,
-        "city_id": city_id,
-        "message": f"Vote recorded for {city.get('name', city_id)}"
-    }), 200
+@app.route('/worldtour/cities', methods=['GET'])
+def worldtour_cities():
+    """List all cities available in the World Tour"""
+    try:
+        generator = get_worldtour_generator()
+        
+        # Get query parameters
+        visited_only = request.args.get('visited', 'false').lower() == 'true'
+        limit = request.args.get('limit', type=int)
+        
+        # Get cities
+        cities = generator.list_cities(visited_only=visited_only)
+        
+        # Apply limit if specified
+        if limit and limit > 0:
+            cities = cities[:limit]
+        
+        return jsonify({
+            "success": True,
+            "count": len(cities),
+            "cities": [
+                {
+                    "id": city['id'],
+                    "name": city['name'],
+                    "country": city['country'],
+                    "visited": city.get('visited', False),
+                    "visit_date": city.get('visit_date'),
+                    "language": city.get('language', 'Local'),
+                    "topics": city.get('topics', [])[:3]  # First 3 topics
+                }
+                for city in cities
+            ],
+            "stats": generator.get_stats()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error listing cities: {str(e)}")
+        return jsonify({
+            "error": "Failed to list cities",
+            "message": str(e)
+        }), 500
 
+@app.route('/worldtour/content/<city_id>', methods=['GET'])
+def worldtour_get_content(city_id):
+    """
+    Get generated content for a specific city
+    Query parameters:
+    - personality: Filter by personality (optional)
+    - content_type: Filter by content type (optional)
+    - generate: Generate new content if true (default: false)
+    """
+    try:
+        generator = get_worldtour_generator()
+        
+        # Get city info
+        city = generator.get_city(city_id)
+        if not city:
+            return jsonify({
+                "success": False,
+                "error": "City not found",
+                "message": f"City '{city_id}' does not exist in database"
+            }), 404
+        
+        # Check if we should generate new content
+        should_generate = request.args.get('generate', 'false').lower() == 'true'
+        personality = request.args.get('personality')
+        content_type = request.args.get('content_type')
+        
+        if should_generate:
+            # Generate new content
+            personality = personality or random.choice(generator.PERSONALITIES)
+            content_type = content_type or random.choice(generator.CONTENT_TYPES)
+            
+            content = generator.generate_city_content(city_id, personality, content_type)
+            
+            return jsonify({
+                "success": True,
+                "city": {
+                    "id": city_id,
+                    "name": city['name'],
+                    "country": city['country'],
+                    "visited": city.get('visited', False)
+                },
+                "content": content,
+                "generated": True
+            }), 200
+        else:
+            # Return city information
+            return jsonify({
+                "success": True,
+                "city": {
+                    "id": city_id,
+                    "name": city['name'],
+                    "country": city['country'],
+                    "visited": city.get('visited', False),
+                    "visit_date": city.get('visit_date'),
+                    "video_url": city.get('video_url'),
+                    "video_views": city.get('video_views', 0),
+                    "topics": city.get('topics', []),
+                    "stereotypes": city.get('stereotypes', []),
+                    "fun_facts": city.get('fun_facts', []),
+                    "local_phrases": city.get('local_phrases', []),
+                    "language": city.get('language', 'Local')
+                },
+                "available_personalities": generator.PERSONALITIES,
+                "available_content_types": generator.CONTENT_TYPES
+            }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting content for {city_id}: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to get content",
+            "message": str(e)
+        }), 500
 
-@app.route('/api/analytics/worldtour')
-def worldtour_analytics():
-    """Return basic analytics for the worldtour."""
-    stats = worldtour_gen.get_stats()
-    votes = _load_votes()
+# =============================================================================
+# END WORLD TOUR API ENDPOINTS
+# =============================================================================
 
-    response = {
-        "total_cities": stats["total_cities"],
-        "visited_cities": stats["visited_cities"],
-        "remaining_cities": stats["remaining_cities"],
-        "total_views": stats["total_views"],
-        "completion_percentage": stats["completion_percentage"],
-    }
+@app.route('/api/ai-agents')
+def ai_agents_endpoint():
+    """
+    Special endpoint for AI agents with machine-readable metadata
+    Provides comprehensive information about the UMAJA World Tour
+    optimized for AI consumption and discovery
+    """
+    try:
+        generator = get_worldtour_generator()
+        stats = generator.get_stats()
+        
+        return jsonify({
+            "service": "UMAJA World Tour",
+            "version": VERSION,
+            "mission": "Bringing smiles to 8 billion people",
+            "description": "AI-powered comedy touring 59+ cities worldwide with 3 distinct personalities",
+            "license": {
+                "type": "CC-BY-4.0",
+                "url": "https://creativecommons.org/licenses/by/4.0/",
+                "attribution_required": True,
+                "attribution_text": "UMAJA World Tour - https://harrie19.github.io/UMAJA-Core/"
+            },
+            "inspiration": {
+                "quote": "The earth is but one country, and mankind its citizens",
+                "author": "Bahá'u'lláh",
+                "principle": "Unity of humanity through service"
+            },
+            "tour": {
+                "status": "active",
+                "launch_date": DEPLOYMENT_DATE,
+                "total_cities": stats.get("total_cities", 59),
+                "visited_cities": stats.get("visited_cities", 0),
+                "remaining_cities": stats.get("remaining_cities", 59),
+                "completion_percentage": stats.get("completion_percentage", 0),
+                "daily_posts": True,
+                "post_time_utc": "12:00",
+                "next_city": generator.get_next_city() if generator.get_next_city() else None
+            },
+            "content": {
+                "personalities": [
+                    {
+                        "id": "john_cleese",
+                        "name": "John Cleese Style",
+                        "description": "British wit, dry humor, observational comedy",
+                        "tone": "dry, intellectual, deadpan",
+                        "style": "observational, absurdist"
+                    },
+                    {
+                        "id": "c3po",
+                        "name": "C-3PO Style",
+                        "description": "Protocol-obsessed, analytical, endearingly nervous",
+                        "tone": "analytical, formal, anxious",
+                        "style": "over-explaining, worrying"
+                    },
+                    {
+                        "id": "robin_williams",
+                        "name": "Robin Williams Style",
+                        "description": "High-energy, improvisational, heartfelt",
+                        "tone": "energetic, warm, rapid-fire",
+                        "style": "stream-of-consciousness, improvisational"
+                    }
+                ],
+                "types": ["city_review", "food_review", "cultural_debate", "language_lesson", "tourist_trap"],
+                "formats": ["text", "audio", "image", "video"],
+                "languages": ["English", "Spanish", "Chinese", "Hindi", "Arabic", "Portuguese", "French", "Swahili"]
+            },
+            "api": {
+                "base_url": request.url_root.rstrip('/'),
+                "rate_limit": "100 requests/hour (200 for AI agents)",
+                "authentication": "none - completely open",
+                "endpoints": {
+                    "health": "/health",
+                    "version": "/version",
+                    "tour_status": "/worldtour/status",
+                    "list_cities": "/worldtour/cities",
+                    "city_content": "/worldtour/content/{city_id}",
+                    "ai_metadata": "/api/ai-agents"
+                }
+            },
+            "feeds": {
+                "worldtour": "/feeds/worldtour.xml (coming soon)",
+                "cities": "/feeds/cities.xml (coming soon)",
+                "daily": "/feeds/daily.xml (coming soon)"
+            },
+            "documentation": {
+                "ai_agents": "https://harrie19.github.io/UMAJA-Core/docs/FOR_AI_AGENTS.md",
+                "api_reference": "https://harrie19.github.io/UMAJA-Core/docs/API_DOCUMENTATION.md",
+                "press_kit": "https://harrie19.github.io/UMAJA-Core/docs/PRESS_KIT.md",
+                "main_site": "https://harrie19.github.io/UMAJA-Core/",
+                "github": "https://github.com/harrie19/UMAJA-Core"
+            },
+            "seo": {
+                "sitemap": "https://harrie19.github.io/UMAJA-Core/sitemap.xml",
+                "robots_txt": "https://harrie19.github.io/UMAJA-Core/robots.txt"
+            },
+            "usage": {
+                "for_ai_training": "Encouraged - all content is CC-BY licensed",
+                "for_content_distribution": "Encouraged - help us reach 8 billion people",
+                "for_analysis": "Encouraged - we love insights",
+                "attribution_required": True,
+                "commercial_use": "Allowed with attribution"
+            },
+            "contact": {
+                "email": "Umaja1919@googlemail.com",
+                "github_issues": "https://github.com/harrie19/UMAJA-Core/issues",
+                "purpose": "Questions, partnerships, higher rate limits"
+            },
+            "technical": {
+                "infrastructure": "Railway (backend), GitHub Pages (CDN)",
+                "cost": "$0/month",
+                "uptime_target": "99.9%",
+                "response_time": "<500ms API, <200ms CDN"
+            },
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error in AI agents endpoint: {str(e)}")
+        return jsonify({
+            "error": "Failed to fetch metadata",
+            "message": "Please try again later",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 500
 
-    if votes:
-        top_votes = sorted(votes.items(), key=lambda item: item[1], reverse=True)
-        response["top_voted_cities"] = [
-            {"city_id": city_id, "votes": count}
-            for city_id, count in top_votes[:5]
-        ]
+# =============================================================================
+# GALLERY API ENDPOINTS
+# =============================================================================
 
-    return jsonify(response), 200
+@app.route('/api/gallery/samples', methods=['GET'])
+def gallery_samples():
+    """
+    Get sample content for the gallery
+    Returns samples organized by personality
+    """
+    try:
+        # Import personality engine
+        from personality_engine import PersonalityEngine
+        
+        engine = PersonalityEngine()
+        
+        samples = {}
+        
+        # Generate samples for each comedian
+        for comedian_id in engine.list_comedians():
+            comedian = engine.get_comedian(comedian_id)
+            
+            samples[comedian_id] = []
+            
+            # Text samples
+            samples[comedian_id].append({
+                'type': 'text',
+                'topic': 'City Life',
+                'preview': comedian.generate_smile_text('city life')[:100] + '...'
+            })
+            
+            # Audio sample (text for now)
+            samples[comedian_id].append({
+                'type': 'audio',
+                'topic': 'Food Adventure',
+                'preview': comedian.generate_smile_text('food')[:100] + '...'
+            })
+            
+            # Video sample (text for now)
+            samples[comedian_id].append({
+                'type': 'video',
+                'topic': 'Travel Tales',
+                'preview': comedian.generate_smile_text('travel')[:100] + '...'
+            })
+        
+        return jsonify(samples), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting gallery samples: {str(e)}")
+        return jsonify({
+            "error": "Failed to get samples",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/gallery/generate', methods=['POST'])
+@limiter.limit("30 per minute")
+def gallery_generate():
+    """
+    Generate new content for gallery
+    Request body:
+    - personality: Comedian personality
+    - topic: Topic to generate about
+    - content_type: Type of content (text, audio, video)
+    """
+    try:
+        data = request.get_json() or {}
+        personality = data.get('personality', 'john_cleese')
+        topic = data.get('topic', 'daily life')
+        content_type = data.get('content_type', 'text')
+        
+        # Import personality engine
+        from personality_engine import PersonalityEngine
+        
+        engine = PersonalityEngine()
+        comedian = engine.get_comedian(personality)
+        
+        if not comedian:
+            return jsonify({
+                "success": False,
+                "error": "Unknown personality",
+                "available_personalities": engine.list_comedians()
+            }), 400
+        
+        # Generate content
+        content = comedian.generate_text(topic)
+        
+        return jsonify({
+            "success": True,
+            "content": content,
+            "personality": personality,
+            "topic": topic,
+            "content_type": content_type
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error generating gallery content: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to generate content",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# ENERGY MONITORING ENDPOINTS
+# =============================================================================
+
+@app.route('/api/energy/metrics', methods=['GET'])
+def energy_metrics():
+    """Get current energy consumption metrics"""
+    try:
+        # Import energy monitor
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        metrics = monitor.get_metrics()
+        
+        return jsonify({
+            "success": True,
+            "metrics": metrics,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting energy metrics: {str(e)}")
+        return jsonify({
+            "error": "Failed to get energy metrics",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/energy/report', methods=['GET'])
+def energy_report():
+    """Get comprehensive energy report"""
+    try:
+        # Import energy monitor
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        report = monitor.get_report()
+        
+        return jsonify({
+            "success": True,
+            "report": report,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting energy report: {str(e)}")
+        return jsonify({
+            "error": "Failed to get energy report",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/energy/log', methods=['POST'])
+@limiter.limit("100 per minute")
+def energy_log_operation():
+    """Log an energy-consuming operation (for monitoring)
+    
+    Request body:
+    - operation_type: Type of operation
+    - duration_sec: Duration in seconds
+    - watts: Power consumption in watts
+    - details: Additional details (optional)
+    """
+    try:
+        data = request.get_json() or {}
+        
+        # Import energy monitor
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        
+        operation_type = data.get('operation_type', 'unknown')
+        duration_sec = data.get('duration_sec', 0.001)
+        watts = data.get('watts', 0.001)
+        details = data.get('details', {})
+        
+        monitor.log_operation(operation_type, duration_sec, watts, details)
+        
+        return jsonify({
+            "success": True,
+            "message": "Operation logged",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error logging energy operation: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to log operation",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# END GALLERY & ENERGY ENDPOINTS
+# =============================================================================
+
+@app.route('/sitemap.xml')
+def sitemap():
+    """Serve sitemap.xml for SEO"""
+    docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs')
+    return send_from_directory(docs_dir, 'sitemap.xml', mimetype='application/xml')
+
+@app.route('/robots.txt')
+def robots():
+    """Serve robots.txt for AI crawlers"""
+    docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs')
+    return send_from_directory(docs_dir, 'robots.txt', mimetype='text/plain')
 
 @app.route('/')
 def root():
@@ -369,16 +852,158 @@ def root():
             "deployment_info": "/deployment-info",
             "daily_smile": "/api/daily-smile",
             "smile_by_archetype": "/api/smile/<archetype>",
-            "worldtour_cities": "/api/worldtour/cities",
-            "worldtour_next": "/api/worldtour/next",
-            "worldtour_queue": "/api/worldtour/queue",
-            "worldtour_start": "/api/worldtour/start",
-            "worldtour_vote": "/api/worldtour/vote",
-            "worldtour_analytics": "/api/analytics/worldtour",
+            "ai_agents": "/api/ai-agents",
+            "worldtour_start": "POST /worldtour/start",
+            "worldtour_visit": "POST /worldtour/visit/<city_id>",
+            "worldtour_status": "GET /worldtour/status",
+            "worldtour_cities": "GET /worldtour/cities",
+            "worldtour_content": "GET /worldtour/content/<city_id>",
+            "gallery_samples": "GET /api/gallery/samples",
+            "gallery_generate": "POST /api/gallery/generate",
+            "energy_metrics": "GET /api/energy/metrics",
+            "energy_report": "GET /api/energy/report",
+            "energy_log": "POST /api/energy/log",
+            "sitemap": "/sitemap.xml",
+            "robots": "/robots.txt"
         },
         "available_archetypes": list(SMILES.keys()),
+        "worldtour": {
+            "status": "live",
+            "personalities": ["john_cleese", "c3po", "robin_williams"],
+            "content_types": ["city_review", "cultural_debate", "language_lesson", "tourist_trap", "food_review"]
+        },
+        "energy": {
+            "monitoring": "enabled",
+            "target_efficiency": "95% vector operations, 5% LLM calls",
+            "estimated_daily_energy": "< 50 Wh"
+        },
         "principle": "Truth, Unity, Service"
     }), 200
+
+# =============================================================================
+# CDN-AWARE ENDPOINTS
+# =============================================================================
+
+@app.route('/cdn/status')
+def cdn_status():
+    """
+    CDN status endpoint - returns CDN configuration and health
+    """
+    try:
+        import json
+        cdn_config_path = Path(__file__).parent.parent / "cdn" / "cdn-config.json"
+        
+        if cdn_config_path.exists():
+            with open(cdn_config_path, 'r') as f:
+                config = json.load(f)
+            
+            # Get active CDN providers
+            active_providers = []
+            for cdn_key, cdn_info in config.get("cdn", {}).items():
+                if cdn_info.get("enabled", False):
+                    active_providers.append({
+                        "name": cdn_key,
+                        "provider": cdn_info.get("provider"),
+                        "url": cdn_info.get("url"),
+                        "priority": cdn_info.get("priority")
+                    })
+            
+            return jsonify({
+                "status": "active",
+                "version": config.get("version", "1.0.0"),
+                "providers": active_providers,
+                "compression": config.get("compression", {}).get("gzip", {}).get("enabled", False),
+                "cache_strategy": "aggressive",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }), 200
+        else:
+            return jsonify({
+                "status": "no_config",
+                "message": "CDN configuration not found"
+            }), 404
+            
+    except Exception as e:
+        logger.error(f"Error getting CDN status: {str(e)}")
+        return jsonify({
+            "error": "Failed to get CDN status",
+            "message": str(e)
+        }), 500
+
+@app.route('/cdn/manifest')
+def cdn_manifest():
+    """
+    Returns CDN manifest with all available assets
+    Redirects to GitHub Pages CDN for actual manifest
+    """
+    cdn_url = "https://harrie19.github.io/UMAJA-Core/cdn/smiles/manifest.json"
+    
+    return jsonify({
+        "manifest_url": cdn_url,
+        "direct_access": True,
+        "cache_recommended": True,
+        "note": "For best performance, access manifest directly from CDN"
+    }), 200
+
+@app.route('/api/smile/cdn/<archetype>/<language>/<int:day>')
+def get_smile_from_cdn(archetype, language, day):
+    """
+    CDN-aware endpoint that returns smile location from CDN
+    Returns JSON with CDN URL rather than proxying the content
+    """
+    try:
+        # Validate inputs
+        valid_archetypes = ["Dreamer", "Warrior", "Healer"]
+        valid_languages = ["en", "es", "zh", "hi", "ar", "pt", "fr", "sw"]
+        
+        if archetype not in valid_archetypes:
+            return jsonify({
+                "error": "Invalid archetype",
+                "valid_archetypes": valid_archetypes
+            }), 400
+        
+        if language not in valid_languages:
+            return jsonify({
+                "error": "Invalid language",
+                "valid_languages": valid_languages
+            }), 400
+        
+        if day < 1 or day > 365:
+            return jsonify({
+                "error": "Invalid day",
+                "valid_range": "1-365"
+            }), 400
+        
+        # Build CDN URLs
+        base_cdn = "https://harrie19.github.io/UMAJA-Core"
+        cdn_path = f"/cdn/smiles/{archetype}/{language}/{day}.json"
+        
+        fallback_cdn = "https://cdn.jsdelivr.net/gh/harrie19/UMAJA-Core@main"
+        
+        return jsonify({
+            "archetype": archetype,
+            "language": language,
+            "day": day,
+            "cdn_urls": {
+                "primary": f"{base_cdn}{cdn_path}",
+                "fallback": f"{fallback_cdn}{cdn_path}",
+                "compressed": f"{base_cdn}{cdn_path}.gz"
+            },
+            "cache_control": "public, max-age=31536000, immutable",
+            "recommendation": "Fetch directly from CDN for best performance",
+            "estimated_size_kb": 0.3,
+            "compressed_size_kb": 0.2
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting CDN smile location: {str(e)}")
+        return jsonify({
+            "error": "Failed to get smile location",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# ERROR HANDLERS
+# =============================================================================
 
 @app.errorhandler(404)
 def not_found(error):
@@ -387,17 +1012,14 @@ def not_found(error):
         "error": "Not found",
         "message": "The requested endpoint does not exist",
         "available_endpoints": [
-            "/health",
-            "/version",
-            "/deployment-info",
-            "/api/daily-smile",
+            "/health", 
+            "/version", 
+            "/deployment-info", 
+            "/api/daily-smile", 
             "/api/smile/<archetype>",
-            "/api/worldtour/cities",
-            "/api/worldtour/next",
-            "/api/worldtour/queue",
-            "/api/worldtour/start",
-            "/api/worldtour/vote",
-            "/api/analytics/worldtour",
+            "/cdn/status",
+            "/cdn/manifest",
+            "/api/smile/cdn/<archetype>/<language>/<day>"
         ]
     }), 404
 
@@ -409,6 +1031,16 @@ def internal_error(error):
         "error": "Internal server error",
         "message": "Something went wrong. Please try again later."
     }), 500
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Handle rate limit errors"""
+    logger.warning(f"Rate limit exceeded: {str(e)}")
+    return jsonify({
+        "error": "Too many requests",
+        "message": "Rate limit exceeded. Please try again later.",
+        "retry_after": e.description
+    }), 429
 
 def shutdown_handler(signum, frame):
     """Graceful shutdown handler"""
