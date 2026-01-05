@@ -14,14 +14,21 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
+
+// Configuration constants
+const PORT = process.env.PORT || 3002;
+const REALITY_CHECK_TIMEOUT = 60000; // 60 seconds
+const REALITY_CHECK_INTERVAL = 10000; // 10 seconds
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS ? 
+  process.env.ALLOWED_ORIGINS.split(',') : 
+  ['http://localhost:3000', 'http://localhost:5173']; // Vite default ports
+
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: process.env.NODE_ENV === 'production' ? ALLOWED_ORIGINS : '*',
     methods: ['GET', 'POST']
   }
 });
-
-const PORT = process.env.PORT || 3002;
 const REPO_ROOT = path.resolve(__dirname, '..');
 const REALITY_AGENT_PATH = path.join(REPO_ROOT, 'src', 'reality_agent.py');
 
@@ -99,7 +106,7 @@ function runRealityCheck() {
     setTimeout(() => {
       python.kill();
       reject(new Error('Reality check timeout'));
-    }, 60000);
+    }, REALITY_CHECK_TIMEOUT);
   });
 }
 
@@ -134,7 +141,7 @@ io.on('connection', (socket) => {
         timestamp: new Date().toISOString()
       });
     }
-  }, 10000);
+  }, REALITY_CHECK_INTERVAL);
 
   // Handle disconnection
   socket.on('disconnect', () => {

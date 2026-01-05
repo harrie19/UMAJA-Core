@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -73,6 +73,35 @@ export function DNAHelix({ position = [0, 1, 3], data }: DNAHelixProps) {
   const color = getHelixColor();
   const emissiveIntensity = getEmissiveIntensity();
 
+  // Pre-calculate ladder rungs to avoid creating objects in render
+  const ladderRungs = useMemo(() => {
+    const rungs = [];
+    for (let i = 0; i < 20; i++) {
+      const t = i / 20;
+      const angle = t * 4 * Math.PI * 2;
+      
+      const x1 = Math.cos(angle) * 0.3;
+      const y = (t * 3) - 1.5;
+      const z1 = Math.sin(angle) * 0.3;
+      
+      const x2 = Math.cos(angle + Math.PI) * 0.3;
+      const z2 = Math.sin(angle + Math.PI) * 0.3;
+      
+      const start = new THREE.Vector3(x1, y, z1);
+      const end = new THREE.Vector3(x2, y, z2);
+      const distance = start.distanceTo(end);
+      const direction = end.clone().sub(start).normalize();
+      const center = start.clone().add(end).multiplyScalar(0.5);
+      const quaternion = new THREE.Quaternion().setFromUnitVectors(
+        new THREE.Vector3(0, 1, 0),
+        direction
+      );
+      
+      rungs.push({ center, quaternion, distance });
+    }
+    return rungs;
+  }, []); // Empty deps - only calculate once
+
   return (
     <group position={position} ref={meshRef}>
       <mesh>
@@ -87,43 +116,22 @@ export function DNAHelix({ position = [0, 1, 3], data }: DNAHelixProps) {
       </mesh>
       
       {/* Add connecting bars between strands (DNA ladder effect) */}
-      {Array.from({ length: 20 }).map((_, i) => {
-        const t = i / 20;
-        const angle = t * 4 * Math.PI * 2;
-        
-        const x1 = Math.cos(angle) * 0.3;
-        const y = (t * 3) - 1.5;
-        const z1 = Math.sin(angle) * 0.3;
-        
-        const x2 = Math.cos(angle + Math.PI) * 0.3;
-        const z2 = Math.sin(angle + Math.PI) * 0.3;
-        
-        const start = new THREE.Vector3(x1, y, z1);
-        const end = new THREE.Vector3(x2, y, z2);
-        const distance = start.distanceTo(end);
-        const direction = end.clone().sub(start).normalize();
-        const center = start.clone().add(end).multiplyScalar(0.5);
-        
-        return (
-          <mesh 
-            key={i} 
-            position={[center.x, center.y, center.z]}
-            quaternion={new THREE.Quaternion().setFromUnitVectors(
-              new THREE.Vector3(0, 1, 0),
-              direction
-            )}
-          >
-            <cylinderGeometry args={[0.02, 0.02, distance, 6]} />
-            <meshBasicMaterial 
-              color={color}
-              emissive={color}
-              emissiveIntensity={emissiveIntensity * 0.5}
-              transparent={true}
-              opacity={0.6}
-            />
-          </mesh>
-        );
-      })}
+      {ladderRungs.map((rung, i) => (
+        <mesh 
+          key={i} 
+          position={[rung.center.x, rung.center.y, rung.center.z]}
+          quaternion={rung.quaternion}
+        >
+          <cylinderGeometry args={[0.02, 0.02, rung.distance, 6]} />
+          <meshBasicMaterial 
+            color={color}
+            emissive={color}
+            emissiveIntensity={emissiveIntensity * 0.5}
+            transparent={true}
+            opacity={0.6}
+          />
+        </mesh>
+      ))}
     </group>
   );
 }

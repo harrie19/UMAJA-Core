@@ -35,7 +35,7 @@ export function useRealityStream(): UseRealityStreamReturn {
 
   useEffect(() => {
     // Connect to WebSocket server
-    const socketUrl = process.env.REACT_APP_REALITY_STREAM_URL || 'http://localhost:3002';
+    const socketUrl = import.meta.env.VITE_REALITY_STREAM_URL || 'http://localhost:3002';
     const newSocket = io(socketUrl);
 
     // Connection events

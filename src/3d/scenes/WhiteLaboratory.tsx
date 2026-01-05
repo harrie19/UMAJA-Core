@@ -1,4 +1,5 @@
 import { MeshReflectorMaterial } from '@react-three/drei';
+import * as THREE from 'three';
 
 /**
  * WhiteLaboratory Scene
@@ -82,8 +83,6 @@ export function WhiteLaboratory() {
 
       {/* Ambient Lighting */}
       <ambientLight intensity={0.5} />
-
-      {/* RectAreaLight - Left */}
       <rectAreaLight
         position={[-5, 5, 0]}
         intensity={20}
@@ -103,6 +102,3 @@ export function WhiteLaboratory() {
     </group>
   );
 }
-
-// Need to import THREE for EdgesGeometry
-import * as THREE from 'three';

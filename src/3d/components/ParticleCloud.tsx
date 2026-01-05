@@ -13,6 +13,7 @@ interface ParticleCloudProps {
  */
 export function ParticleCloud({ count = 5000, status = 'OK' }: ParticleCloudProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
+  const lastStatusRef = useRef<string>(status);
   
   // Generate particle data (positions, velocities, phases)
   const particles = useMemo(() => {
@@ -58,6 +59,12 @@ export function ParticleCloud({ count = 5000, status = 'OK' }: ParticleCloudProp
 
   const baseColor = getColorByStatus(status);
   
+  // Track if we need to update colors
+  const needsColorUpdate = status !== lastStatusRef.current;
+  if (needsColorUpdate) {
+    lastStatusRef.current = status;
+  }
+  
   // Animate particles
   useFrame((state, delta) => {
     if (!meshRef.current) return;
@@ -87,14 +94,17 @@ export function ParticleCloud({ count = 5000, status = 'OK' }: ParticleCloudProp
       
       meshRef.current.setMatrixAt(i, dummy.matrix);
       
-      // Color variation - mix with base color
-      const colorMix = 0.5 + Math.sin(time * particle.speed + particle.phase) * 0.5;
-      color.copy(baseColor).lerp(new THREE.Color('#ffffff'), colorMix * 0.3);
-      meshRef.current.setColorAt(i, color);
+      // Only update colors when status changes or for animation
+      // Update colors less frequently (every 10th particle per frame) for performance
+      if (needsColorUpdate || i % 10 === Math.floor(time * 10) % 10) {
+        const colorMix = 0.5 + Math.sin(time * particle.speed + particle.phase) * 0.5;
+        color.copy(baseColor).lerp(new THREE.Color('#ffffff'), colorMix * 0.3);
+        meshRef.current.setColorAt(i, color);
+      }
     }
     
     meshRef.current.instanceMatrix.needsUpdate = true;
-    if (meshRef.current.instanceColor) {
+    if (meshRef.current.instanceColor && needsColorUpdate) {
       meshRef.current.instanceColor.needsUpdate = true;
     }
   });
