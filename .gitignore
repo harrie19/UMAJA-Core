@@ -95,3 +95,41 @@ data/reality_checks/*.md
 # Deployment artifacts
 deployment_report.json
 deployment_metrics.json
+
+# ============================================
+# WHITE ROOM LAB (Next.js)
+# ============================================
+
+# Dependencies
+white-room-lab/node_modules/
+white-room-lab/.pnp
+white-room-lab/.pnp.js
+
+# Testing
+white-room-lab/coverage/
+
+# Next.js
+white-room-lab/.next/
+white-room-lab/out/
+
+# Production
+white-room-lab/build/
+
+# Misc
+white-room-lab/.DS_Store
+white-room-lab/*.pem
+
+# Debug
+white-room-lab/npm-debug.log*
+white-room-lab/yarn-debug.log*
+white-room-lab/yarn-error.log*
+
+# Local env files
+white-room-lab/.env*.local
+
+# Vercel
+white-room-lab/.vercel
+
+# TypeScript
+white-room-lab/*.tsbuildinfo
+white-room-lab/next-env.d.ts
