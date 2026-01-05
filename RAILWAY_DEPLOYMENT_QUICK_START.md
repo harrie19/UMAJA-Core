@@ -154,7 +154,7 @@ Expected response:
 After deployment, update the frontend if the Railway URL is different:
 
 1. Edit `docs/index.html`
-2. Find line: `const BACKEND_URL = 'https://umaja-core-production.up.railway.app';`
+2. Find line: `const BACKEND_URL = 'https://web-production-6ec45.up.railway.app';`
 3. Replace with your actual Railway URL
 4. Commit and push to trigger GitHub Pages update
 

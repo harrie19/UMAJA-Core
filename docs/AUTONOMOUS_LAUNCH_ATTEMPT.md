@@ -227,7 +227,7 @@ railway init
 railway up
 
 # Railway will auto-detect railway.json and deploy
-# Your API will be live at: https://umaja-core-production.up.railway.app
+# Your API will be live at: https://web-production-6ec45.up.railway.app
 ```
 
 ---
@@ -241,7 +241,7 @@ railway up
 - **Cost**: $0/month
 
 ### Railway (Backend API)
-- **URL**: https://umaja-core-production.up.railway.app
+- **URL**: https://web-production-6ec45.up.railway.app
 - **Endpoints**: `/health`, `/api/ai-agents`, `/worldtour/*`
 - **Auto-scaling**: Enabled
 - **Cost**: $0-5/month (free tier: 500 hours)
@@ -253,9 +253,9 @@ curl https://harrie19.github.io/UMAJA-Core/sitemap.xml
 curl https://harrie19.github.io/UMAJA-Core/robots.txt
 
 # Test Railway API
-curl https://umaja-core-production.up.railway.app/health
-curl https://umaja-core-production.up.railway.app/api/ai-agents
-curl https://umaja-core-production.up.railway.app/worldtour/status
+curl https://web-production-6ec45.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/api/ai-agents
+curl https://web-production-6ec45.up.railway.app/worldtour/status
 
 # All should return 200 OK with JSON data
 ```

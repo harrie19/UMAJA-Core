@@ -132,7 +132,7 @@ After Railway deployment completes:
 
 1. **Get Railway URL**
    - Check Railway dashboard for your deployment URL
-   - Example: `https://umaja-core-production.up.railway.app`
+   - Example: `https://web-production-6ec45.up.railway.app`
 
 2. **Update Dashboard Configuration**
    ```javascript

@@ -181,7 +181,7 @@ Data Layer
 
 ```javascript
 ❌ FALSCH: 'https://web-production-6ec45.up.railway.app'
-✅ RICHTIG: 'https://umaja-core-production.up.railway.app'
+✅ RICHTIG: 'https://web-production-6ec45.up.railway.app'
 ```
 
 **Impact:** 100% deiner Features offline!  

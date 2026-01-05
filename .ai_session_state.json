@@ -10,7 +10,7 @@
   "deployment_status": {
     "backend": {
       "platform": "Railway",
-      "url": "https://umaja-core-production.up.railway.app",
+      "url": "https://web-production-6ec45.up.railway.app",
       "status": "deployed",
       "last_deploy": "2026-01-01",
       "health_check": "/health",

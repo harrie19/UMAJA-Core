@@ -14,7 +14,7 @@ The code is **ready and tested**, but not yet live. Deployment requires merging 
 - **Purpose**: Public dashboard, documentation, sitemap, robots.txt
 
 ### Railway (Backend API)
-- **URL**: https://umaja-core-production.up.railway.app
+- **URL**: https://web-production-6ec45.up.railway.app
 - **Status**: ⏳ Awaiting Railway setup + merge to main
 - **Purpose**: REST API, World Tour endpoints, AI agent metadata
 
@@ -63,7 +63,7 @@ The workflow `.github/workflows/pages-deploy.yml` will automatically deploy on e
 4. Choose `harrie19/UMAJA-Core`
 5. Railway auto-detects `railway.json` configuration
 6. Click **Deploy**
-7. Get your deployment URL (e.g., `umaja-core-production.up.railway.app`)
+7. Get your deployment URL (e.g., `web-production-6ec45.up.railway.app`)
 
 #### Option B: Via Railway CLI
 ```bash
@@ -106,13 +106,13 @@ curl https://harrie19.github.io/UMAJA-Core/robots.txt
 ### Check Railway Backend
 ```bash
 # Health check
-curl https://umaja-core-production.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/health
 
 # AI agents endpoint
-curl https://umaja-core-production.up.railway.app/api/ai-agents
+curl https://web-production-6ec45.up.railway.app/api/ai-agents
 
 # World Tour status
-curl https://umaja-core-production.up.railway.app/worldtour/status
+curl https://web-production-6ec45.up.railway.app/worldtour/status
 ```
 
 ---

@@ -72,7 +72,7 @@ PYTHONUNBUFFERED=1
 
 **Expected Backend URL:**
 ```
-https://umaja-core-production.up.railway.app
+https://web-production-6ec45.up.railway.app
 ```
 
 **Available Endpoints:**
@@ -97,14 +97,14 @@ https://umaja-core-production.up.railway.app
 4. Railway will auto-detect `railway.json`
 5. Add environment variables (see above)
 6. Deploy from `main` branch
-7. Railway will assign a URL (should be umaja-core-production.up.railway.app)
+7. Railway will assign a URL (should be web-production-6ec45.up.railway.app)
 
 ### Phase 5: Integration Testing 🔗 PENDING
 **Status:** Waiting for both deployments to complete
 
 **Test Plan:**
 1. Verify GitHub Pages loads: https://harrie19.github.io/UMAJA-Core/
-2. Verify backend health: https://umaja-core-production.up.railway.app/health
+2. Verify backend health: https://web-production-6ec45.up.railway.app/health
 3. Test daily smile from dashboard
 4. Test World Tour features
 5. Verify CORS headers allow cross-origin requests
@@ -148,7 +148,7 @@ https://umaja-core-production.up.railway.app
 - **Cost:** $0/month
 
 ### Backend (Railway)
-- **URL:** https://umaja-core-production.up.railway.app
+- **URL:** https://web-production-6ec45.up.railway.app
 - **Platform:** Railway.app
 - **Runtime:** Python 3.11+
 - **Server:** Gunicorn WSGI server
@@ -272,11 +272,11 @@ $ curl -I https://harrie19.github.io/UMAJA-Core/
 # Expected: HTTP 200 OK
 
 # Check Backend
-$ curl https://umaja-core-production.up.railway.app/health
+$ curl https://web-production-6ec45.up.railway.app/health
 # Expected: {"status":"healthy","version":"2.1.0",...}
 
 # Test Daily Smile
-$ curl https://umaja-core-production.up.railway.app/api/daily-smile
+$ curl https://web-production-6ec45.up.railway.app/api/daily-smile
 # Expected: {"content":"...","archetype":"..."}
 ```
 
@@ -314,7 +314,7 @@ $ curl https://umaja-core-production.up.railway.app/api/daily-smile
 
 **Deployment is successful when:**
 1. ✅ Frontend dashboard loads at https://harrie19.github.io/UMAJA-Core/
-2. ✅ Backend API responds at https://umaja-core-production.up.railway.app
+2. ✅ Backend API responds at https://web-production-6ec45.up.railway.app
 3. ✅ Backend health check returns 200 OK
 4. ✅ Daily smile generation works through dashboard
 5. ✅ World Tour status displays correctly
@@ -335,7 +335,7 @@ $ curl https://umaja-core-production.up.railway.app/api/daily-smile
 ### Links
 - GitHub Repository: https://github.com/harrie19/UMAJA-Core
 - Frontend URL: https://harrie19.github.io/UMAJA-Core/
-- Backend URL: https://umaja-core-production.up.railway.app
+- Backend URL: https://web-production-6ec45.up.railway.app
 - Railway Dashboard: https://railway.app/dashboard
 
 ### Contact

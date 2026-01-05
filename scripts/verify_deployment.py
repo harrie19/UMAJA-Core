@@ -28,7 +28,7 @@ class Colors:
     END = '\033[0m'
 
 # Deployment URLs - can be overridden via environment variables
-BACKEND_URL = os.environ.get("UMAJA_BACKEND_URL", "https://umaja-core-production.up.railway.app")
+BACKEND_URL = os.environ.get("UMAJA_BACKEND_URL", "https://web-production-6ec45.up.railway.app")
 FRONTEND_URL = os.environ.get("UMAJA_FRONTEND_URL", "https://harrie19.github.io/UMAJA-Core/")
 
 def print_header(text: str) -> None:

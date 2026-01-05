@@ -83,7 +83,7 @@ PORT=5000  # Railway sets this automatically
 ### Step 4: Get Your Backend URL
 
 After deployment:
-- Railway provides a URL like: `https://umaja-core-production.up.railway.app`
+- Railway provides a URL like: `https://web-production-6ec45.up.railway.app`
 - Copy this URL for frontend configuration
 
 ### Health Check Configuration
@@ -119,7 +119,7 @@ Update the backend URL in `docs/index.html`:
 
 ```javascript
 // Around line 243
-const BACKEND_URL = 'https://umaja-core-production.up.railway.app';
+const BACKEND_URL = 'https://web-production-6ec45.up.railway.app';
 const FALLBACK_MODE = false; // Disable demo mode once backend is live
 ```
 

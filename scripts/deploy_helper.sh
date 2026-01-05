@@ -207,10 +207,10 @@ case $option in
         
         # Check Railway
         print_info "Railway Backend:"
-        echo "   URL: https://umaja-core-production.up.railway.app"
-        if curl -s --max-time 5 https://umaja-core-production.up.railway.app/health > /dev/null 2>&1; then
+        echo "   URL: https://web-production-6ec45.up.railway.app"
+        if curl -s --max-time 5 https://web-production-6ec45.up.railway.app/health > /dev/null 2>&1; then
             print_success "   ONLINE"
-            health_response=$(curl -s https://umaja-core-production.up.railway.app/health | jq -r '.status' 2>/dev/null || echo "unknown")
+            health_response=$(curl -s https://web-production-6ec45.up.railway.app/health | jq -r '.status' 2>/dev/null || echo "unknown")
             echo "   Health: $health_response"
         else
             print_warning "   NOT ACCESSIBLE"

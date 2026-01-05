@@ -7,10 +7,10 @@ This guide explains how to configure and verify the backend URL for the UMAJA-Co
 
 **File:** `docs/index.html`  
 **Line:** 324  
-**Current URL:** `https://umaja-core-production.up.railway.app`
+**Current URL:** `https://web-production-6ec45.up.railway.app`
 
 ```javascript
-const BACKEND_URL = 'https://umaja-core-production.up.railway.app';
+const BACKEND_URL = 'https://web-production-6ec45.up.railway.app';
 ```
 
 ## How to Verify the Correct Railway URL
@@ -59,7 +59,7 @@ This will test:
 Test the health endpoint directly:
 
 ```bash
-curl https://umaja-core-production.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/health
 ```
 
 Expected response:
@@ -122,8 +122,8 @@ CORS(app, origins=[
 
 ### Issue: Wrong URL in Configuration
 
-**Previous Wrong URL:** `https://web-production-6ec45.up.railway.app`  
-**Correct URL:** `https://umaja-core-production.up.railway.app`
+**Previous Wrong URL:** `https://umaja-core-production.up.railway.app`  
+**Correct URL:** `https://web-production-6ec45.up.railway.app`
 
 If you see the old wrong URL, update it immediately in `docs/index.html`.
 
@@ -169,5 +169,5 @@ If issues persist:
 
 - **Railway Dashboard**: https://railway.app/dashboard
 - **GitHub Pages**: https://harrie19.github.io/UMAJA-Core/
-- **Backend Health**: https://umaja-core-production.up.railway.app/health
+- **Backend Health**: https://web-production-6ec45.up.railway.app/health
 - **Repository**: https://github.com/harrie19/UMAJA-Core
