@@ -49,11 +49,11 @@
 
 | Component | Status | Tests | Docs | Demo | Notes |
 |-----------|--------|-------|------|------|-------|
-| **FastAPI Backend** | ✅ READY | 🟢 Tested | [api/simple_server.py](api/simple_server.py) | [✅ Live](https://umaja-core-production.up.railway.app) | Railway deployment active |
+| **FastAPI Backend** | ✅ READY | 🟢 Tested | [api/simple_server.py](api/simple_server.py) | [✅ Live](https://web-production-6ec45.up.railway.app) | Railway deployment active |
 | **GitHub Actions** | ✅ READY | ⚪ N/A | [.github/workflows/](.github/workflows/) | ✅ | 11 active workflows (1 disabled) |
 | **CDN Integration** | ✅ READY | ⚪ N/A | [docs/CDN_INTEGRATION.md](docs/CDN_INTEGRATION.md) | ✅ | GitHub Pages + global CDN |
 | **Health Monitoring** | ✅ READY | 🟢 Tested | [scripts/monitor_health.py](scripts/monitor_health.py) | ✅ | Automated health checks |
-| **Railway Deploy** | ✅ READY | ⚪ N/A | [docs/RAILWAY_DEPLOYMENT.md](docs/RAILWAY_DEPLOYMENT.md) | [✅ Live](https://umaja-core-production.up.railway.app) | Production backend |
+| **Railway Deploy** | ✅ READY | ⚪ N/A | [docs/RAILWAY_DEPLOYMENT.md](docs/RAILWAY_DEPLOYMENT.md) | [✅ Live](https://web-production-6ec45.up.railway.app) | Production backend |
 | **GitHub Pages** | ✅ READY | ⚪ N/A | [docs/](docs/) | [✅ Live](https://harrie19.github.io/UMAJA-Core/) | Web dashboard |
 | **Bundle Builder** | ✅ READY | 🟡 Partial | [src/bundle_builder.py](src/bundle_builder.py) | ✅ | CDN content packaging |
 | **CDN Manager** | ✅ READY | 🟡 Partial | [src/cdn_manager.py](src/cdn_manager.py) | ✅ | CDN upload/management |
@@ -219,7 +219,7 @@
 ## 🔗 Quick Links
 
 ### 🌐 Live Deployments
-- **Backend API**: https://umaja-core-production.up.railway.app
+- **Backend API**: https://web-production-6ec45.up.railway.app
 - **Web Dashboard**: https://harrie19.github.io/UMAJA-Core/
 - **Status Page**: https://harrie19.github.io/UMAJA-Core/status.html
 - **Documentation Hub**: https://harrie19.github.io/UMAJA-Core/

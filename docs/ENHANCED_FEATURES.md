@@ -35,7 +35,7 @@ Backend URL is now automatically detected based on environment.
 **Automatic Detection:**
 - `localhost` or `127.0.0.1` → Development (`http://localhost:5000`)
 - Domain contains `staging` or `dev` → Staging
-- All other domains → Production (`https://umaja-core-production.up.railway.app`)
+- All other domains → Production (`https://web-production-6ec45.up.railway.app`)
 
 **Manual Override:**
 Add `?backendUrl=` parameter to URL:
@@ -47,7 +47,7 @@ https://harrie19.github.io/UMAJA-Core/?backendUrl=https://custom-backend.com
 ```javascript
 // docs/config.js
 const BACKEND_URLS = {
-    production: 'https://umaja-core-production.up.railway.app',
+    production: 'https://web-production-6ec45.up.railway.app',
     staging: 'https://umaja-core-staging.up.railway.app',
     development: 'http://localhost:5000'
 };

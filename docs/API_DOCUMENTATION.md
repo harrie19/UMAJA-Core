@@ -5,7 +5,7 @@
 The UMAJA World Tour API provides programmatic access to our comedy content, city database, and tour statistics. All endpoints are REST-based and return JSON responses.
 
 **Base URLs**:
-- Production API: `https://umaja-core-production.up.railway.app`
+- Production API: `https://web-production-6ec45.up.railway.app`
 - GitHub Pages: `https://harrie19.github.io/UMAJA-Core/`
 
 **Version**: 2.1.0  
@@ -465,7 +465,7 @@ Get machine-readable metadata optimized for AI agents.
     "formats": ["text", "audio", "image", "video"]
   },
   "api": {
-    "base_url": "https://umaja-core-production.up.railway.app",
+    "base_url": "https://web-production-6ec45.up.railway.app",
     "rate_limit": "100/hour",
     "authentication": "none"
   },
@@ -524,13 +524,13 @@ All error responses follow this format:
 import requests
 
 # Get World Tour status
-response = requests.get('https://umaja-core-production.up.railway.app/worldtour/status')
+response = requests.get('https://web-production-6ec45.up.railway.app/worldtour/status')
 data = response.json()
 print(f"Visited {data['stats']['visited_cities']} cities")
 
 # Visit a city
 response = requests.post(
-    'https://umaja-core-production.up.railway.app/worldtour/visit/tokyo',
+    'https://web-production-6ec45.up.railway.app/worldtour/visit/tokyo',
     json={
         'personality': 'john_cleese',
         'content_type': 'city_review'
@@ -544,14 +544,14 @@ print(content['content']['topic'])
 
 ```javascript
 // Get World Tour status
-fetch('https://umaja-core-production.up.railway.app/worldtour/status')
+fetch('https://web-production-6ec45.up.railway.app/worldtour/status')
   .then(response => response.json())
   .then(data => {
     console.log(`Visited ${data.stats.visited_cities} cities`);
   });
 
 // Visit a city
-fetch('https://umaja-core-production.up.railway.app/worldtour/visit/tokyo', {
+fetch('https://web-production-6ec45.up.railway.app/worldtour/visit/tokyo', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -569,11 +569,11 @@ fetch('https://umaja-core-production.up.railway.app/worldtour/visit/tokyo', {
 
 ```bash
 # Get World Tour status
-curl https://umaja-core-production.up.railway.app/worldtour/status
+curl https://web-production-6ec45.up.railway.app/worldtour/status
 
 # Visit a city
 curl -X POST \
-  https://umaja-core-production.up.railway.app/worldtour/visit/tokyo \
+  https://web-production-6ec45.up.railway.app/worldtour/visit/tokyo \
   -H 'Content-Type: application/json' \
   -d '{
     "personality": "john_cleese",
@@ -581,7 +581,7 @@ curl -X POST \
   }'
 
 # List unvisited cities
-curl 'https://umaja-core-production.up.railway.app/worldtour/cities?visited=false&limit=10'
+curl 'https://web-production-6ec45.up.railway.app/worldtour/cities?visited=false&limit=10'
 ```
 
 ---

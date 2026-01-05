@@ -324,7 +324,7 @@ This embodies the ethical AI principles from `docs/KI_KOMMUNIKATION_WAHRHEIT.md`
 - Once you approve and complete Phase 2, the UMAJA World Tour will be **LIVE**
 - URLs will become accessible:
   - 📄 https://harrie19.github.io/UMAJA-Core/
-  - 🚂 https://umaja-core-production.up.railway.app
+  - 🚂 https://web-production-6ec45.up.railway.app
 - 8 billion people can start receiving smiles! 🌍✨
 
 ---

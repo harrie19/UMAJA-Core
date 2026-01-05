@@ -69,7 +69,7 @@ Allow: /
 # ===================================
 
 Sitemap: https://harrie19.github.io/UMAJA-Core/sitemap.xml
-Sitemap: https://umaja-core-production.up.railway.app/sitemap.xml
+Sitemap: https://web-production-6ec45.up.railway.app/sitemap.xml
 
 # ===================================
 # CRAWL RATE

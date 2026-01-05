@@ -36,7 +36,7 @@ jobs:
           echo "🔍 Checking backend health..."
           
           # Try primary backend (Railway)
-          BACKEND_URL="https://umaja-core-production.up.railway.app"
+          BACKEND_URL="https://web-production-6ec45.up.railway.app"
           
           # Wait for cold start (Render/Railway free tier)
           echo "⏳ Waiting for backend to wake up (15s timeout)..."

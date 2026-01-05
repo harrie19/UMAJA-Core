@@ -17,7 +17,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-BACKEND_URL="https://umaja-core-production.up.railway.app"
+BACKEND_URL="https://web-production-6ec45.up.railway.app"
 BACKEND_HEALTH_URL="${BACKEND_URL}/health"
 FRONTEND_URL="https://harrie19.github.io/UMAJA-Core/"
 TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
@@ -257,7 +257,7 @@ check_security() {
     # Check SSL/TLS certificate for backend
     print_info "Checking SSL certificate for backend..."
     
-    if echo | openssl s_client -connect umaja-core-production.up.railway.app:443 -servername umaja-core-production.up.railway.app 2>/dev/null | grep -q "Verify return code: 0"; then
+    if echo | openssl s_client -connect web-production-6ec45.up.railway.app:443 -servername web-production-6ec45.up.railway.app 2>/dev/null | grep -q "Verify return code: 0"; then
         print_success "Backend SSL certificate is valid"
     else
         print_warning "Could not verify backend SSL certificate"

@@ -14,7 +14,7 @@
 | Component | Status | URL | Health |
 |-----------|--------|-----|--------|
 | 🌐 **Frontend Dashboard** | 🟢 LIVE | [harrie19.github.io/UMAJA-Core](https://harrie19.github.io/UMAJA-Core/) | ✅ Operational |
-| 🚂 **Backend API** | 🟢 LIVE | [Railway Production](https://umaja-core-production.up.railway.app) | ✅ Operational |
+| 🚂 **Backend API** | 🟢 LIVE | [Railway Production](https://web-production-6ec45.up.railway.app) | ✅ Operational |
 | 📦 **CDN Content** | 🟢 LIVE | GitHub Pages | ✅ Serving |
 | 🔐 **Security** | 🟢 ACTIVE | Rate Limiting | ✅ Protected |
 
@@ -147,7 +147,7 @@ If critical issues arise:
 ### Health Monitoring
 ```bash
 # Check backend health
-curl https://umaja-core-production.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/health
 
 # Expected: {"status": "healthy", "mission": "8 billion smiles"}
 ```

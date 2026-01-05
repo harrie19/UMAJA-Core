@@ -100,7 +100,7 @@ Before starting the deployment process, ensure you have:
 2. **Get Backend URL**
    - Once deployed, navigate to Settings → Domains
    - Click "Generate Domain" to get your Railway subdomain
-   - Copy the URL (e.g., `https://umaja-core-production.up.railway.app`)
+   - Copy the URL (e.g., `https://web-production-6ec45.up.railway.app`)
 
    ![Screenshot: Generated Domain](_placeholder_railway_domain.png)
 
@@ -116,7 +116,7 @@ Before starting the deployment process, ensure you have:
 
    ```javascript
    const API_BASE_URL = process.env.REACT_APP_API_URL || 
-                        'https://umaja-core-production.up.railway.app/api';
+                        'https://web-production-6ec45.up.railway.app/api';
    
    export default API_BASE_URL;
    ```
@@ -125,7 +125,7 @@ Before starting the deployment process, ensure you have:
    - Create/update `.env.production` in the frontend directory:
 
    ```env
-   REACT_APP_API_URL=https://umaja-core-production.up.railway.app/api
+   REACT_APP_API_URL=https://web-production-6ec45.up.railway.app/api
    REACT_APP_ENV=production
    ```
 
@@ -217,7 +217,7 @@ app.use(cors(corsOptions));
 ```javascript
 // frontend/src/services/api.js
 const API_URL = process.env.REACT_APP_API_URL || 
-                'https://umaja-core-production.up.railway.app/api';
+                'https://web-production-6ec45.up.railway.app/api';
 
 export const fetchData = async (endpoint) => {
   const response = await fetch(`${API_URL}${endpoint}`, {
@@ -264,7 +264,7 @@ export const fetchData = async (endpoint) => {
 
 1. **Health Check**
    ```bash
-   curl https://umaja-core-production.up.railway.app/health
+   curl https://web-production-6ec45.up.railway.app/health
    ```
    Expected response: `{ "status": "ok", "timestamp": "..." }`
 
@@ -458,8 +458,8 @@ If issues persist:
 | Service | URL | Description |
 |---------|-----|-------------|
 | Frontend | https://harrie19.github.io/UMAJA-core/ | Main application interface |
-| Backend API | https://umaja-core-production.up.railway.app | API server |
-| Backend Health | https://umaja-core-production.up.railway.app/health | Health check endpoint |
+| Backend API | https://web-production-6ec45.up.railway.app | API server |
+| Backend Health | https://web-production-6ec45.up.railway.app/health | Health check endpoint |
 
 ### API Endpoints
 
@@ -500,15 +500,15 @@ You can test your deployed API using curl:
 
 ```bash
 # Test health endpoint
-curl https://umaja-core-production.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/health
 
 # Test API with authentication (example)
-curl -X POST https://umaja-core-production.up.railway.app/api/v1/auth/login \
+curl -X POST https://web-production-6ec45.up.railway.app/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"user@example.com","password":"password"}'
 
 # Test protected endpoint (with token)
-curl https://umaja-core-production.up.railway.app/api/v1/users \
+curl https://web-production-6ec45.up.railway.app/api/v1/users \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 

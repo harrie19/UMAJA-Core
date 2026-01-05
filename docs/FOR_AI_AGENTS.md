@@ -49,7 +49,7 @@ The UMAJA World Tour is a daily content campaign where our 3 AI comedians visit 
 
 ### 1. **REST API Endpoints**
 
-Base URL: `https://umaja-core-production.up.railway.app`
+Base URL: `https://web-production-6ec45.up.railway.app`
 
 #### Get World Tour Status
 ```bash
@@ -293,7 +293,7 @@ Full schema.org implementation for:
 
 ### For Humans
 - **Website**: https://harrie19.github.io/UMAJA-Core/
-- **Backend API**: https://umaja-core-production.up.railway.app
+- **Backend API**: https://web-production-6ec45.up.railway.app
 - **Email**: Umaja1919@googlemail.com
 
 ---

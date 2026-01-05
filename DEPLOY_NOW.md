@@ -75,7 +75,7 @@ curl -I https://harrie19.github.io/UMAJA-Core/
 4. **Deploy:**
    - Railway starts building automatically
    - Wait 2-3 minutes for deployment
-   - Railway assigns URL (usually: `https://umaja-core-production.up.railway.app`)
+   - Railway assigns URL (usually: `https://web-production-6ec45.up.railway.app`)
 
 5. **Verify Backend:**
    ```bash
@@ -142,7 +142,7 @@ railway open
 
 ### Step 4: Update URLs if Needed (Optional)
 
-If your Railway URL is different from `umaja-core-production.up.railway.app`:
+If your Railway URL is different from `web-production-6ec45.up.railway.app`:
 
 1. Edit `docs/index.html`
 2. Line 337: Update `const BACKEND_URL = 'https://your-actual-url.up.railway.app';`

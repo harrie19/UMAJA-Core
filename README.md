@@ -162,15 +162,15 @@ python src/cdn_manager.py report
 ### Live System
 
 🌐 **Dashboard**: https://harrie19.github.io/UMAJA-Core/  
-🚂 **Backend API**: https://umaja-core-production.up.railway.app *(update after Railway deployment)*
+🚂 **Backend API**: https://web-production-6ec45.up.railway.app *(update after Railway deployment)*
 
 Try it now:
 ```bash
 # Check system health
-curl https://umaja-core-production.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/health
 
 # Get a daily smile
-curl https://umaja-core-production.up.railway.app/api/daily-smile
+curl https://web-production-6ec45.up.railway.app/api/daily-smile
 ```
 
 ### Deployment Status
@@ -178,7 +178,7 @@ curl https://umaja-core-production.up.railway.app/api/daily-smile
 | Service | Status | URL |
 |---------|--------|-----|
 | 🌐 Dashboard (GitHub Pages) | ![Pages Status](https://img.shields.io/badge/status-ready-brightgreen) | [Visit Dashboard](https://harrie19.github.io/UMAJA-Core/) |
-| 🚂 Backend (Railway) | ![Railway Status](https://img.shields.io/badge/status-ready-brightgreen) | [Check Health](https://umaja-core-production.up.railway.app/health) |
+| 🚂 Backend (Railway) | ![Railway Status](https://img.shields.io/badge/status-ready-brightgreen) | [Check Health](https://web-production-6ec45.up.railway.app/health) |
 
 **Quick Deploy:**
 - 📖 [Railway Deployment Quick Start](RAILWAY_DEPLOYMENT_QUICK_START.md)
@@ -445,7 +445,7 @@ UMAJA-Core uses a **dual-deployment strategy**:
 
 ### Railway (Backend)
 - **Service**: Python Flask API
-- **Endpoint**: `https://umaja-core-production.up.railway.app`
+- **Endpoint**: `https://web-production-6ec45.up.railway.app`
 - **Features**: 
   - `/health` - System health monitoring
   - `/api/daily-smile` - Smile generation API
@@ -489,7 +489,7 @@ Uptime:        99.9% target
 Status:        🟢 PRODUCTION READY!
 ```
 
-**Health Check**: [Test Backend](https://umaja-core-production.up.railway.app/health)
+**Health Check**: [Test Backend](https://web-production-6ec45.up.railway.app/health)
 
 ---
 

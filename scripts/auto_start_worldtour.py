@@ -7,7 +7,7 @@ import requests
 import time
 import sys
 
-BACKEND_URL = "https://umaja-core-production.up.railway.app"
+BACKEND_URL = "https://web-production-6ec45.up.railway.app"
 # Fallback to local if Railway not available
 LOCAL_URL = "http://localhost:5000"
 

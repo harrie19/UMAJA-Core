@@ -44,21 +44,21 @@
 
   <!-- API Endpoints -->
   <url>
-    <loc>https://umaja-core-production.up.railway.app/health</loc>
+    <loc>https://web-production-6ec45.up.railway.app/health</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>always</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/status</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/status</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/cities</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/cities</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -66,392 +66,392 @@
 
   <!-- World Tour Cities -->
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/new_york</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/new_york</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/london</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/london</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/tokyo</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/tokyo</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/paris</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/paris</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/berlin</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/berlin</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/rome</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/rome</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/barcelona</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/barcelona</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/amsterdam</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/amsterdam</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/sydney</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/sydney</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/dubai</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/dubai</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/singapore</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/singapore</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/hong_kong</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/hong_kong</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/beijing</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/beijing</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/shanghai</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/shanghai</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/mumbai</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/mumbai</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/delhi</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/delhi</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/bangalore</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/bangalore</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/seoul</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/seoul</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/bangkok</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/bangkok</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/istanbul</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/istanbul</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/moscow</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/moscow</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/sao_paulo</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/sao_paulo</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/rio_de_janeiro</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/rio_de_janeiro</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/mexico_city</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/mexico_city</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/buenos_aires</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/buenos_aires</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/toronto</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/toronto</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/los_angeles</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/los_angeles</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/chicago</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/chicago</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/san_francisco</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/san_francisco</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/madrid</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/madrid</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/lisbon</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/lisbon</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/vienna</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/vienna</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/prague</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/prague</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/budapest</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/budapest</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/athens</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/athens</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/cairo</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/cairo</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/cape_town</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/cape_town</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/johannesburg</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/johannesburg</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/nairobi</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/nairobi</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/lagos</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/lagos</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/marrakech</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/marrakech</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/jerusalem</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/jerusalem</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/tel_aviv</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/tel_aviv</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/riyadh</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/riyadh</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/doha</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/doha</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/kuala_lumpur</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/kuala_lumpur</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/manila</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/manila</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/jakarta</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/jakarta</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/hanoi</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/hanoi</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/ho_chi_minh</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/ho_chi_minh</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/auckland</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/auckland</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/wellington</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/wellington</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/melbourne</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/melbourne</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/copenhagen</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/copenhagen</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/stockholm</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/stockholm</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://umaja-core-production.up.railway.app/worldtour/content/oslo</loc>
+    <loc>https://web-production-6ec45.up.railway.app/worldtour/content/oslo</loc>
     <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>

@@ -61,7 +61,7 @@ def main():
     # Define URLs to check
     tests = [
         {
-            'url': 'https://umaja-core-production.up.railway.app/health',
+            'url': 'https://web-production-6ec45.up.railway.app/health',
             'description': 'Railway Production Health Endpoint'
         },
         {

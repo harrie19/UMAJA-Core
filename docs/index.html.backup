@@ -404,7 +404,7 @@
 
     <script>
         // Configuration
-        const BACKEND_URL = 'https://umaja-core-production.up.railway.app';
+        const BACKEND_URL = 'https://web-production-6ec45.up.railway.app';
         const FALLBACK_MODE = false;
         let conversationHistory = [];
 

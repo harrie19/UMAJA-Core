@@ -144,7 +144,7 @@ UMAJA-Core is founded on Bahá'í teachings that emphasize:
 UMAJA-Core uses a sophisticated dual-deployment approach:
 
 #### 1. **Backend API (Railway)**
-**URL:** `https://umaja-core-production.up.railway.app`
+**URL:** `https://web-production-6ec45.up.railway.app`
 
 **Components:**
 - Flask REST API
@@ -287,7 +287,7 @@ PORT=5000
 ```javascript
 const CONFIG = {
   DEPLOYMENT_ENV: 'github_pages',
-  API_URL: 'https://umaja-core-production.up.railway.app',
+  API_URL: 'https://web-production-6ec45.up.railway.app',
   FALLBACK_ENABLED: true
 };
 ```

@@ -128,7 +128,7 @@ Available in repository: `/output/worldtour/` (city-specific folders)
 
 ### Official Channels
 - **Website**: https://harrie19.github.io/UMAJA-Core/
-- **API**: https://umaja-core-production.up.railway.app
+- **API**: https://web-production-6ec45.up.railway.app
 - **GitHub**: https://github.com/harrie19/UMAJA-Core
 - **Email**: Umaja1919@googlemail.com
 

@@ -34,7 +34,7 @@
    - Choose `harrie19/UMAJA-Core`
    - Railway auto-detects `railway.json`
    - Click "Deploy"
-   - Your URL: `https://umaja-core-production.up.railway.app`
+   - Your URL: `https://web-production-6ec45.up.railway.app`
 
    **Via Railway CLI:**
    ```bash
@@ -147,9 +147,9 @@ curl https://harrie19.github.io/UMAJA-Core/sitemap.xml
 curl https://harrie19.github.io/UMAJA-Core/robots.txt
 
 # Backend API (replace with your URL)
-curl https://umaja-core-production.up.railway.app/health
-curl https://umaja-core-production.up.railway.app/api/ai-agents
-curl https://umaja-core-production.up.railway.app/worldtour/status
+curl https://web-production-6ec45.up.railway.app/health
+curl https://web-production-6ec45.up.railway.app/api/ai-agents
+curl https://web-production-6ec45.up.railway.app/worldtour/status
 ```
 
 All should return 200 OK! ✅

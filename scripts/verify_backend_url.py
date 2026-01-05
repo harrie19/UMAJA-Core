@@ -10,7 +10,7 @@ import json
 from urllib.parse import urlparse
 
 # Backend URL to test (should match docs/index.html line 324)
-BACKEND_URL = "https://umaja-core-production.up.railway.app"
+BACKEND_URL = "https://web-production-6ec45.up.railway.app"
 FRONTEND_ORIGIN = "https://harrie19.github.io"
 
 def test_health_endpoint():
@@ -144,7 +144,7 @@ def main():
         print("2. Check the actual URL at: https://railway.app/dashboard")
         print("3. If URL is different, update docs/index.html line 324")
         print("4. Ensure CORS allows: https://harrie19.github.io")
-        print("\n💡 Expected URL format: https://umaja-core-production.up.railway.app")
+        print("\n💡 Expected URL format: https://web-production-6ec45.up.railway.app")
         print("⚠️  Previous wrong URL: https://web-production-6ec45.up.railway.app")
         sys.exit(1)
     
