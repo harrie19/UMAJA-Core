@@ -15,7 +15,7 @@ UMAJA features three distinct fictional comedian archetypes, each with unique:
 ## The Distinguished Wit 🎩
 
 ### Style Profile
-**Comedy Style:** Dry British wit, Monty Python-esque humor, absurdist observations  
+**Comedy Style:** Dry British wit, sophisticated humor, absurdist observations  
 **Voice:** Deep, measured, sarcastic  
 **Tone:** Sophisticated, deadpan, understated
 

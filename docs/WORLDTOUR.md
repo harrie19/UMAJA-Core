@@ -74,7 +74,7 @@ Each city includes:
 
 1. **Select Next City** (00:00 UTC)
    - Get unvisited city from queue
-   - Rotate personality (John → The Anxious Analyzer → Robin)
+   - Rotate personality (The Distinguished Wit → The Anxious Analyzer → The Energetic Improviser)
    - Choose content type
 
 2. **Generate Content** (00:01 - 00:05 UTC)

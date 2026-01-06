@@ -80,8 +80,8 @@ flutter_app/
      - Style: British humor
      - Description: British wit, dry humor, and brilliant observational comedy
   2. **The Anxious Analyzer** (🤖)
-     - Style: Protocol droid
-     - Description: Protocol-obsessed, analytical, and endearingly nervous droid
+     - Style: Analytical protocol
+     - Description: Protocol-obsessed, analytical, and endearingly nervous
   3. **The Energetic Improviser** (🎪)
      - Style: Energetic improviser
      - Description: High-energy improvisation with heartfelt, inspiring moments

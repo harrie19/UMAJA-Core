@@ -208,7 +208,7 @@ The core intelligence of UMAJA-Core consists of three layers of autonomous agent
        ▼
 3. ContentGenerator Agent
    ├─→ Generate base content (English)
-   ├─→ Apply personality (Cleese/The Anxious Analyzer/Williams)
+   ├─→ Apply personality (The Distinguished Wit/The Anxious Analyzer/The Energetic Improviser)
    └─→ Add archetype targeting (Professor/Worrier/Enthusiast)
        │
        ▼
