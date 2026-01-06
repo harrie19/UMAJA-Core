@@ -1,21 +1,151 @@
-name: Autonomous DevOps Agent
+name: Autonomous Holographic Agent
 
 on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
+    inputs:
+      command:
+        description: 'Natural language command (e.g., "Merge PR #90", "Deploy to Railway")'
+        required: true
+        type: string
+  schedule:
+    - cron: '0 */6 * * *'  # Self-maintenance every 6 hours
 
 permissions:
   contents: write
   pull-requests: write
   issues: write
+  actions: write
 
 jobs:
+  autonomous_operations:
+    # Enable for autonomous operations when needed
+    # Set to true to activate autonomous agent
+    if: false
+    name: Autonomous Agent Operations
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install numpy  # For holographic AI
+      
+      - name: Parse Command from Issue/Comment
+        id: parse_command
+        if: github.event_name == 'issues' || github.event_name == 'issue_comment'
+        run: |
+          # Extract command from issue body or comment
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            COMMAND="${{ github.event.comment.body }}"
+          else
+            COMMAND="${{ github.event.issue.body }}"
+          fi
+          echo "command=$COMMAND" >> $GITHUB_OUTPUT
+          echo "Received command: $COMMAND"
+      
+      - name: Parse Command from Workflow Dispatch
+        id: parse_dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          COMMAND="${{ github.event.inputs.command }}"
+          echo "command=$COMMAND" >> $GITHUB_OUTPUT
+          echo "Received command: $COMMAND"
+      
+      - name: Execute Autonomous Agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          COMMAND: ${{ steps.parse_command.outputs.command || steps.parse_dispatch.outputs.command || 'status' }}
+        run: |
+          echo "🤖 UMAJA Autonomous Agent Starting..."
+          echo "Command: $COMMAND"
+          
+          # Run the master orchestrator
+          python -c "
+          import asyncio
+          import sys
+          import os
+          sys.path.insert(0, 'src')
+          from autonomous.master_orchestrator import MasterOrchestrator
+          
+          async def main():
+              orchestrator = MasterOrchestrator()
+              command = os.environ.get('COMMAND', 'status')
+              result = await orchestrator.process_command(command, require_approval=False)
+              
+              print('\\n' + '='*60)
+              print('🤖 UMAJA Autonomous Agent Result')
+              print('='*60)
+              
+              if result['success']:
+                  print(f'✅ {result.get(\"message\", \"Success\")}')
+              else:
+                  print(f'❌ {result.get(\"error\", \"Failed\")}')
+                  if 'suggestion' in result:
+                      print(f'💡 {result[\"suggestion\"]}')
+              
+              if 'steps' in result:
+                  print('\\nWorkflow Steps:')
+                  for step in result['steps']:
+                      status = '✅' if step['result'].get('success') else '❌'
+                      print(f'  {status} {step[\"step\"]}')
+              
+              print('='*60)
+              return result['success']
+          
+          success = asyncio.run(main())
+          sys.exit(0 if success else 1)
+          "
+      
+      - name: Report Results
+        if: always()
+        run: |
+          echo "Agent execution complete"
+          echo "Check logs above for detailed results"
+      
+      - name: Self-Heal on Schedule
+        if: github.event_name == 'schedule'
+        run: |
+          echo "🔧 Running scheduled self-healing..."
+          python -c "
+          import asyncio
+          import sys
+          sys.path.insert(0, 'src')
+          from autonomous.master_orchestrator import MasterOrchestrator
+          
+          async def main():
+              orchestrator = MasterOrchestrator()
+              await orchestrator.self_heal()
+              print('✅ Self-healing complete')
+          
+          asyncio.run(main())
+          "
+  
+  # Legacy intelligent review job (kept for reference)
   intelligent_review:
     # Temporarily disabled during Flutter app development to conserve GitHub Actions minutes
-    # Original condition was: github.actor != 'github-actions[bot]' && github.actor != 'copilot-swe-agent[bot]' && !contains(github.event.head_commit.message, '[skip-ci]')
     if: false
-    name: AI-Powered PR Review
+    name: AI-Powered PR Review (Legacy)
     runs-on: ubuntu-latest
     
     steps:
@@ -29,12 +159,6 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-      
-      # Allow HuggingFace access for model downloads
-      - name: Configure Network Access
-        run: |
-          echo "Configuring network access for ML model downloads..."
-          # Models will be cached after first download
       
       - name: Install Dependencies
         run: |
