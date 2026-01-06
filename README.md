@@ -15,7 +15,7 @@
 ## 🚀 Quick Deploy
 
 ### Backend (Railway)
-1. Click: [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/UMAJA-Core)
+1. Click: [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/harrie19/UMAJA-Core)
 2. Set environment variables from `.env.example`
 3. Deploy → Get your backend URL
 
