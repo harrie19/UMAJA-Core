@@ -24,8 +24,45 @@
 2. Save → Wait 2 minutes
 3. Visit: `https://harrie19.github.io/UMAJA-Core/`
 
-### Configure Dashboard
-Update `docs/config.js` with your Railway backend URL.
+---
+
+## 🥽 WhiteLab Reality Analyser
+
+### Live 3D Reality Visualization
+
+GitHub Pages now displays the **WhiteLab Reality Analyser** - a minimalist white laboratory environment with real-time Reality Agent data visualization using Three.js/React Three Fiber.
+
+**Live URL:** https://harrie19.github.io/UMAJA-Core/
+
+### Manual Deployment to GitHub Pages
+
+```bash
+# Option 1: Use deployment script
+npm run deploy:whitelab
+
+# Option 2: Manual steps
+npm run build
+cp -r dist/* docs/
+git add docs/
+git commit -m "🥽 Deploy WhiteLab"
+git push origin main
+```
+
+### Automatic Deployment
+
+GitHub Actions automatically deploys WhiteLab to GitHub Pages when:
+- Changes are pushed to `src/3d/`, `src/hooks/`, or `index.html`
+- Workflow is manually triggered via Actions tab
+
+### Architecture
+
+```
+GitHub Pages (Static 3D UI)
+    ↓ WebSocket connection
+Railway Backend (API + Reality Agent)
+```
+
+The WhiteLab 3D UI is a client-side React application that connects to the Railway backend for real-time reality check data streaming.
 
 ---
 
