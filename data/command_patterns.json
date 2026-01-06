@@ -1,0 +1,236 @@
+{
+  "merge_pr": [
+    {
+      "pattern": "merge\\s+pr\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["merge pr 90", "merge pr #90", "merge PR #123"]
+    },
+    {
+      "pattern": "merge\\s+pull\\s+request\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["merge pull request 90", "merge pull request #90"]
+    },
+    {
+      "pattern": "accept\\s+pr\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["accept pr 90", "accept pr #90"]
+    },
+    {
+      "pattern": "pr\\s+#?(\\d+)\\s+mergen",
+      "lang": "de",
+      "groups": ["pr_number"],
+      "examples": ["PR 90 mergen", "PR #90 mergen"]
+    },
+    {
+      "pattern": "akzeptiere\\s+pr\\s+#?(\\d+)",
+      "lang": "de",
+      "groups": ["pr_number"],
+      "examples": ["akzeptiere PR 90", "akzeptiere pr #90"]
+    }
+  ],
+  "close_pr": [
+    {
+      "pattern": "close\\s+pr\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["close pr 89", "close PR #89"]
+    },
+    {
+      "pattern": "reject\\s+pr\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["reject pr 89", "reject PR #89"]
+    },
+    {
+      "pattern": "schließe\\s+pr\\s+#?(\\d+)",
+      "lang": "de",
+      "groups": ["pr_number"],
+      "examples": ["schließe PR 89", "schließe pr #89"]
+    }
+  ],
+  "close_old_prs": [
+    {
+      "pattern": "close\\s+old\\s+prs",
+      "lang": "en",
+      "groups": [],
+      "examples": ["close old prs", "close old PRs"]
+    },
+    {
+      "pattern": "cleanup\\s+prs",
+      "lang": "en",
+      "groups": [],
+      "examples": ["cleanup prs", "cleanup PRs"]
+    },
+    {
+      "pattern": "schließe\\s+alte\\s+prs",
+      "lang": "de",
+      "groups": [],
+      "examples": ["schließe alte PRs", "schließe alte prs"]
+    },
+    {
+      "pattern": "alte\\s+prs\\s+aufräumen",
+      "lang": "de",
+      "groups": [],
+      "examples": ["alte PRs aufräumen"]
+    }
+  ],
+  "fix_conflicts": [
+    {
+      "pattern": "fix\\s+conflicts?(?:\\s+in)?\\s+pr\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["fix conflicts in pr 87", "fix conflict in PR #87"]
+    },
+    {
+      "pattern": "resolve\\s+conflicts?(?:\\s+in)?\\s+pr\\s+#?(\\d+)",
+      "lang": "en",
+      "groups": ["pr_number"],
+      "examples": ["resolve conflicts in pr 87", "resolve conflict PR #87"]
+    },
+    {
+      "pattern": "konflikte\\s+lösen(?:\\s+in)?\\s+pr\\s+#?(\\d+)",
+      "lang": "de",
+      "groups": ["pr_number"],
+      "examples": ["Konflikte lösen in PR 87", "konflikte lösen pr #87"]
+    },
+    {
+      "pattern": "behebe\\s+konflikte(?:\\s+in)?\\s+pr\\s+#?(\\d+)",
+      "lang": "de",
+      "groups": ["pr_number"],
+      "examples": ["behebe Konflikte in PR 87"]
+    }
+  ],
+  "deploy": [
+    {
+      "pattern": "deploy(?:\\s+to)?\\s+(railway|render|production)",
+      "lang": "en",
+      "groups": ["platform"],
+      "examples": ["deploy to railway", "deploy railway", "deploy to production"]
+    },
+    {
+      "pattern": "push\\s+to\\s+(railway|render|production)",
+      "lang": "en",
+      "groups": ["platform"],
+      "examples": ["push to railway", "push to render"]
+    },
+    {
+      "pattern": "deploy(?:\\s+zu)?\\s+(railway|render|produktion)",
+      "lang": "de",
+      "groups": ["platform"],
+      "examples": ["deploy zu railway", "deploy railway", "deploy zu produktion"]
+    },
+    {
+      "pattern": "veröffentliche\\s+auf\\s+(railway|render)",
+      "lang": "de",
+      "groups": ["platform"],
+      "examples": ["veröffentliche auf railway", "veröffentliche auf render"]
+    }
+  ],
+  "status": [
+    {
+      "pattern": "(?:what'?s|what is)\\s+the\\s+status",
+      "lang": "en",
+      "groups": [],
+      "examples": ["what's the status", "what is the status"]
+    },
+    {
+      "pattern": "show\\s+status",
+      "lang": "en",
+      "groups": [],
+      "examples": ["show status"]
+    },
+    {
+      "pattern": "status\\s+check",
+      "lang": "en",
+      "groups": [],
+      "examples": ["status check"]
+    },
+    {
+      "pattern": "(?:wie ist|was ist)\\s+(?:der|die)\\s+status",
+      "lang": "de",
+      "groups": [],
+      "examples": ["wie ist der Status", "was ist der status"]
+    },
+    {
+      "pattern": "zeige\\s+status",
+      "lang": "de",
+      "groups": [],
+      "examples": ["zeige status", "zeige Status"]
+    }
+  ],
+  "create_issue": [
+    {
+      "pattern": "create\\s+issue[:\\s]+(.+)",
+      "lang": "en",
+      "groups": ["title"],
+      "examples": ["create issue: Fix login bug", "create issue Add feature"]
+    },
+    {
+      "pattern": "new\\s+issue[:\\s]+(.+)",
+      "lang": "en",
+      "groups": ["title"],
+      "examples": ["new issue: Bug in authentication"]
+    },
+    {
+      "pattern": "erstelle\\s+issue[:\\s]+(.+)",
+      "lang": "de",
+      "groups": ["title"],
+      "examples": ["erstelle issue: Bug beheben", "erstelle issue Feature hinzufügen"]
+    }
+  ],
+  "create_feature": [
+    {
+      "pattern": "create\\s+feature[:\\s]+(.+)",
+      "lang": "en",
+      "groups": ["description"],
+      "examples": ["create feature: User dashboard", "create feature Add login system"]
+    },
+    {
+      "pattern": "implement[:\\s]+(.+)",
+      "lang": "en",
+      "groups": ["description"],
+      "examples": ["implement: Payment processing", "implement new API endpoint"]
+    },
+    {
+      "pattern": "erstelle\\s+feature[:\\s]+(.+)",
+      "lang": "de",
+      "groups": ["description"],
+      "examples": ["erstelle feature: Benutzer-Dashboard", "erstelle feature Login-System"]
+    },
+    {
+      "pattern": "implementiere[:\\s]+(.+)",
+      "lang": "de",
+      "groups": ["description"],
+      "examples": ["implementiere: Zahlungsverarbeitung", "implementiere neues Feature"]
+    }
+  ],
+  "help": [
+    {
+      "pattern": "help",
+      "lang": "en",
+      "groups": [],
+      "examples": ["help", "Help"]
+    },
+    {
+      "pattern": "what\\s+can\\s+you\\s+do",
+      "lang": "en",
+      "groups": [],
+      "examples": ["what can you do", "what can you do?"]
+    },
+    {
+      "pattern": "hilfe",
+      "lang": "de",
+      "groups": [],
+      "examples": ["hilfe", "Hilfe"]
+    },
+    {
+      "pattern": "was\\s+kannst\\s+du",
+      "lang": "de",
+      "groups": [],
+      "examples": ["was kannst du", "was kannst du tun"]
+    }
+  ]
+}

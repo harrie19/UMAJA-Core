@@ -4,6 +4,7 @@ flask-limiter==3.8.0
 gunicorn==23.0.0
 requests==2.32.3
 pytest==7.4.3
+pytest-asyncio>=0.21.0
 
 # CPU-only PyTorch (much smaller for Railway deployment!)
 --extra-index-url https://download.pytorch.org/whl/cpu

@@ -863,6 +863,12 @@ def root():
             "energy_metrics": "GET /api/energy/metrics",
             "energy_report": "GET /api/energy/report",
             "energy_log": "POST /api/energy/log",
+            "agent_command": "POST /api/agent/command",
+            "agent_status": "GET /api/agent/status",
+            "agent_help": "GET /api/agent/help",
+            "agent_history": "GET /api/agent/history",
+            "holographic_status": "GET /api/holographic/status",
+            "holographic_query": "POST /api/holographic/query",
             "sitemap": "/sitemap.xml",
             "robots": "/robots.txt"
         },
@@ -871,6 +877,22 @@ def root():
             "status": "live",
             "personalities": ["john_cleese", "c3po", "robin_williams"],
             "content_types": ["city_review", "cultural_debate", "language_lesson", "tourist_trap", "food_review"]
+        },
+        "autonomous_agent": {
+            "enabled": True,
+            "natural_language": "English and German",
+            "example_commands": [
+                "Merge PR #90",
+                "Deploy to Railway",
+                "Fix conflicts in PR #87",
+                "What's the status?"
+            ]
+        },
+        "holographic_ai": {
+            "enabled": True,
+            "personalities": 6,
+            "distributed_intelligence": True,
+            "self_healing": "every 6 hours"
         },
         "energy": {
             "monitoring": "enabled",
@@ -1000,6 +1022,201 @@ def get_smile_from_cdn(archetype, language, day):
             "error": "Failed to get smile location",
             "message": str(e)
         }), 500
+
+# =============================================================================
+# AUTONOMOUS AGENT ENDPOINTS
+# =============================================================================
+
+@app.route('/api/agent/command', methods=['POST'])
+@limiter.limit("30 per minute")
+def agent_command():
+    """
+    Send a natural language command to the autonomous agent
+    
+    Request body:
+    - command: Natural language command (e.g., "Merge PR #90", "Deploy to Railway")
+    - require_approval: Whether to require approval for destructive operations (default: true)
+    """
+    try:
+        import asyncio
+        from autonomous.master_orchestrator import MasterOrchestrator
+        
+        data = request.get_json() or {}
+        command_text = data.get('command', '')
+        require_approval = data.get('require_approval', True)
+        
+        if not command_text:
+            return jsonify({
+                "success": False,
+                "error": "No command provided",
+                "message": "Please provide a 'command' in the request body"
+            }), 400
+        
+        # Log energy for this operation
+        try:
+            from energy_monitor import get_energy_monitor
+            monitor = get_energy_monitor()
+            monitor.log_vector_operation("autonomous_command", count=1)
+        except:
+            pass  # Energy monitoring is optional
+        
+        # Execute command via orchestrator
+        orchestrator = MasterOrchestrator()
+        result = asyncio.run(orchestrator.process_command(command_text, require_approval))
+        
+        return jsonify(result), 200 if result.get('success') else 400
+        
+    except Exception as e:
+        logger.error(f"Error processing agent command: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to process command",
+            "message": str(e),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 500
+
+@app.route('/api/agent/status', methods=['GET'])
+def agent_status():
+    """Get autonomous agent system status"""
+    try:
+        import asyncio
+        from autonomous.master_orchestrator import MasterOrchestrator
+        
+        orchestrator = MasterOrchestrator()
+        status = asyncio.run(orchestrator._get_system_status())
+        
+        return jsonify(status), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting agent status: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to get status",
+            "message": str(e),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 500
+
+@app.route('/api/agent/help', methods=['GET'])
+def agent_help():
+    """Get help text showing available commands"""
+    try:
+        from autonomous.nl_command_processor import NLCommandProcessor
+        
+        processor = NLCommandProcessor()
+        language = request.args.get('lang', 'en')
+        
+        help_text = processor.get_help_text(language)
+        
+        return jsonify({
+            "success": True,
+            "help_text": help_text,
+            "language": language,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting agent help: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to get help",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/agent/history', methods=['GET'])
+def agent_history():
+    """Get recent operation history"""
+    try:
+        from autonomous.master_orchestrator import MasterOrchestrator
+        
+        limit = request.args.get('limit', 10, type=int)
+        
+        orchestrator = MasterOrchestrator()
+        history = orchestrator.get_operation_history(limit=limit)
+        
+        return jsonify({
+            "success": True,
+            "count": len(history),
+            "history": history,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting agent history: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to get history",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/holographic/status', methods=['GET'])
+def holographic_status():
+    """Get holographic AI system status"""
+    try:
+        from holographic_ai_system import get_holographic_integration
+        
+        integration = get_holographic_integration()
+        health = integration.get_system_health()
+        
+        return jsonify({
+            "success": True,
+            "health": health,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting holographic status: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to get holographic status",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/holographic/query', methods=['POST'])
+@limiter.limit("50 per minute")
+def holographic_query():
+    """
+    Query the holographic AI system
+    
+    Request body:
+    - query: Query string
+    - personality: Optional personality to use
+    """
+    try:
+        import asyncio
+        from holographic_ai_system import get_holographic_integration
+        
+        data = request.get_json() or {}
+        query = data.get('query', '')
+        personality = data.get('personality')
+        
+        if not query:
+            return jsonify({
+                "success": False,
+                "error": "No query provided"
+            }), 400
+        
+        integration = get_holographic_integration()
+        result = asyncio.run(
+            integration.holographic_system.process_query(query, personality)
+        )
+        
+        return jsonify({
+            "success": True,
+            "result": result,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error processing holographic query: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to process query",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# END AUTONOMOUS AGENT ENDPOINTS
+# =============================================================================
 
 # =============================================================================
 # ERROR HANDLERS
