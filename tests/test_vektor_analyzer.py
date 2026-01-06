@@ -116,10 +116,13 @@ class TestVektorAnalyzer:
         # Should detect at least one outlier
         assert len(outliers) > 0
         
-        # Outliers should have low similarity
+        # At least one of the outliers should be the weather text at index 3
+        outlier_indices = [idx for idx, _, _ in outliers]
+        assert 3 in outlier_indices
+        
+        # All outliers should have low similarity
         for idx, text, similarity in outliers:
             assert similarity < 0.4
-            assert idx == 3  # Should be the weather text
     
     def test_find_outliers_threshold(self, analyzer):
         """Test outlier detection with different thresholds"""

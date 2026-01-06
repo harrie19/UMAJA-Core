@@ -378,9 +378,18 @@ class EthicalValueEncoder:
             
         Returns:
             Tuple of (principle, alignment_score)
+            
+        Raises:
+            ValueError: If cultural context is invalid or has no principles
         """
+        if culture not in self.CULTURAL_CONTEXTS:
+            raise ValueError(f"Unknown cultural context: {culture}")
+        
         action_vector = self.encode_action(action_description)
         principles = self.CULTURAL_CONTEXTS[culture]['principles']
+        
+        if not principles:
+            raise ValueError(f"No principles found for cultural context: {culture}")
         
         best_principle = None
         best_score = -1.0

@@ -3,7 +3,6 @@ Tests for WorldtourGenerator - City-specific comedy content generation
 """
 
 import pytest
-import json
 import sys
 from pathlib import Path
 

@@ -169,10 +169,8 @@ class TestVectorCommSerialization:
         """Test that compression achieves 50-70% reduction as specified"""
         ratio = estimate_compression_ratio(sample_message)
         
-        assert ratio > 0
-        # Should achieve some compression (ratio > 1 means compression worked)
-        # Note: Small messages might not compress well
-        assert ratio >= 1.0
+        # Should achieve compression (ratio > 1 means compression worked)
+        assert ratio > 1.0
     
     def test_batch_serialize_deserialize(self, sample_message):
         """Test batch serialization of multiple messages"""

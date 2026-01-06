@@ -45,11 +45,11 @@ class EnergyMonitor:
     CO2_PER_KWH = float(os.environ.get('ENERGY_CO2_PER_KWH', 0.45))   # 0.45 kg CO2/kWh default
     
     # Energy constants for operations (as per spec)
-    VECTOR_SIMILARITY_WH = 0.0000000003  # Vector similarity check (ultra-efficient)
+    VECTOR_SIMILARITY_WH = 0.0000003     # Vector similarity check (ultra-efficient)
     SLM_ENCODE_WH = 0.00001              # Small Language Model encode
     LLM_CALL_WH = 0.056                  # LLM API call  
     CACHE_HIT_WH = 0.0000001             # Cached response
-    VECTOR_OPERATION_WH = 0.0000003      # Vector operation
+    VECTOR_OPERATION_WH = 0.0000003      # Vector operation (same as similarity)
     CDN_SERVE_WH = 0.00000005            # CDN file serve
     
     def __init__(self, data_dir: str = "data/monitoring"):
@@ -188,10 +188,15 @@ class EnergyMonitor:
             text_length: Length of text encoded
             details: Additional details
         """
+        # Use configured energy per SLM encode to derive duration at 1W
+        energy_wh = self.SLM_ENCODE_WH
+        watts = 1.0  # 1W typical
+        duration_sec = energy_wh * 3600.0 / watts
+        
         self.log_operation(
             operation_type="slm_encode",
-            duration_sec=0.01,  # 10ms typical
-            watts=1.0,  # 1W typical
+            duration_sec=duration_sec,
+            watts=watts,
             details={'text_length': text_length, **(details or {})}
         )
     
@@ -202,10 +207,15 @@ class EnergyMonitor:
             count: Number of similarity calculations
             details: Additional details
         """
+        duration_per_calc = 0.00001  # 10 microseconds per calculation
+        # Compute wattage so that energy per calculation matches VECTOR_SIMILARITY_WH:
+        # (watts_per_calc * duration_per_calc) / 3600 == VECTOR_SIMILARITY_WH
+        watts_per_calc = (self.VECTOR_SIMILARITY_WH * 3600) / duration_per_calc
+        
         self.log_operation(
             operation_type="vector_similarity",
-            duration_sec=0.00001 * count,  # 10 microseconds per calculation
-            watts=0.001 * count,
+            duration_sec=duration_per_calc * count,
+            watts=watts_per_calc * count,
             details={'count': count, **(details or {})}
         )
     

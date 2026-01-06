@@ -133,11 +133,11 @@ class TestEthicalValueEncoder:
             action_description="promoting equality between all people",
             principle="equality of women and men",
             culture='bahai',
-            threshold=0.6
+            threshold=0.75
         )
         
         assert result['culture'] == 'bahai'
-        assert result['alignment_score'] > 0.6
+        assert result['alignment_score'] > 0.75
         assert result['aligned'] is True
     
     def test_get_most_aligned_principle(self, encoder):

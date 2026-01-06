@@ -137,8 +137,8 @@ class TestVectorAgentOrchestrator:
     def test_find_best_agent_with_required_type(self, orchestrator):
         """Test finding agent with required type"""
         # Spawn different types
-        research_id = orchestrator.spawn_agent('research')
-        code_id = orchestrator.spawn_agent('code')
+        orchestrator.spawn_agent('research')
+        orchestrator.spawn_agent('code')
         
         # Task requiring code agent
         task = VectorTask(
@@ -176,7 +176,7 @@ class TestVectorAgentOrchestrator:
         orchestrator.spawn_agent('research')
         
         # Add a task
-        task_id = orchestrator.add_task(
+        orchestrator.add_task(
             description="Research artificial intelligence",
             priority=8
         )
@@ -190,8 +190,10 @@ class TestVectorAgentOrchestrator:
         # Stop workers
         orchestrator.stop_workers()
         
-        # Check stats
-        assert orchestrator.stats['completed_tasks'] >= 0
+        # Check stats - at least one task should be processed
+        total_processed = (orchestrator.stats['completed_tasks'] + 
+                          orchestrator.stats['failed_tasks'])
+        assert total_processed > 0
     
     def test_clone_agent(self, orchestrator):
         """Test cloning an agent"""
@@ -303,8 +305,8 @@ class TestVectorAgentOrchestrator:
         orchestrator.spawn_agent('research')
         
         # Add tasks with different priorities
-        low_priority = orchestrator.add_task("Low priority task", priority=1)
-        high_priority = orchestrator.add_task("High priority task", priority=10)
+        orchestrator.add_task("Low priority task", priority=1)
+        orchestrator.add_task("High priority task", priority=10)
         
         # The task queue should order by priority
         assert orchestrator.task_queue.qsize() == 2

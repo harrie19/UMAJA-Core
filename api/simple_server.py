@@ -542,7 +542,6 @@ def worldtour_generate():
             }), 404
         
         # Get personality and content_type (with defaults)
-        import random
         personality = data.get('personality', random.choice(generator.PERSONALITIES))
         content_type = data.get('content_type', random.choice(generator.CONTENT_TYPES))
         
