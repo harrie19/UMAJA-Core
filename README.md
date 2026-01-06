@@ -103,9 +103,9 @@ The UMAJA Worldtour brings comedy and joy to cities around the world through 3 A
 
 ### Meet the Comedians
 
-- 🎩 **John Cleese Style**: British wit, dry humor, observational comedy
-- 🤖 **C-3PO Style**: Protocol-obsessed, analytical, endearingly nervous
-- 🎪 **Robin Williams Style**: High-energy, improvisational, heartfelt
+- 🎩 **The Distinguished Wit**: British wit, dry humor, observational comedy
+- 🤖 **The Anxious Analyzer**: Protocol-obsessed, analytical, endearingly nervous
+- 🎪 **The Energetic Improviser**: High-energy, improvisational, heartfelt
 
 ### Worldtour Statistics
 
