@@ -8,6 +8,7 @@ from sentence_transformers import SentenceTransformer
 from typing import List, Dict, Tuple, Optional, Any
 import logging
 import re
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -27,12 +28,22 @@ class VektorAnalyzer:
         Initialize the VektorAnalyzer with a sentence transformer model.
         
         Args:
-            model_name: Name of the sentence transformer model to use
+            model_name: Name of the sentence transformer model to use.
+                       Can be short name like 'all-MiniLM-L6-v2' or
+                       full name like 'sentence-transformers/all-MiniLM-L6-v2'.
                        Default: 'all-MiniLM-L6-v2' (lightweight and efficient)
         """
         logger.info(f"Loading sentence transformer model: {model_name}")
-        self.model = SentenceTransformer(model_name)
+        
+        # Check for environment variable for cache directory
+        cache_dir = os.environ.get('SENTENCE_TRANSFORMERS_HOME', 
+                                   os.environ.get('HF_HOME',
+                                   os.path.expanduser('~/.cache/huggingface')))
+        
+        # Load model (SentenceTransformer handles both short and full names)
+        self.model = SentenceTransformer(model_name, cache_folder=cache_dir)
         self.model_name = model_name
+        logger.info(f"Successfully loaded model: {model_name}")
         
     def encode_texts(self, texts: List[str]) -> np.ndarray:
         """
