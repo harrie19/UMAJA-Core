@@ -1,0 +1,87 @@
+name: Deploy WhiteLab to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/3d/**'
+      - 'src/hooks/**'
+      - 'index.html'
+      - 'package.json'
+      - 'vite.config.ts'
+      - '.github/workflows/deploy-whitelab.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write  # Need write to push to docs/
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper git operations
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build WhiteLab 3D UI
+        run: npm run build
+        env:
+          VITE_REALITY_STREAM_URL: https://umaja-core-production.up.railway.app
+          VITE_BACKEND_URL: https://umaja-core-production.up.railway.app
+      
+      - name: Prepare docs/ directory
+        run: |
+          # Backup documentation markdown files
+          mkdir -p /tmp/docs-backup
+          find docs/ -name "*.md" -exec cp --parents {} /tmp/docs-backup/ \; || true
+          
+          # Clear old HTML/JS/CSS from docs/
+          rm -rf docs/*.html docs/*.js docs/*.css docs/assets/ docs/config.js
+          
+          # Copy Vite build output
+          cp -r dist/* docs/
+          
+          # Restore documentation
+          if [ -d "/tmp/docs-backup/docs" ]; then
+            cp -r /tmp/docs-backup/docs/*.md docs/ || true
+          fi
+          
+          # Create .nojekyll
+          touch docs/.nojekyll
+          
+          # Fix asset paths for GitHub Pages subdirectory
+          if [ -f "docs/index.html" ]; then
+            sed -i 's|href="/assets/|href="./assets/|g' docs/index.html
+            sed -i 's|src="/assets/|src="./assets/|g' docs/index.html
+          fi
+      
+      - name: Commit and push to docs/
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add docs/
+          
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🥽 Auto-deploy WhiteLab Reality Analyser [$(date +'%Y-%m-%d %H:%M:%S')]"
+            git push origin main
+          fi
+      
+      - name: Deployment summary
+        run: |
+          echo "✅ WhiteLab deployed to GitHub Pages"
+          echo "🌐 URL: https://harrie19.github.io/UMAJA-Core/"
+          echo "⏱️  Changes will be live in ~60 seconds"
