@@ -7,6 +7,7 @@
 
 import { Scene } from '@/components/white-lab/Scene';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function LabPage() {
   const [instructions, setInstructions] = useState(true);
@@ -66,12 +67,12 @@ export default function LabPage() {
       </div>
 
       {/* Back button */}
-      <a 
+      <Link 
         href="/"
         className="absolute top-6 left-1/2 transform -translate-x-1/2 z-10 backdrop-blur-md bg-white/10 rounded-full px-4 py-2 shadow-xl border border-white/20 hover:bg-white/20 transition-all text-sm font-medium text-gray-800"
       >
         ← Back to Home
-      </a>
+      </Link>
     </div>
   );
 }

@@ -4,7 +4,6 @@
  */
 
 import { CONFIG } from '@/lib/config';
-import { Environment } from '@react-three/drei';
 
 export function Lighting() {
   return (
@@ -31,8 +30,11 @@ export function Lighting() {
         intensity={CONFIG.lighting.rim.intensity}
       />
       
-      {/* Environment map for realistic reflections */}
-      <Environment preset="studio" />
+      {/* Simple hemisphere light for soft ambient lighting instead of Environment */}
+      <hemisphereLight
+        args={['#ffffff', '#8888ff', 0.4]}
+        position={[0, 50, 0]}
+      />
     </>
   );
 }
