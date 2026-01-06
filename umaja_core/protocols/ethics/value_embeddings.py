@@ -4,7 +4,7 @@ Multi-dimensional ethical value encoding for AI alignment
 """
 
 import numpy as np
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Any
 from sentence_transformers import SentenceTransformer
 import logging
 
