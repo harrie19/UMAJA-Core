@@ -7,47 +7,57 @@ and allow offline testing.
 
 import pytest
 import numpy as np
-from unittest.mock import Mock, MagicMock
+from unittest.mock import Mock, MagicMock, patch
 import os
+import sys
 
 
-@pytest.fixture
-def mock_sentence_transformer(monkeypatch):
-    """
-    Mock SentenceTransformer to avoid downloading models during tests.
+class MockSentenceTransformer:
+    """Mock SentenceTransformer class for testing."""
     
-    Returns a mock model that generates random embeddings of the correct dimensions.
-    """
-    class MockSentenceTransformer:
-        def __init__(self, model_name, cache_folder=None):
-            self.model_name = model_name
-            # Determine embedding dimension based on model name
-            if 'all-MiniLM-L6-v2' in model_name:
-                self.embedding_dim = 384
-            elif 'all-mpnet-base-v2' in model_name:
-                self.embedding_dim = 768
-            else:
-                self.embedding_dim = 384  # Default
+    def __init__(self, model_name, cache_folder=None, device=None):
+        self.model_name = model_name
+        # Determine embedding dimension based on model name
+        if 'all-MiniLM-L6-v2' in model_name:
+            self.embedding_dim = 384
+        elif 'all-mpnet-base-v2' in model_name:
+            self.embedding_dim = 768
+        else:
+            self.embedding_dim = 384  # Default
+    
+    def encode(self, texts, convert_to_numpy=True, normalize_embeddings=False,
+              show_progress_bar=False, batch_size=32, convert_to_tensor=False):
+        """Mock encode method that returns random embeddings."""
+        is_single = isinstance(texts, str)
+        if is_single:
+            texts = [texts]
         
-        def encode(self, texts, convert_to_numpy=True, normalize_embeddings=False):
-            """Mock encode method that returns random embeddings."""
-            if isinstance(texts, str):
-                texts = [texts]
-            
-            # Generate random embeddings
-            embeddings = np.random.randn(len(texts), self.embedding_dim).astype(np.float32)
-            
-            # Normalize if requested
-            if normalize_embeddings:
-                norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
-                embeddings = embeddings / (norms + 1e-10)
-            
-            return embeddings
-    
-    # Monkeypatch the SentenceTransformer class
-    monkeypatch.setattr('sentence_transformers.SentenceTransformer', MockSentenceTransformer)
-    
-    return MockSentenceTransformer
+        # Generate random embeddings with consistent seed for reproducibility
+        np.random.seed(hash(str(texts)) % (2**32))
+        embeddings = np.random.randn(len(texts), self.embedding_dim).astype(np.float32)
+        
+        # Normalize if requested
+        if normalize_embeddings:
+            norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
+            embeddings = embeddings / (norms + 1e-10)
+        
+        # Return single embedding if input was single string (match real behavior)
+        if is_single:
+            return embeddings[0]
+        
+        return embeddings
+
+
+# Apply mock at module import time, before any tests run
+use_real_models = os.environ.get('UMAJA_USE_REAL_MODELS', '0') == '1'
+
+if not use_real_models:
+    # Mock the SentenceTransformer at import time
+    import sentence_transformers
+    sentence_transformers.SentenceTransformer = MockSentenceTransformer
+    print("🔧 Using mocked SentenceTransformer for tests (set UMAJA_USE_REAL_MODELS=1 for real models)")
+else:
+    print("✅ Using real SentenceTransformer models for tests")
 
 
 @pytest.fixture
