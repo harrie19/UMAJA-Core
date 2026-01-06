@@ -9,6 +9,95 @@
 [![Languages](https://img.shields.io/badge/languages-8-orange)]()
 [![Reach](https://img.shields.io/badge/reach-8B%20people-red)]()
 [![Cost](https://img.shields.io/badge/cost-$0-success)](https://github.com/harrie19/UMAJA-Core)
+[![Tests](https://img.shields.io/badge/tests-130%2B-success)]()
+[![Coverage](https://img.shields.io/badge/coverage-complete-brightgreen)]()
+
+---
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/harrie19/UMAJA-Core.git
+cd UMAJA-Core
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start API server
+python api/simple_server.py
+```
+
+Server will start on `http://localhost:5000`
+
+### Usage
+
+```python
+import sys
+sys.path.insert(0, 'src')
+
+# Vector Analysis
+from vektor_analyzer import VektorAnalyzer
+analyzer = VektorAnalyzer()
+coherence = analyzer.semantic_coherence_score(["AI is amazing", "Machine learning rocks"])
+
+# World Tour
+from worldtour_generator import WorldtourGenerator
+generator = WorldtourGenerator()
+content = generator.generate_city_content('paris', 'john_cleese', 'food_review')
+
+# Ethical Alignment
+sys.path.insert(0, 'umaja_core/protocols/ethics')
+from value_embeddings import EthicalValueEncoder
+encoder = EthicalValueEncoder()
+alignment = encoder.check_alignment("helping others", "compassion and kindness")
+```
+
+### API Endpoints
+
+```bash
+# Health check
+curl http://localhost:5000/health
+
+# Generate world tour content
+curl -X POST http://localhost:5000/worldtour/generate \
+  -H "Content-Type: application/json" \
+  -d '{"city_id": "tokyo", "personality": "robin_williams", "content_type": "food_review"}'
+
+# Get energy statistics
+curl http://localhost:5000/energy/stats
+
+# Spawn vector agent
+curl -X POST http://localhost:5000/vector-agents/spawn \
+  -H "Content-Type: application/json" \
+  -d '{"agent_type": "research"}'
+```
+
+### Testing
+
+```bash
+# Run all tests (130+ tests)
+python -m pytest tests/ -v
+
+# Run specific test suite
+python -m pytest tests/test_vektor_analyzer.py -v
+
+# With coverage
+python -m pytest tests/ --cov=src --cov=umaja_core
+```
+
+**Note**: First run downloads sentence-transformer models (~500MB, cached afterward).
+
+### Complete Documentation
+
+See [docs/COMPLETE_SYSTEM.md](docs/COMPLETE_SYSTEM.md) for:
+- Architecture overview
+- Energy efficiency metrics  
+- API endpoint reference
+- Usage examples
+- Deployment guide
 
 ---
 
