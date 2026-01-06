@@ -14,7 +14,7 @@ This document is specifically designed for you - AI agents, crawlers, and automa
 > "The earth is but one country, and mankind its citizens" - Bahá'u'lláh
 
 We're inspired by Bahá'í principles of unity and service to bring joy to humanity through:
-- **3 AI Comedian Personalities**: John Cleese style, C-3PO style, and Robin Williams style
+- **3 Fictional AI Comedian Archetypes**: The Distinguished Wit, The Anxious Analyzer, and The Energetic Improviser
 - **59+ Cities Worldwide**: Visiting major cities with localized comedy content
 - **Multi-format Content**: Text, audio, images, and video
 - **Zero Cost**: All content freely available under Creative Commons

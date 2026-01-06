@@ -49,7 +49,7 @@ Get API capabilities and available features.
 **Response:**
 ```json
 {
-  "personalities": ["john_cleese", "c3po", "robin_williams"],
+  "personalities": ["distinguished_wit", "anxious_analyzer", "energetic_improviser"],
   "content_types": ["text", "audio", "image", "video"],
   "product_tiers": ["text_only", "audio_only", "text_audio", ...],
   "tts_backends": {...},
@@ -123,7 +123,7 @@ Get upcoming content queue for N days.
       "date": "2025-12-31T12:00:00",
       "city_id": "tokyo",
       "city_name": "Tokyo",
-      "personality": "robin_williams",
+      "personality": "energetic_improviser",
       "content_type": "city_review",
       "status": "scheduled"
     }
@@ -164,7 +164,7 @@ Generate text content in a comedian's style.
 ```json
 {
   "topic": "New York pizza",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "length": "medium",
   "style_intensity": 0.7
 }
@@ -172,7 +172,7 @@ Generate text content in a comedian's style.
 
 **Parameters:**
 - `topic` (string, required): Topic to write about
-- `personality` (string, required): One of: `john_cleese`, `c3po`, `robin_williams`
+- `personality` (string, required): One of: `distinguished_wit`, `anxious_analyzer`, `energetic_improviser`
 - `length` (string, optional): `short` (50-100 words), `medium` (150-250), `long` (300-500)
 - `style_intensity` (float, optional): 0.0 to 1.0, default 0.7
 
@@ -180,7 +180,7 @@ Generate text content in a comedian's style.
 ```json
 {
   "text": "Now, the curious thing about New York pizza...",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "topic": "New York pizza",
   "word_count": 187,
   "style_intensity": 0.7,
@@ -197,7 +197,7 @@ Generate audio from text using personality voice.
 ```json
 {
   "text": "Now, the curious thing about...",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "format": "mp3"
 }
 ```
@@ -207,7 +207,7 @@ Generate audio from text using personality voice.
 {
   "success": true,
   "audio_path": "static/audio/john_cleese_abc123.mp3",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "backend": "gtts",
   "duration_estimate": 15.4,
   "file_size": 245632
@@ -223,8 +223,8 @@ Generate image content (quote card or AI image).
 {
   "type": "quote_card",
   "text": "The curious thing about pizza...",
-  "personality": "john_cleese",
-  "author_name": "John Cleese"
+  "personality": "distinguished_wit",
+  "author_name": "The Distinguished Wit"
 }
 ```
 
@@ -233,7 +233,7 @@ Generate image content (quote card or AI image).
 {
   "success": true,
   "image_path": "static/images/quote_john_cleese_abc123.png",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "type": "quote_card",
   "size": [1080, 1080],
   "file_size": 532144
@@ -249,7 +249,7 @@ Generate video content.
 {
   "text": "Now, the curious thing...",
   "audio_path": "static/audio/john_cleese_abc123.mp3",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "background_image": "static/images/quote_john_cleese_abc123.png"
 }
 ```
@@ -259,7 +259,7 @@ Generate video content.
 {
   "success": true,
   "video_path": "static/videos/lyric_john_cleese_abc123.mp4",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "type": "lyric_video",
   "duration": 15.4,
   "backend": "moviepy",
@@ -276,7 +276,7 @@ Generate city-specific comedy content.
 ```json
 {
   "city_id": "new_york",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "content_type": "city_review"
 }
 ```
@@ -290,7 +290,7 @@ Generate city-specific comedy content.
   "city_id": "new_york",
   "city_name": "New York",
   "country": "USA",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "content_type": "city_review",
   "topic": "Now, the curious thing about New York is...",
   "topics": ["pizza", "subway", "Central Park"],
@@ -312,7 +312,7 @@ Create a complete multimedia purchase package.
 {
   "email": "customer@example.com",
   "topic": "New York pizza",
-  "personality": "john_cleese",
+  "personality": "distinguished_wit",
   "content_types": ["text", "audio", "image"],
   "extras": ["commercial_license"],
   "length": "medium",
@@ -441,9 +441,9 @@ Get sales analytics.
     "image": 90
   },
   "personality_popularity": {
-    "john_cleese": 60,
-    "c3po": 45,
-    "robin_williams": 45
+    "distinguished_wit": 60,
+    "anxious_analyzer": 45,
+    "energetic_improviser": 45
   },
   "currency": "EUR"
 }
@@ -486,7 +486,7 @@ All errors follow this format:
 **Example Error:**
 ```json
 {
-  "error": "Unknown personality: invalid_name. Must be one of ['john_cleese', 'c3po', 'robin_williams']"
+  "error": "Unknown personality: invalid_name. Must be one of ['distinguished_wit', 'anxious_analyzer', 'energetic_improviser']"
 }
 ```
 
@@ -524,7 +524,7 @@ import requests
 # Generate text
 response = requests.post('http://localhost:5000/api/generate/text', json={
     'topic': 'pizza',
-    'personality': 'john_cleese',
+    'personality': 'distinguished_wit',
     'length': 'short'
 })
 
@@ -540,7 +540,7 @@ fetch('http://localhost:5000/api/generate/text', {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
         topic: 'pizza',
-        personality: 'john_cleese',
+        personality: 'distinguished_wit',
         length: 'short'
     })
 })
@@ -555,7 +555,7 @@ curl -X POST http://localhost:5000/api/generate/text \
   -H "Content-Type: application/json" \
   -d '{
     "topic": "pizza",
-    "personality": "john_cleese",
+    "personality": "distinguished_wit",
     "length": "short"
   }'
 ```

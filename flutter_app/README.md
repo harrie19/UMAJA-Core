@@ -31,9 +31,9 @@ Built on **Bahá'í principles** of unity, service, and beauty.
 
 ### 🎭 Personalities Screen
 Choose from 3 unique AI comedian personalities:
-- **🎩 John Cleese** - British wit and observational comedy
-- **🤖 C-3PO** - Protocol-obsessed, analytical humor
-- **🎪 Robin Williams** - High-energy, heartfelt inspiration
+- **🎩 The Distinguished Wit** - British wit and observational comedy
+- **🤖 The Anxious Analyzer** - Protocol-obsessed, analytical humor
+- **🎪 The Energetic Improviser** - High-energy, heartfelt inspiration
 
 ### ⚙️ Settings Screen
 - **Language Selection**: 8 languages supported

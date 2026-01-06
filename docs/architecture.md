@@ -208,7 +208,7 @@ The core intelligence of UMAJA-Core consists of three layers of autonomous agent
        ▼
 3. ContentGenerator Agent
    ├─→ Generate base content (English)
-   ├─→ Apply personality (Cleese/C-3PO/Williams)
+   ├─→ Apply personality (Cleese/The Anxious Analyzer/Williams)
    └─→ Add archetype targeting (Professor/Worrier/Enthusiast)
        │
        ▼
@@ -255,9 +255,9 @@ The core intelligence of UMAJA-Core consists of three layers of autonomous agent
        │
        ▼
 4. Generate Content for 3 Personalities
-   ├─→ John Cleese: British wit
-   ├─→ C-3PO: Protocol obsessed
-   └─→ Robin Williams: High energy
+   ├─→ The Distinguished Wit: British wit
+   ├─→ The Anxious Analyzer: Protocol obsessed
+   └─→ The Energetic Improviser: High energy
        │
        ▼
 5. Generate 5 Content Types

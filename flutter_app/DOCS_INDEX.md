@@ -154,9 +154,9 @@ Welcome to the UMAJA KI Agent OS Flutter application documentation!
 - Info card
 
 **Personalities**:
-- 🎩 John Cleese (British humor)
-- 🤖 C-3PO (Protocol droid)
-- 🎪 Robin Williams (Energetic improviser)
+- 🎩 The Distinguished Wit (British humor)
+- 🤖 The Anxious Analyzer (Protocol droid)
+- 🎪 The Energetic Improviser (Energetic improviser)
 
 **Documentation**: See APP_FLOW.md for visual mockup
 

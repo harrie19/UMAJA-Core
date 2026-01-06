@@ -12,7 +12,7 @@ The UMAJA-AI dashboard is deployed via GitHub Pages and shows real-time progress
 
 - **Real-time Statistics**: Cities visited, content generated, days active
 - **World Tour Map**: Visual progress through 50+ global cities
-- **Content Feed**: Latest comedy pieces from John Cleese, C-3PO, and Robin Williams
+- **Content Feed**: Latest comedy pieces from The Distinguished Wit, The Anxious Analyzer, and The Energetic Improviser
 - **Mission Statement**: Core values and Bahá'í-inspired vision
 - **Responsive Design**: Works on desktop, tablet, and mobile
 

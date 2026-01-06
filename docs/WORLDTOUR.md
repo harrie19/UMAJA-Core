@@ -4,7 +4,7 @@ Complete guide to the UMAJA Worldtour system - 3 AI comedians touring the world.
 
 ## Overview
 
-The Worldtour is a **viral marketing campaign** where three AI comedian personalities (John Cleese, C-3PO, Robin Williams) create comedy content about cities worldwide. The goal is to build a massive audience before launching the paid service.
+The Worldtour is a **viral marketing campaign** where three AI comedian personalities (The Distinguished Wit, The Anxious Analyzer, The Energetic Improviser) create comedy content about cities worldwide. The goal is to build a massive audience before launching the paid service.
 
 ---
 
@@ -74,14 +74,14 @@ Each city includes:
 
 1. **Select Next City** (00:00 UTC)
    - Get unvisited city from queue
-   - Rotate personality (John → C-3PO → Robin)
+   - Rotate personality (John → The Anxious Analyzer → Robin)
    - Choose content type
 
 2. **Generate Content** (00:01 - 00:05 UTC)
    ```python
    content = worldtour_generator.generate_city_content(
        city_id='tokyo',
-       personality='robin_williams',
+       personality='energetic_improviser',
        content_type='food_review'
    )
    ```
@@ -90,7 +90,7 @@ Each city includes:
    ```python
    text = personality_engine.generate_text(
        topic=content['topic'],
-       personality='robin_williams',
+       personality='energetic_improviser',
        length='medium'
    )
    ```
@@ -99,7 +99,7 @@ Each city includes:
    ```python
    audio = voice_synthesizer.synthesize(
        text=text['text'],
-       personality='robin_williams'
+       personality='energetic_improviser'
    )
    ```
 
@@ -107,7 +107,7 @@ Each city includes:
    ```python
    image = image_generator.generate_quote_card(
        quote=text['text'][:150],
-       personality='robin_williams'
+       personality='energetic_improviser'
    )
    ```
 
@@ -116,7 +116,7 @@ Each city includes:
    video = video_generator.create_lyric_video(
        text=text['text'],
        audio_path=audio['audio_path'],
-       personality='robin_williams',
+       personality='energetic_improviser',
        background_image=image['image_path']
    )
    ```
@@ -150,7 +150,7 @@ Each city includes:
 2. **User-Generated Content**
    - Encourage #MyUMAJATour posts
    - Feature best submissions
-   - Create challenges (e.g., "Do your best John Cleese impression")
+   - Create challenges (e.g., "Do your best The Distinguished Wit impression")
 
 3. **Behind-the-Scenes**
    - Share AI generation process

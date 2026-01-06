@@ -8,13 +8,13 @@ Welcome to the UMAJA World Tour press kit! This page contains everything journal
 
 ## 🌍 Quick Overview
 
-**UMAJA World Tour** is an AI-powered comedy project bringing smiles to all 8 billion people on Earth by touring 59+ cities worldwide with 3 distinct AI comedian personalities.
+**UMAJA World Tour** is an AI-powered comedy project bringing smiles to all 8 billion people on Earth by touring 59+ cities worldwide with 3 distinct fictional AI comedian archetypes.
 
 ### Key Facts
 - **Launch Date**: January 2, 2026
 - **Mission**: Bring daily smiles to 8 billion people
 - **Cities**: 59+ cities worldwide (8.5% complete)
-- **Personalities**: 3 AI comedians (John Cleese, C-3PO, and Robin Williams styles)
+- **Personalities**: 3 fictional AI comedian archetypes (The Distinguished Wit, The Anxious Analyzer, and The Energetic Improviser)
 - **Cost**: $0 (completely free, open source)
 - **License**: Creative Commons Attribution 4.0
 - **Inspiration**: Bahá'í principle "The earth is but one country, and mankind its citizens"
@@ -33,9 +33,9 @@ UMAJA (Universal Motivation & Joy for All) is demonstrating that:
 
 ---
 
-## 🎭 The Three Personalities
+## 🎭 The Three Fictional Archetypes
 
-### 1. John Cleese Style 🎩
+### 1. The Distinguished Wit 🎩
 **Description**: British wit meets sharp observational comedy
 - **Tone**: Dry, intellectual, deadpan
 - **Style**: Observational, absurdist
@@ -44,8 +44,8 @@ UMAJA (Universal Motivation & Joy for All) is demonstrating that:
 
 **Sample Quote**: *"Now, the curious thing about London is that everyone is perpetually discussing the weather, as if tomorrow it might suddenly become interesting."*
 
-### 2. C-3PO Style 🤖
-**Description**: Protocol-obsessed, endearingly nervous android
+### 2. The Anxious Analyzer 🤖
+**Description**: Protocol-obsessed, endearingly nervous analyst
 - **Tone**: Analytical, formal, anxious
 - **Style**: Over-explaining, worrying
 - **Delivery**: Concerned earnestness
@@ -53,7 +53,7 @@ UMAJA (Universal Motivation & Joy for All) is demonstrating that:
 
 **Sample Quote**: *"I must inform you that the probability of successfully navigating a Tokyo subway during rush hour is approximately 3,720 to 1. Should I be concerned about the pushing? Yes, very concerned."*
 
-### 3. Robin Williams Style 🎪
+### 3. The Energetic Improviser 🎪
 **Description**: High-energy, improvisational, heartfelt
 - **Tone**: Energetic, warm, rapid-fire
 - **Style**: Stream-of-consciousness, impressions
@@ -203,7 +203,7 @@ Our founder/team can discuss:
 > "We're proving that technology can serve all of humanity without anyone paying a cent. Eight billion people deserve daily smiles, and AI makes that possible."
 
 ### About The Approach
-> "Each city gets a unique comedic treatment from three distinct AI personalities. It's like having John Cleese, C-3PO, and Robin Williams tour the world together."
+> "Each city gets a unique comedic treatment from three distinct fictional AI archetypes. It's like having a sophisticated British wit, an anxious analyst, and an energetic improviser tour the world together."
 
 ### About The Technology
 > "We built this entirely on free tiers - GitHub Pages, Railway, open-source tools. It's a blueprint for how to serve billions without venture capital."
