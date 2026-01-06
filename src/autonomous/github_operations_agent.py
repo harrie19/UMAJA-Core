@@ -36,12 +36,16 @@ class GitHubOperationsAgent:
         
         Args:
             token: GitHub token (or from GITHUB_TOKEN env)
-            owner: Repository owner
-            repo: Repository name
+            owner: Repository owner (required)
+            repo: Repository name (required)
         """
         self.token = token or os.environ.get('GITHUB_TOKEN', '')
-        self.owner = owner or os.environ.get('GITHUB_REPO_OWNER', 'harrie19')
-        self.repo = repo or os.environ.get('GITHUB_REPO_NAME', 'UMAJA-Core')
+        self.owner = owner or os.environ.get('GITHUB_REPO_OWNER', '')
+        self.repo = repo or os.environ.get('GITHUB_REPO_NAME', '')
+        
+        if not self.owner or not self.repo:
+            logger.warning("GitHub repository owner/name not configured - some operations may fail")
+        
         self.base_url = "https://api.github.com"
         
         logger.info(f"GitHub Operations Agent initialized for {self.owner}/{self.repo}")

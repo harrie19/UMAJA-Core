@@ -79,6 +79,8 @@ jobs:
         run: |
           echo "🤖 UMAJA Autonomous Agent Starting..."
           echo "Command: $COMMAND"
+          echo "⚠️  Note: require_approval=False for automated execution"
+          echo "⚠️  Only use for non-destructive operations or with proper safeguards"
           
           # Run the master orchestrator
           python -c "
