@@ -14,13 +14,15 @@ fi
 # Install dependencies if needed
 if [ ! -d "node_modules" ]; then
     echo "📦 Installing dependencies..."
-    npm install
+    yarn install
 fi
 
 # Build the 3D UI
 echo ""
 echo "🔨 Building WhiteLab 3D UI..."
-npm run build
+VITE_BACKEND_URL=https://web-production-016d1.up.railway.app \
+VITE_REALITY_STREAM_URL=https://web-production-016d1.up.railway.app \
+yarn build
 
 # Check if build succeeded
 if [ ! -d "dist" ]; then
@@ -28,20 +30,21 @@ if [ ! -d "dist" ]; then
     exit 1
 fi
 
-# Backup old docs/ content (excluding .md files)
+# Preserve markdown files
 echo ""
-echo "💾 Backing up old docs/ content..."
-mkdir -p docs-backup
-# More portable backup using tar
-(cd docs && tar cf - --exclude='*.md' .) | (cd docs-backup && tar xf -) 2>/dev/null || true
+echo "💾 Preserving markdown files..."
+find docs/ -name "*.md" -exec cp --parents {} /tmp/docs-backup/ \; 2>/dev/null || true
 
 # Clear old docs/ HTML/JS/CSS (keep .md documentation)
 echo "🧹 Cleaning docs/ directory..."
-rm -rf docs/*.html docs/*.js docs/*.css docs/assets/ docs/config.js
+rm -rf docs/*.html docs/*.js docs/*.css docs/assets/
 
 # Copy Vite build output to docs/
 echo "📋 Copying build to docs/..."
 cp -r dist/* docs/
+
+# Restore markdown files
+cp -r /tmp/docs-backup/docs/*.md docs/ 2>/dev/null || true
 
 # Create .nojekyll to disable Jekyll processing
 touch docs/.nojekyll
@@ -54,7 +57,7 @@ echo ""
 echo "Next steps:"
 echo "1. Review changes: git status"
 echo "2. Commit: git add docs/ && git commit -m '🥽 Deploy WhiteLab to GitHub Pages'"
-echo "3. Push: git push origin main"
+echo "3. Push: git push"
 echo "4. Wait ~60s for GitHub Pages to update"
 echo "5. Visit: https://harrie19.github.io/UMAJA-Core/"
 echo ""
