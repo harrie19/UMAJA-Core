@@ -7,23 +7,28 @@ on:
       - 'src/3d/**'
       - 'src/hooks/**'
       - 'index.html'
-      - 'package.json'
       - 'vite.config.ts'
-      - '.github/workflows/deploy-whitelab.yml'
-  workflow_dispatch:  # Allow manual trigger
+      - '.env.production'
+  workflow_dispatch:
 
+# Required permissions for GitHub Pages deployment
 permissions:
-  contents: write  # Need write to push to docs/
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent concurrent deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Full history for proper git operations
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,50 +39,44 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       
-      - name: Build WhiteLab 3D UI
+      - name: Build WhiteLab
         run: yarn build
         env:
-          VITE_REALITY_STREAM_URL: https://umaja-core-production.up.railway.app
-          VITE_BACKEND_URL: https://umaja-core-production.up.railway.app
+          VITE_BACKEND_URL: https://web-production-016d1.up.railway.app
+          VITE_REALITY_STREAM_URL: https://web-production-016d1.up.railway.app
       
-      - name: Prepare docs/ directory
+      - name: Prepare deployment directory
         run: |
-          # Backup documentation markdown files using tar (more portable)
+          # Backup markdown files from docs/
           mkdir -p /tmp/docs-backup
-          if [ -d "docs" ]; then
-            (cd docs && tar cf - $(find . -name "*.md" 2>/dev/null) 2>/dev/null) | (cd /tmp/docs-backup && tar xf -) 2>/dev/null || true
-          fi
+          find docs/ -name "*.md" -type f -exec cp {} /tmp/docs-backup/ \; 2>/dev/null || true
           
-          # Clear old HTML/JS/CSS from docs/
-          rm -rf docs/*.html docs/*.js docs/*.css docs/assets/ docs/config.js
+          # Clear old build files from docs/
+          rm -rf docs/*.html docs/*.js docs/*.css docs/assets/
           
-          # Copy Vite build output
+          # Copy Vite build output to docs/
           cp -r dist/* docs/
           
-          # Restore documentation
-          if [ -d "/tmp/docs-backup" ]; then
-            cp -r /tmp/docs-backup/*.md docs/ 2>/dev/null || true
-          fi
+          # Restore markdown files
+          cp /tmp/docs-backup/*.md docs/ 2>/dev/null || true
           
-          # Create .nojekyll
+          # Add .nojekyll to disable Jekyll processing
           touch docs/.nojekyll
       
-      - name: Commit and push to docs/
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add docs/
-          
-          # Only commit if there are changes
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "🥽 Auto-deploy WhiteLab Reality Analyser [$(date +'%Y-%m-%d %H:%M:%S')]"
-            git push origin main
-          fi
-      
-      - name: Deployment summary
-        run: |
-          echo "✅ WhiteLab deployed to GitHub Pages"
-          echo "🌐 URL: https://harrie19.github.io/UMAJA-Core/"
-          echo "⏱️  Changes will be live in ~60 seconds"
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
