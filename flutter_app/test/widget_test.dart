@@ -5,6 +5,8 @@ void main() {
   testWidgets('App launches and displays Home screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const UmajaApp());
+    // Wait for all timers and animations to complete
+    await tester.pumpAndSettle();
 
     // Verify that the app bar shows UMAJA branding
     expect(find.text('🌍 UMAJA'), findsOneWidget);
