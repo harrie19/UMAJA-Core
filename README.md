@@ -26,9 +26,20 @@ cd UMAJA-Core
 # Install dependencies
 pip install -r requirements.txt
 
+# Download sentence-transformer models (first time only)
+python -c "
+from sentence_transformers import SentenceTransformer
+print('📥 Downloading models (this may take a few minutes)...')
+SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
+print('✅ Models cached successfully!')
+"
+
 # Start API server
 python api/simple_server.py
 ```
+
+**Note**: Models are cached in `~/.cache/huggingface` and only need to be downloaded once. See [docs/MODEL_CACHING.md](docs/MODEL_CACHING.md) for offline development and CI setup.
 
 Server will start on `http://localhost:5000`
 
@@ -78,8 +89,11 @@ curl -X POST http://localhost:5000/vector-agents/spawn \
 ### Testing
 
 ```bash
-# Run all tests (130+ tests)
+# Run all tests (130+ tests) with mocked models (fast)
 python -m pytest tests/ -v
+
+# Run tests with real models (slower, requires models to be cached)
+UMAJA_USE_REAL_MODELS=1 python -m pytest tests/ -v
 
 # Run specific test suite
 python -m pytest tests/test_vektor_analyzer.py -v
@@ -88,7 +102,11 @@ python -m pytest tests/test_vektor_analyzer.py -v
 python -m pytest tests/ --cov=src --cov=umaja_core
 ```
 
-**Note**: First run downloads sentence-transformer models (~500MB, cached afterward).
+**Testing Modes**:
+- **Default (Mocked)**: Fast tests using mocked models (~2-5 seconds)
+- **Real Models**: Integration tests with actual embeddings (requires cached models)
+
+See [docs/MODEL_CACHING.md](docs/MODEL_CACHING.md) for details on model management and offline testing.
 
 ### Complete Documentation
 

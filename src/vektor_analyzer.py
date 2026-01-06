@@ -8,6 +8,7 @@ from sentence_transformers import SentenceTransformer
 from typing import List, Dict, Tuple, Optional, Any
 import logging
 import re
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,8 +32,29 @@ class VektorAnalyzer:
                        Default: 'all-MiniLM-L6-v2' (lightweight and efficient)
         """
         logger.info(f"Loading sentence transformer model: {model_name}")
-        self.model = SentenceTransformer(model_name)
-        self.model_name = model_name
+        
+        # Check for environment variable for cache directory
+        cache_dir = os.environ.get('SENTENCE_TRANSFORMERS_HOME', 
+                                   os.environ.get('HF_HOME',
+                                   os.path.expanduser('~/.cache/huggingface')))
+        
+        # Ensure full model name for sentence-transformers
+        if not model_name.startswith('sentence-transformers/'):
+            full_model_name = f'sentence-transformers/{model_name}'
+        else:
+            full_model_name = model_name
+        
+        try:
+            # Try to load model (will use cache if available)
+            self.model = SentenceTransformer(full_model_name, cache_folder=cache_dir)
+            self.model_name = model_name
+            logger.info(f"Successfully loaded model: {model_name}")
+        except Exception as e:
+            logger.warning(f"Failed to load full model name '{full_model_name}', trying '{model_name}': {e}")
+            # Fallback to original model name if full name fails
+            self.model = SentenceTransformer(model_name, cache_folder=cache_dir)
+            self.model_name = model_name
+            logger.info(f"Successfully loaded model with fallback: {model_name}")
         
     def encode_texts(self, texts: List[str]) -> np.ndarray:
         """

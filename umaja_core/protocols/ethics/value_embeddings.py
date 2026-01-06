@@ -7,6 +7,7 @@ import numpy as np
 from typing import List, Dict, Optional, Tuple, Any
 from sentence_transformers import SentenceTransformer
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +94,20 @@ class EthicalValueEncoder:
             model_name: Sentence transformer model to use
         """
         logger.info(f"Initializing EthicalValueEncoder with {model_name}")
-        self.model = SentenceTransformer(model_name)
+        
+        # Check for environment variable for cache directory
+        cache_dir = os.environ.get('SENTENCE_TRANSFORMERS_HOME', 
+                                   os.environ.get('HF_HOME',
+                                   os.path.expanduser('~/.cache/huggingface')))
+        
+        try:
+            # Try to load model (will use cache if available)
+            self.model = SentenceTransformer(model_name, cache_folder=cache_dir)
+            logger.info(f"Successfully loaded model: {model_name}")
+        except Exception as e:
+            logger.error(f"Failed to load model '{model_name}': {e}")
+            raise
+        
         self.value_cache = {}
     
     def encode_value(
