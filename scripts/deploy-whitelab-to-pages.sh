@@ -32,7 +32,8 @@ fi
 echo ""
 echo "💾 Backing up old docs/ content..."
 mkdir -p docs-backup
-find docs/ -type f ! -name "*.md" -exec cp --parents {} docs-backup/ \;
+# More portable backup using tar
+(cd docs && tar cf - --exclude='*.md' .) | (cd docs-backup && tar xf -) 2>/dev/null || true
 
 # Clear old docs/ HTML/JS/CSS (keep .md documentation)
 echo "🧹 Cleaning docs/ directory..."
@@ -44,14 +45,6 @@ cp -r dist/* docs/
 
 # Create .nojekyll to disable Jekyll processing
 touch docs/.nojekyll
-
-# Update relative paths if needed (Vite builds with absolute paths)
-echo "🔧 Fixing asset paths for GitHub Pages..."
-if [ -f "docs/index.html" ]; then
-    # Replace absolute paths with relative for GitHub Pages
-    sed -i 's|href="/assets/|href="./assets/|g' docs/index.html
-    sed -i 's|src="/assets/|src="./assets/|g' docs/index.html
-fi
 
 echo ""
 echo "======================================================"

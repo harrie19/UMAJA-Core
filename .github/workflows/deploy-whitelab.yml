@@ -42,9 +42,11 @@ jobs:
       
       - name: Prepare docs/ directory
         run: |
-          # Backup documentation markdown files
+          # Backup documentation markdown files using tar (more portable)
           mkdir -p /tmp/docs-backup
-          find docs/ -name "*.md" -exec cp --parents {} /tmp/docs-backup/ \; || true
+          if [ -d "docs" ]; then
+            (cd docs && tar cf - $(find . -name "*.md" 2>/dev/null) 2>/dev/null) | (cd /tmp/docs-backup && tar xf -) 2>/dev/null || true
+          fi
           
           # Clear old HTML/JS/CSS from docs/
           rm -rf docs/*.html docs/*.js docs/*.css docs/assets/ docs/config.js
@@ -53,18 +55,12 @@ jobs:
           cp -r dist/* docs/
           
           # Restore documentation
-          if [ -d "/tmp/docs-backup/docs" ]; then
-            cp -r /tmp/docs-backup/docs/*.md docs/ || true
+          if [ -d "/tmp/docs-backup" ]; then
+            cp -r /tmp/docs-backup/*.md docs/ 2>/dev/null || true
           fi
           
           # Create .nojekyll
           touch docs/.nojekyll
-          
-          # Fix asset paths for GitHub Pages subdirectory
-          if [ -f "docs/index.html" ]; then
-            sed -i 's|href="/assets/|href="./assets/|g' docs/index.html
-            sed -i 's|src="/assets/|src="./assets/|g' docs/index.html
-          fi
       
       - name: Commit and push to docs/
         run: |
