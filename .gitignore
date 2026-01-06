@@ -59,6 +59,7 @@ htmlcov/
 # Data
 data/request_queue.json
 data/processed_requests.json
+data/vector_layer_state.json  # Dual-layer agent state (can be large)
 
 # Beta Analytics (anonymous data, but keep local)
 data/beta_analytics/
