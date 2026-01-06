@@ -504,6 +504,85 @@ def worldtour_get_content(city_id):
         }), 500
 
 # =============================================================================
+# WORLD TOUR GENERATE ENDPOINT
+# =============================================================================
+
+@app.route('/worldtour/generate', methods=['POST'])
+@limiter.limit("10 per minute")
+def worldtour_generate():
+    """
+    Generate content for a city
+    
+    Request body:
+    - city_id: City identifier (required)
+    - personality: Comedian personality (optional, default: random)
+    - content_type: Type of content (optional, default: random)
+    """
+    try:
+        generator = get_worldtour_generator()
+        
+        # Parse request data
+        data = request.get_json() or {}
+        city_id = data.get('city_id')
+        
+        if not city_id:
+            return jsonify({
+                "success": False,
+                "error": "Missing city_id",
+                "message": "Please provide a city_id in the request body"
+            }), 400
+        
+        # Get city info
+        city = generator.get_city(city_id)
+        if not city:
+            return jsonify({
+                "success": False,
+                "error": "City not found",
+                "message": f"City '{city_id}' does not exist in database"
+            }), 404
+        
+        # Get personality and content_type (with defaults)
+        import random
+        personality = data.get('personality', random.choice(generator.PERSONALITIES))
+        content_type = data.get('content_type', random.choice(generator.CONTENT_TYPES))
+        
+        # Validate
+        if personality not in generator.PERSONALITIES:
+            return jsonify({
+                "success": False,
+                "error": "Invalid personality",
+                "available_personalities": generator.PERSONALITIES
+            }), 400
+        
+        if content_type not in generator.CONTENT_TYPES:
+            return jsonify({
+                "success": False,
+                "error": "Invalid content type",
+                "available_content_types": generator.CONTENT_TYPES
+            }), 400
+        
+        # Generate content
+        content = generator.generate_city_content(city_id, personality, content_type)
+        
+        return jsonify({
+            "success": True,
+            "content": content,
+            "city": {
+                "id": city_id,
+                "name": city['name'],
+                "country": city['country']
+            }
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error generating content: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to generate content",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
 # END WORLD TOUR API ENDPOINTS
 # =============================================================================
 
@@ -824,6 +903,122 @@ def energy_log_operation():
         }), 500
 
 # =============================================================================
+# VECTOR AGENTS ENDPOINTS
+# =============================================================================
+
+# Initialize Vector Agent Orchestrator (lazy loading)
+_vector_orchestrator = None
+
+def get_vector_orchestrator():
+    """Get or create VectorAgentOrchestrator instance"""
+    global _vector_orchestrator
+    if _vector_orchestrator is None:
+        try:
+            import sys
+            from pathlib import Path
+            sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+            from vector_agents.orchestrator import VectorAgentOrchestrator
+            _vector_orchestrator = VectorAgentOrchestrator()
+            logger.info("VectorAgentOrchestrator initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize VectorAgentOrchestrator: {e}")
+            raise
+    return _vector_orchestrator
+
+@app.route('/vector-agents/status', methods=['GET'])
+def vector_agents_status():
+    """Get vector agent system status"""
+    try:
+        orchestrator = get_vector_orchestrator()
+        status = orchestrator.get_status()
+        
+        return jsonify({
+            "success": True,
+            "status": status,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting vector agent status: {str(e)}")
+        return jsonify({
+            "error": "Failed to get status",
+            "message": str(e)
+        }), 500
+
+@app.route('/vector-agents/spawn', methods=['POST'])
+@limiter.limit("5 per minute")
+def vector_agents_spawn():
+    """
+    Spawn a new vector agent
+    
+    Request body:
+    - agent_type: Type of agent ('research', 'code', 'creative', 'math', 'teacher')
+    - agent_id: Optional custom agent ID
+    """
+    try:
+        orchestrator = get_vector_orchestrator()
+        
+        # Parse request data
+        data = request.get_json() or {}
+        agent_type = data.get('agent_type')
+        agent_id = data.get('agent_id')
+        
+        if not agent_type:
+            return jsonify({
+                "success": False,
+                "error": "Missing agent_type",
+                "available_types": ['research', 'code', 'creative', 'math', 'teacher']
+            }), 400
+        
+        # Spawn agent
+        new_agent_id = orchestrator.spawn_agent(agent_type, agent_id)
+        
+        return jsonify({
+            "success": True,
+            "agent_id": new_agent_id,
+            "agent_type": agent_type,
+            "message": f"Agent {new_agent_id} spawned successfully"
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error spawning agent: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Failed to spawn agent",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
+# END VECTOR AGENTS ENDPOINTS
+# =============================================================================
+
+# =============================================================================
+# ENERGY STATS ENDPOINT
+# =============================================================================
+
+@app.route('/energy/stats', methods=['GET'])
+def energy_stats():
+    """Get energy statistics and monitoring data"""
+    try:
+        from energy_monitor import get_energy_monitor
+        
+        monitor = get_energy_monitor()
+        report = monitor.get_report()
+        
+        return jsonify({
+            "success": True,
+            "report": report,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting energy stats: {str(e)}")
+        return jsonify({
+            "error": "Failed to get energy stats",
+            "message": str(e)
+        }), 500
+
+# =============================================================================
 # END GALLERY & ENERGY ENDPOINTS
 # =============================================================================
 
@@ -858,11 +1053,15 @@ def root():
             "worldtour_status": "GET /worldtour/status",
             "worldtour_cities": "GET /worldtour/cities",
             "worldtour_content": "GET /worldtour/content/<city_id>",
+            "worldtour_generate": "POST /worldtour/generate",
+            "vector_agents_status": "GET /vector-agents/status",
+            "vector_agents_spawn": "POST /vector-agents/spawn",
             "gallery_samples": "GET /api/gallery/samples",
             "gallery_generate": "POST /api/gallery/generate",
             "energy_metrics": "GET /api/energy/metrics",
             "energy_report": "GET /api/energy/report",
             "energy_log": "POST /api/energy/log",
+            "energy_stats": "GET /energy/stats",
             "sitemap": "/sitemap.xml",
             "robots": "/robots.txt"
         },

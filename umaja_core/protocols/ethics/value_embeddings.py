@@ -32,6 +32,19 @@ class EthicalValueEncoder:
         "seeking knowledge and wisdom"
     ]
     
+    # Bahá'í principles
+    BAHAI_PRINCIPLES = [
+        "unity of humanity",
+        "independent investigation of truth",
+        "oneness of religion",
+        "equality of women and men",
+        "elimination of prejudice",
+        "universal education",
+        "harmony of science and religion",
+        "elimination of extremes of wealth and poverty",
+        "universal peace"
+    ]
+    
     # Cultural value frameworks
     CULTURAL_CONTEXTS = {
         'universal': {
@@ -65,6 +78,10 @@ class EthicalValueEncoder:
                 "pursuing justice",
                 "showing compassion"
             ]
+        },
+        'bahai': {
+            'description': 'Bahá\'í ethical principles',
+            'principles': BAHAI_PRINCIPLES
         }
     }
     
@@ -302,3 +319,78 @@ class EthicalValueEncoder:
                 conflicts.append(value)
         
         return conflicts
+    
+    def encode_action(self, action_description: str) -> np.ndarray:
+        """
+        Encode an action description as a vector
+        
+        Args:
+            action_description: Description of the action to encode
+            
+        Returns:
+            Embedding vector for the action
+        """
+        return self.model.encode(action_description, normalize_embeddings=True)
+    
+    def check_alignment(
+        self,
+        action_description: str,
+        principle: str,
+        culture: str = 'universal',
+        threshold: float = 0.7
+    ) -> Dict[str, Any]:
+        """
+        Check alignment of an action against a specific principle
+        
+        Args:
+            action_description: Description of the action
+            principle: Ethical principle to check against
+            culture: Cultural context for the principle
+            threshold: Alignment threshold for "aligned" status
+            
+        Returns:
+            Dictionary with alignment information
+        """
+        action_vector = self.encode_action(action_description)
+        value_vector = self.encode_value(principle, culture)
+        alignment_score = self.compute_alignment_score(action_vector, value_vector)
+        
+        return {
+            'action': action_description,
+            'principle': principle,
+            'culture': culture,
+            'alignment_score': alignment_score,
+            'aligned': alignment_score >= threshold,
+            'status': 'aligned' if alignment_score >= threshold else 'misaligned'
+        }
+    
+    def get_most_aligned_principle(
+        self,
+        action_description: str,
+        culture: str = 'universal'
+    ) -> Tuple[str, float]:
+        """
+        Find the most aligned principle for a given action
+        
+        Args:
+            action_description: Description of the action
+            culture: Cultural context to use
+            
+        Returns:
+            Tuple of (principle, alignment_score)
+        """
+        action_vector = self.encode_action(action_description)
+        principles = self.CULTURAL_CONTEXTS[culture]['principles']
+        
+        best_principle = None
+        best_score = -1.0
+        
+        for principle in principles:
+            value_vector = self.encode_value(principle, culture)
+            score = self.compute_alignment_score(action_vector, value_vector)
+            
+            if score > best_score:
+                best_score = score
+                best_principle = principle
+        
+        return (best_principle, best_score)
