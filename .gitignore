@@ -107,7 +107,6 @@ deployment_metrics.json
 # Node.js
 node_modules/
 package-lock.json
-yarn.lock
 
 # Build outputs
 dist/
