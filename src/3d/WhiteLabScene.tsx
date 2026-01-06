@@ -135,3 +135,5 @@ const WhiteLabScene: React.FC = () => {
 };
 
 export default WhiteLabScene;
+
+// Trigger deployment - workflow fixed in PR #104
