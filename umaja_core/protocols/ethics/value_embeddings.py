@@ -78,7 +78,6 @@ class EthicalValueEncoder:
         logger.info(f"Initializing EthicalValueEncoder with {model_name}")
         self.model = SentenceTransformer(model_name)
         self.value_cache = {}
-        self.contexts = self.CULTURAL_CONTEXTS  # Instance reference to class constant
     
     def encode_value(
         self, 

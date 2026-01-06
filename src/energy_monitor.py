@@ -189,11 +189,13 @@ class EnergyMonitor:
             details: Additional details
         """
         # Use constant for consistent tracking
-        energy_per_op = self.VECTOR_SIMILARITY_WH
+        # Each operation: VECTOR_SIMILARITY_WH energy in ~1ms
+        # Convert to watts: Wh * 3600s/h / duration_per_op_s
+        watts_per_op = self.VECTOR_SIMILARITY_WH * 3600 / 0.001  # 1.08 W per operation
         self.log_operation(
             operation_type="vector_similarity",
             duration_sec=0.001 * count,  # ~1ms per operation
-            watts=(energy_per_op * 3600 * count) / (0.001 * count),  # Convert Wh to W
+            watts=watts_per_op,  # Constant watts, scaled by duration in log_operation
             details={'count': count, **(details or {})}
         )
     
@@ -205,13 +207,15 @@ class EnergyMonitor:
             details: Additional details
         """
         # Use constant for consistent tracking
-        energy_per_encode = self.SLM_ENCODE_WH
+        # Each encode: SLM_ENCODE_WH energy in ~10ms
+        # Convert to watts: Wh * 3600s/h / duration_per_encode_s
+        watts_per_encode = self.SLM_ENCODE_WH * 3600 / 0.01  # 3.6 W per encoding
         # Estimate ~100 chars per encoding operation
         encoding_count = max(1, text_length // 100)
         self.log_operation(
             operation_type="slm_encode",
             duration_sec=0.01 * encoding_count,  # ~10ms per encoding
-            watts=(energy_per_encode * 3600 * encoding_count) / (0.01 * encoding_count),  # Convert Wh to W
+            watts=watts_per_encode,  # Constant watts, scaled by duration in log_operation
             details={'text_length': text_length, 'encoding_count': encoding_count, **(details or {})}
         )
     
