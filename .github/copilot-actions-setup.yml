@@ -1,0 +1,19 @@
+# Copilot Actions Setup
+# Pre-download Hugging Face models before firewall activation
+
+steps:
+  - name: 🤗 Cache Hugging Face models
+    uses: actions/cache@v4
+    with:
+      path: ~/.cache/huggingface
+      key: ${{ runner.os }}-huggingface-models-${{ hashFiles('requirements.txt') }}
+      restore-keys: |
+        ${{ runner.os }}-huggingface-models-
+
+  - name: 📦 Install sentence-transformers
+    run: pip install sentence-transformers
+
+  - name: 📥 Pre-download Hugging Face models
+    run: |
+      python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+      python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-mpnet-base-v2')"
