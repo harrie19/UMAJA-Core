@@ -98,3 +98,19 @@ data/reality_checks/*.md
 # Deployment artifacts
 deployment_report.json
 deployment_metrics.json
+
+# ============================================
+# WHITELAB REALITY ANALYSER EXCLUSIONS
+# ============================================
+
+# Node.js
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+
+# TypeScript
+*.tsbuildinfo
