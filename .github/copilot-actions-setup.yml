@@ -1,0 +1,23 @@
+# GitHub Copilot Actions Setup
+# This file configures the environment for Copilot coding agents before the firewall is enabled.
+# Pre-downloads required Hugging Face models to avoid connection issues during testing.
+
+name: Copilot Actions Setup
+
+steps:
+  - name: Install sentence-transformers
+    run: |
+      pip install sentence-transformers
+
+  - name: Download Hugging Face models
+    run: |
+      python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+      python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-mpnet-base-v2')"
+
+  - name: Cache Hugging Face models
+    uses: actions/cache@v3
+    with:
+      path: ~/.cache/huggingface
+      key: ${{ runner.os }}-huggingface-models-${{ hashFiles('requirements.txt') }}
+      restore-keys: |
+        ${{ runner.os }}-huggingface-models-
