@@ -2,16 +2,21 @@
 UMAJA-Core Minimal Server - Bringing smiles to 8 billion people
 Bahá'í principle: Service, not profit
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import json
 import os
 import sys
 import random
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 import signal
 from pathlib import Path
+
+# Add src to path for worldtour_generator
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Configure logging
 logging.basicConfig(
@@ -24,11 +29,24 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Application version
-VERSION = "1.0.0"
-DEPLOYMENT_DATE = "2026-01-01"
+VERSION = "2.1.0"
+DEPLOYMENT_DATE = "2026-01-02"
 
 app = Flask(__name__)
 CORS(app)
+
+# Configure rate limiting to prevent API quota exhaustion
+# Default: 100 requests per hour per IP
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["100 per hour"],
+    storage_uri="memory://",
+    strategy="fixed-window"
+)
+
+# Request timeout configuration (handled by gunicorn in production)
+REQUEST_TIMEOUT = int(os.environ.get('REQUEST_TIMEOUT', 30))  # 30 seconds default
 
 # Ensure src is on path for worldtour imports
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -80,12 +98,12 @@ SMILES = {
     "worrier": [
         "Is it just me, or does anyone else check if they locked the door three times? We're all in this together. 🚪",
         "That moment when you realize you've been worrying about something for hours... and then it works out fine. Classic us! 😅",
-        "Do you ever worry that you worry too much? Yeah, me too. Let's worry about it together. 💭"
+        "What if we all just... took a deep breath together? In... and out... There. Better. 🌬️"
     ],
-    "enthusiast": [
-        "RIGHT NOW, somewhere in the world, someone just learned to ride a bike for the first time! EVERY. SINGLE. DAY. How amazing is that?! 🚴",
-        "Can we just appreciate that dogs exist?! Literal happiness in fur form! 🐕",
-        "You know what's incredible? You're alive during the time when we can see photos from Mars. MARS! 🌟"
+    "optimist": [
+        "Today's gonna be a great day! You know why? Because YOU'RE in it! 🌟",
+        "Remember: every expert was once a beginner who refused to give up. You're on your way! 🚀",
+        "Fun fact: Smiling actually makes you feel happier, not just look it. So let's do this! 😊"
     ]
 }
 
@@ -111,81 +129,63 @@ def _save_votes(votes: dict) -> None:
 @app.route('/health')
 def health():
     """
-    Comprehensive health check endpoint
-    Returns 200 if service is operational
+    Health check endpoint for load balancers and monitoring
+    Returns: 200 if service is healthy
     """
     try:
-        # Basic service check
-        health_data = {
+        # Basic health check - service is running
+        return jsonify({
             "status": "healthy",
-            "service": "UMAJA-Core",
+            "service": "UMAJA-Core-Minimal",
             "version": VERSION,
-            "mission": "8 billion smiles",
-            "timestamp": datetime.utcnow().isoformat(),
-            "environment": os.environ.get('ENVIRONMENT', 'production'),
-            "checks": {
-                "api": "ok",
-                "smiles_loaded": len(SMILES) > 0,
-                "archetypes_available": list(SMILES.keys())
-            }
-        }
-        
-        # Verify we can generate a smile
-        test_archetype = random.choice(list(SMILES.keys()))
-        test_smile = random.choice(SMILES[test_archetype])
-        health_data["checks"]["content_generation"] = "ok" if test_smile else "failed"
-        
-        return jsonify(health_data), 200
-        
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
     except Exception as e:
-        logger.error(f"Health check failed: {str(e)}")
+        logger.error(f"Health check failed: {e}")
         return jsonify({
             "status": "unhealthy",
-            "error": str(e),
-            "timestamp": datetime.utcnow().isoformat()
-        }), 503
+            "error": str(e)
+        }), 500
 
 @app.route('/version')
 def version():
-    """Return version and deployment information"""
+    """Return API version information"""
     return jsonify({
         "version": VERSION,
         "deployment_date": DEPLOYMENT_DATE,
-        "service": "UMAJA-Core Minimal Server",
-        "mission": "Bringing smiles to 8 billion people",
-        "principle": "Service, not profit",
-        "python_version": sys.version.split()[0]
+        "principle": "Truth, Unity, Service"
     }), 200
 
 @app.route('/deployment-info')
 def deployment_info():
-    """Return deployment environment information"""
+    """Return deployment information"""
     return jsonify({
-        "environment": os.environ.get('ENVIRONMENT', 'production'),
-        "debug_mode": os.environ.get('DEBUG', 'false'),
-        "port": os.environ.get('PORT', '5000'),
         "version": VERSION,
-        "uptime": "Service operational",
-        "platform": "Railway",
-        "timestamp": datetime.utcnow().isoformat()
+        "deployment_date": DEPLOYMENT_DATE,
+        "environment": os.environ.get('ENVIRONMENT', 'development'),
+        "principle": "Service to humanity, not profit",
+        "commitment": "Bringing smiles to 8 billion people"
     }), 200
 
 @app.route('/api/daily-smile')
 def daily_smile():
-    """Generate today's smile"""
+    """
+    Generate a random daily smile from any archetype
+    Returns: JSON with smile content
+    """
     try:
-        archetype = random.choice(["professor", "worrier", "enthusiast"])
+        # Pick random archetype and random smile
+        archetype = random.choice(list(SMILES.keys()))
         smile = random.choice(SMILES[archetype])
         
         return jsonify({
-            "content": smile,
+            "smile": smile,
             "archetype": archetype,
-            "mission": "Serving 8 billion people",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "principle": "Truth, Unity, Service"
         }), 200
-        
     except Exception as e:
-        logger.error(f"Error generating daily smile: {str(e)}")
+        logger.error(f"Error generating daily smile: {e}")
         return jsonify({
             "error": "Failed to generate smile",
             "message": "Please try again"
@@ -193,24 +193,31 @@ def daily_smile():
 
 @app.route('/api/smile/<archetype>')
 def smile_by_archetype(archetype):
-    """Get smile from specific archetype"""
+    """
+    Generate a smile for a specific archetype
+    Args:
+        archetype: professor, worrier, or optimist
+    Returns: JSON with smile content
+    """
     try:
         if archetype not in SMILES:
             return jsonify({
-                "error": "Unknown archetype",
+                "error": "Invalid archetype",
                 "available_archetypes": list(SMILES.keys())
-            }), 404
+            }), 400
         
         smile = random.choice(SMILES[archetype])
-        return jsonify({
-            "content": smile,
-            "archetype": archetype
-        }), 200
         
-    except Exception as e:
-        logger.error(f"Error getting smile for archetype {archetype}: {str(e)}")
         return jsonify({
-            "error": "Failed to get smile",
+            "smile": smile,
+            "archetype": archetype,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "principle": "Truth, Unity, Service"
+        }), 200
+    except Exception as e:
+        logger.error(f"Error generating smile for {archetype}: {e}")
+        return jsonify({
+            "error": "Failed to generate smile",
             "message": "Please try again"
         }), 500
 
@@ -360,9 +367,8 @@ def worldtour_analytics():
 def root():
     """Root endpoint with API information"""
     return jsonify({
-        "service": "UMAJA-Core API",
+        "message": "UMAJA-Core Minimal Server",
         "version": VERSION,
-        "mission": "8 billion smiles 🌍",
         "endpoints": {
             "health": "/health",
             "version": "/version",
@@ -382,7 +388,6 @@ def root():
 
 @app.errorhandler(404)
 def not_found(error):
-    """Handle 404 errors"""
     return jsonify({
         "error": "Not found",
         "message": "The requested endpoint does not exist",
@@ -403,42 +408,32 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    """Handle 500 errors"""
-    logger.error(f"Internal server error: {str(error)}")
+    logger.error(f"Internal server error: {error}")
     return jsonify({
         "error": "Internal server error",
-        "message": "Something went wrong. Please try again later."
+        "message": "An unexpected error occurred"
     }), 500
 
-def shutdown_handler(signum, frame):
-    """Graceful shutdown handler"""
-    logger.info(f"Received shutdown signal {signum}")
-    logger.info("UMAJA-Core server shutting down gracefully...")
+def signal_handler(sig, frame):
+    """Handle shutdown signals gracefully"""
+    logger.info(f"Received signal {sig}, shutting down gracefully...")
     sys.exit(0)
 
+# Register signal handlers
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
 if __name__ == '__main__':
-    # Register shutdown handlers
-    signal.signal(signal.SIGTERM, shutdown_handler)
-    signal.signal(signal.SIGINT, shutdown_handler)
-    
-    # Validate environment
-    logger.info("Starting UMAJA-Core Minimal Server...")
-    logger.info(f"Version: {VERSION}")
-    logger.info(f"Mission: Bringing smiles to 8 billion people 🌍")
-    
+    # Validate environment before starting
     if not validate_environment():
-        logger.error("Environment validation failed. Server may not function correctly.")
-    
-    # Start server
-    port = int(os.environ.get('PORT', 5000))
-    debug_mode = os.environ.get('DEBUG', 'false').lower() == 'true'
-    
-    logger.info(f"Starting server on 0.0.0.0:{port}")
-    logger.info(f"Debug mode: {debug_mode}")
-    logger.info("Service, not profit ✨")
-    
-    try:
-        app.run(host='0.0.0.0', port=port, debug=debug_mode)
-    except Exception as e:
-        logger.error(f"Failed to start server: {str(e)}")
+        logger.error("Environment validation failed, exiting")
         sys.exit(1)
+    
+    port = int(os.environ.get('PORT', 8080))
+    debug = os.environ.get('DEBUG', 'false').lower() == 'true'
+    
+    logger.info(f"Starting UMAJA-Core Minimal Server v{VERSION}")
+    logger.info(f"Port: {port}, Debug: {debug}")
+    logger.info("Bahá'í principle: Service to humanity, not profit")
+    
+    app.run(host='0.0.0.0', port=port, debug=debug)
