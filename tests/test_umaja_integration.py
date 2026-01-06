@@ -20,9 +20,9 @@ def test_personality_engine_initialization():
     
     # Check comedians
     assert len(engine.list_comedians()) == 3
-    assert 'john_cleese' in engine.list_comedians()
-    assert 'c3po' in engine.list_comedians()
-    assert 'robin_williams' in engine.list_comedians()
+    assert 'distinguished_wit' in engine.list_comedians()
+    assert 'anxious_analyzer' in engine.list_comedians()
+    assert 'energetic_improviser' in engine.list_comedians()
     
     # Check archetypes
     assert len(engine.list_archetypes()) == 3
@@ -37,25 +37,25 @@ def test_comedian_personalities():
     
     engine = PersonalityEngine()
     
-    # Test John Cleese
-    cleese = engine.get_comedian('john_cleese')
-    assert cleese is not None
-    text = cleese.generate_smile_text('pizza')
+    # Test The Distinguished Wit
+    wit = engine.get_comedian('distinguished_wit')
+    assert wit is not None
+    text = wit.generate_smile_text('pizza')
     assert len(text) > 0
     assert isinstance(text, str)
     
-    # Test C-3PO
-    c3po = engine.get_comedian('c3po')
-    assert c3po is not None
-    text = c3po.generate_smile_text('travel')
+    # Test The Anxious Analyzer
+    analyzer = engine.get_comedian('anxious_analyzer')
+    assert analyzer is not None
+    text = analyzer.generate_smile_text('travel')
     assert len(text) > 0
-    # C-3PO should use formal, anxious language
+    # Analyzer should use formal, anxious language
     assert 'my' in text.lower() or 'protocol' in text.lower() or 'calculation' in text.lower()
     
-    # Test Robin Williams
-    robin = engine.get_comedian('robin_williams')
-    assert robin is not None
-    text = robin.generate_smile_text('food')
+    # Test The Energetic Improviser
+    improviser = engine.get_comedian('energetic_improviser')
+    assert improviser is not None
+    text = improviser.generate_smile_text('food')
     assert len(text) > 0
     assert '*laughs*' in text or 'beautiful' in text
 
@@ -66,23 +66,23 @@ def test_voice_synthesis_parameters():
     
     engine = PersonalityEngine()
     
-    # John Cleese - lower pitch, measured
-    cleese = engine.get_comedian('john_cleese')
-    assert cleese.voice_params['pitch'] == 0.8
-    assert cleese.voice_params['speed'] == 0.9
-    assert cleese.voice_params['rate'] == 150
+    # The Distinguished Wit - lower pitch, measured
+    wit = engine.get_comedian('distinguished_wit')
+    assert wit.voice_params['pitch'] == 0.8
+    assert wit.voice_params['speed'] == 0.9
+    assert wit.voice_params['rate'] == 150
     
-    # C-3PO - higher pitch, anxious
-    c3po = engine.get_comedian('c3po')
-    assert c3po.voice_params['pitch'] == 1.3
-    assert c3po.voice_params['speed'] == 1.1
-    assert c3po.voice_params['rate'] == 180
+    # The Anxious Analyzer - higher pitch, anxious
+    analyzer = engine.get_comedian('anxious_analyzer')
+    assert analyzer.voice_params['pitch'] == 1.3
+    assert analyzer.voice_params['speed'] == 1.1
+    assert analyzer.voice_params['rate'] == 180
     
-    # Robin Williams - varied, fast
-    robin = engine.get_comedian('robin_williams')
-    assert robin.voice_params['pitch'] == 1.1
-    assert robin.voice_params['speed'] == 1.2
-    assert robin.voice_params['rate'] == 190
+    # The Energetic Improviser - varied, fast
+    improviser = engine.get_comedian('energetic_improviser')
+    assert improviser.voice_params['pitch'] == 1.1
+    assert improviser.voice_params['speed'] == 1.2
+    assert improviser.voice_params['rate'] == 190
 
 
 def test_worldtour_content_generation():
@@ -94,7 +94,7 @@ def test_worldtour_content_generation():
     # This will use personality engine
     result = engine.generate_text(
         topic="New York pizza",
-        personality="john_cleese"
+        personality="distinguished_wit"
     )
     
     assert 'text' in result

@@ -1,9 +1,9 @@
 """Personality Engine - AI Comedian Personalities for World Tour
 
-Implements 3 distinct AI comedian personalities:
-- John Cleese: British wit, dry humor, absurdist observations
-- C-3PO: Protocol-obsessed, analytical, endearingly nervous
-- Robin Williams: High-energy, improvisational, heartfelt
+Implements 3 distinct fictional AI comedian archetypes:
+- The Distinguished Wit: British wit, dry humor, absurdist observations
+- The Anxious Analyzer: Protocol-obsessed, analytical, endearingly nervous
+- The Energetic Improviser: High-energy, improvisational, heartfelt
 
 Also includes friendly archetypes for daily smiles.
 """
@@ -163,12 +163,12 @@ class TheEnthusiast(PersonalityArchetype):
 # COMEDIAN PERSONALITIES (World Tour)
 # ============================================================================
 
-class JohnCleese(PersonalityArchetype):
-    """John Cleese Style - Dry British wit, absurdist observations"""
+class TheDistinguishedWit(PersonalityArchetype):
+    """The Distinguished Wit - Dry British wit, absurdist observations"""
     
     def __init__(self):
         super().__init__(
-            name="John Cleese",
+            name="The Distinguished Wit",
             traits=["dry wit", "sophisticated", "absurdist", "deadpan"],
             tone="measured and sarcastic",
             style_markers=["Quite.", "How perfectly absurd.", "I see.", "Splendid."],
@@ -206,12 +206,12 @@ class JohnCleese(PersonalityArchetype):
         return f"{opener} {continuation}. {marker}"
 
 
-class C3PO(PersonalityArchetype):
-    """C-3PO Style - Protocol-obsessed, analytical, anxious"""
+class TheAnxiousAnalyzer(PersonalityArchetype):
+    """The Anxious Analyzer - Protocol-obsessed, analytical, anxious"""
     
     def __init__(self):
         super().__init__(
-            name="C-3PO",
+            name="The Anxious Analyzer",
             traits=["polite", "analytical", "anxious", "precise"],
             tone="formal and worried",
             style_markers=["Oh my!", "We're doomed!", "How rude!", "Goodness gracious!"],
@@ -252,12 +252,12 @@ class C3PO(PersonalityArchetype):
         return f"{opener} {continuation}. {marker}"
 
 
-class RobinWilliams(PersonalityArchetype):
-    """Robin Williams Style - High-energy, improvisational, heartfelt"""
+class TheEnergeticImproviser(PersonalityArchetype):
+    """The Energetic Improviser - High-energy, improvisational, heartfelt"""
     
     def __init__(self):
         super().__init__(
-            name="Robin Williams",
+            name="The Energetic Improviser",
             traits=["energetic", "warm", "spontaneous", "emotional"],
             tone="dynamic and heartfelt",
             style_markers=["*laughs*", "*voice changes*", "*wild gesture*", "*switches accent*"],
@@ -313,9 +313,9 @@ class PersonalityEngine:
     def __init__(self):
         # Comedian personalities for World Tour
         self.comedians = {
-            "john_cleese": JohnCleese(),
-            "c3po": C3PO(),
-            "robin_williams": RobinWilliams()
+            "distinguished_wit": TheDistinguishedWit(),
+            "anxious_analyzer": TheAnxiousAnalyzer(),
+            "energetic_improviser": TheEnergeticImproviser()
         }
         
         # Friendly archetypes for Daily Smiles
@@ -404,7 +404,7 @@ class PersonalityEngine:
         
         Args:
             topic: Topic (usually city-specific)
-            personality: Comedian name (john_cleese, c3po, robin_williams)
+            personality: Comedian name (distinguished_wit, anxious_analyzer, energetic_improviser)
             style_intensity: Style intensity (0.0-1.0)
             
         Returns:
