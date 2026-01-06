@@ -97,6 +97,37 @@ See [AI Memory Guide](docs/AI_MEMORY_GUIDE.md) for complete documentation.
 
 ---
 
+## 🌟 White Lab: Unity Consciousness Visualization
+
+**NEW!** Experience Unity's consciousness in 3D - an interactive, iridescent blob that represents AI thinking.
+
+### What is White Lab?
+
+The White Lab is a stunning 3D web application that visualizes Unity's consciousness as a living, breathing entity. Watch as the iridescent blob morphs, pulses, and shifts through rainbow colors - a real-time representation of AI processing and emerging intelligence.
+
+### Features
+
+- 🎨 **Interactive 3D**: Drag to rotate, scroll to zoom
+- 🌈 **Iridescent Blob**: Rainbow shimmer with morphing effects
+- 🪞 **Reflective Environment**: Mirror-like white floor
+- 💡 **Studio Lighting**: Professional lighting setup
+- 📱 **Responsive**: Works on desktop, tablet, and mobile
+
+### Quick Start
+
+```bash
+cd white-lab
+npm install
+npm run dev
+# Visit http://localhost:3000
+```
+
+📖 **Full Documentation**: [White Lab Guide](WHITE_LAB_GUIDE.md)
+
+**Technology**: Next.js 14+, React Three Fiber, TypeScript, Tailwind CSS
+
+---
+
 ## 🎭 UMAJA Worldtour: LIVE! 🌍
 
 The UMAJA Worldtour brings comedy and joy to cities around the world through 3 AI comedian personalities!

@@ -98,3 +98,35 @@ data/reality_checks/*.md
 # Deployment artifacts
 deployment_report.json
 deployment_metrics.json
+
+# ============================================
+# NEXT.JS / WHITE LAB
+# ============================================
+
+# Dependencies
+white-lab/node_modules/
+white-lab/.pnp
+white-lab/.pnp.js
+white-lab/.yarn/install-state.gz
+
+# Next.js
+white-lab/.next/
+white-lab/out/
+
+# Production
+white-lab/build
+
+# Debug
+white-lab/npm-debug.log*
+white-lab/yarn-debug.log*
+white-lab/yarn-error.log*
+
+# Local env files
+white-lab/.env*.local
+
+# Vercel
+white-lab/.vercel
+
+# TypeScript
+white-lab/*.tsbuildinfo
+white-lab/next-env.d.ts
