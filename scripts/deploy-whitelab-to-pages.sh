@@ -33,7 +33,8 @@ fi
 # Preserve markdown files
 echo ""
 echo "💾 Preserving markdown files..."
-find docs/ -name "*.md" -exec cp --parents {} /tmp/docs-backup/ \; 2>/dev/null || true
+mkdir -p /tmp/docs-backup
+find docs/ -name "*.md" -exec cp {} /tmp/docs-backup/ \; 2>/dev/null || true
 
 # Clear old docs/ HTML/JS/CSS (keep .md documentation)
 echo "🧹 Cleaning docs/ directory..."
@@ -44,7 +45,7 @@ echo "📋 Copying build to docs/..."
 cp -r dist/* docs/
 
 # Restore markdown files
-cp -r /tmp/docs-backup/docs/*.md docs/ 2>/dev/null || true
+cp /tmp/docs-backup/*.md docs/ 2>/dev/null || true
 
 # Create .nojekyll to disable Jekyll processing
 touch docs/.nojekyll
