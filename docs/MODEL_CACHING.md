@@ -27,6 +27,10 @@ pip install -r requirements.txt
 
 Download models (requires internet connection):
 ```bash
+# Option 1: Using the provided script
+python scripts/download_models.py
+
+# Option 2: Manual download
 python -c "
 from sentence_transformers import SentenceTransformer
 
@@ -100,11 +104,26 @@ pytest tests/
 
 This uses the fixtures in `tests/conftest.py` which mock the SentenceTransformer class.
 
+**What works with mocks:**
+- ✅ Code structure and logic tests
+- ✅ API and integration tests  
+- ✅ Most unit tests (163+ tests)
+- ✅ Tests that don't require actual semantic relationships
+
+**What requires real models:**
+- ❌ Semantic similarity accuracy tests
+- ❌ Embedding dimension validation with real models
+- ❌ Tests that verify actual semantic meaning
+
 ### Integration Tests with Real Models
 
-To run tests with real models:
+To run tests with real models (requires models to be cached first):
 
 ```bash
+# First, download models (one-time setup)
+python scripts/download_models.py
+
+# Then run tests with real models
 UMAJA_USE_REAL_MODELS=1 pytest tests/
 ```
 
@@ -116,6 +135,11 @@ def test_with_real_embeddings(analyzer):
     # This test will be skipped unless UMAJA_USE_REAL_MODELS=1
     pass
 ```
+
+### Test Performance
+
+- **Mocked tests**: ~7 seconds for 181 tests
+- **Real model tests**: ~30-60 seconds (first run with downloads: 3-5 minutes)
 
 ## Environment Variables
 

@@ -27,13 +27,7 @@ cd UMAJA-Core
 pip install -r requirements.txt
 
 # Download sentence-transformer models (first time only)
-python -c "
-from sentence_transformers import SentenceTransformer
-print('📥 Downloading models (this may take a few minutes)...')
-SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
-print('✅ Models cached successfully!')
-"
+python scripts/download_models.py
 
 # Start API server
 python api/simple_server.py
