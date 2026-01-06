@@ -78,6 +78,7 @@ class EthicalValueEncoder:
         logger.info(f"Initializing EthicalValueEncoder with {model_name}")
         self.model = SentenceTransformer(model_name)
         self.value_cache = {}
+        self.contexts = self.CULTURAL_CONTEXTS  # Instance reference to class constant
     
     def encode_value(
         self, 
@@ -302,3 +303,42 @@ class EthicalValueEncoder:
                 conflicts.append(value)
         
         return conflicts
+    
+    def get_most_aligned_principle(self, action: str, cultural_context: str = "universal") -> Tuple[str, float]:
+        """Find the principle most aligned with an action.
+        
+        Args:
+            action: Action description
+            cultural_context: Cultural context (e.g., 'universal', 'utilitarian', etc.)
+            
+        Returns:
+            Tuple of (principle, alignment_score)
+            
+        Raises:
+            ValueError: If cultural context is unknown or has no principles
+        """
+        # Validate inputs
+        if cultural_context not in self.CULTURAL_CONTEXTS:
+            raise ValueError(f"Unknown cultural context: {cultural_context}. "
+                           f"Available contexts: {list(self.CULTURAL_CONTEXTS.keys())}")
+        
+        principles = self.CULTURAL_CONTEXTS[cultural_context]['principles']
+        if not principles:
+            raise ValueError(f"No principles defined for context: {cultural_context}")
+        
+        # Encode action
+        action_vector = self.model.encode(action, normalize_embeddings=True)
+        
+        # Find best aligned principle
+        best_principle = None
+        best_score = -1.0
+        
+        for principle in principles:
+            value_vector = self.encode_value(principle, cultural_context)
+            score = self.compute_alignment_score(action_vector, value_vector)
+            
+            if score > best_score:
+                best_score = score
+                best_principle = principle
+        
+        return (best_principle, best_score)

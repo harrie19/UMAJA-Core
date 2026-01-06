@@ -44,11 +44,13 @@ class EnergyMonitor:
     COST_PER_KWH = float(os.environ.get('ENERGY_COST_PER_KWH', 0.12))  # $0.12/kWh default
     CO2_PER_KWH = float(os.environ.get('ENERGY_CO2_PER_KWH', 0.45))   # 0.45 kg CO2/kWh default
     
-    # Energy constants for operations
-    VECTOR_OPERATION_WH = 0.0000003  # Vector similarity check
-    LLM_CALL_WH = 0.056              # LLM API call
-    CDN_SERVE_WH = 0.00000005        # CDN file serve
-    CACHE_HIT_WH = 0.00001           # Cached response
+    # Energy costs (in Wh)
+    VECTOR_OPERATION_WH = 0.0000003  # 0.3 µWh per vector operation
+    VECTOR_SIMILARITY_WH = 0.0000003  # 0.3 µWh (was incorrectly 0.0000000003)
+    SLM_ENCODE_WH = 0.00001  # 10 µWh per SLM encoding
+    CACHE_HIT_WH = 0.0000001  # 0.1 µWh per cache hit
+    LLM_CALL_WH = 0.056  # 56 mWh per LLM call
+    CDN_SERVE_WH = 0.00000005  # CDN file serve
     
     def __init__(self, data_dir: str = "data/monitoring"):
         """Initialize energy monitor
@@ -178,6 +180,40 @@ class EnergyMonitor:
                 watts=1.0,
                 details={'file_size_kb': file_size_kb, 'cached': False, **(details or {})}
             )
+    
+    def log_vector_similarity(self, count: int = 1, details: Optional[Dict] = None):
+        """Log vector similarity operation (ultra-efficient)
+        
+        Args:
+            count: Number of similarity operations
+            details: Additional details
+        """
+        # Use constant for consistent tracking
+        energy_per_op = self.VECTOR_SIMILARITY_WH
+        self.log_operation(
+            operation_type="vector_similarity",
+            duration_sec=0.001 * count,  # ~1ms per operation
+            watts=(energy_per_op * 3600 * count) / (0.001 * count),  # Convert Wh to W
+            details={'count': count, **(details or {})}
+        )
+    
+    def log_slm_encode(self, text_length: int = 100, details: Optional[Dict] = None):
+        """Log SLM (Small Language Model) encoding operation
+        
+        Args:
+            text_length: Length of text being encoded (in characters)
+            details: Additional details
+        """
+        # Use constant for consistent tracking
+        energy_per_encode = self.SLM_ENCODE_WH
+        # Estimate ~100 chars per encoding operation
+        encoding_count = max(1, text_length // 100)
+        self.log_operation(
+            operation_type="slm_encode",
+            duration_sec=0.01 * encoding_count,  # ~10ms per encoding
+            watts=(energy_per_encode * 3600 * encoding_count) / (0.01 * encoding_count),  # Convert Wh to W
+            details={'text_length': text_length, 'encoding_count': encoding_count, **(details or {})}
+        )
     
     def _check_alerts(self):
         """Check if any thresholds are exceeded"""

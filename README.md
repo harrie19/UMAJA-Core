@@ -12,6 +12,23 @@
 
 ---
 
+## 🚀 Quick Deploy
+
+### Backend (Railway)
+1. Click: [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/UMAJA-Core)
+2. Set environment variables from `.env.example`
+3. Deploy → Get your backend URL
+
+### Frontend (GitHub Pages)
+1. Settings → Pages → Source: `main` branch, `/docs` folder
+2. Save → Wait 2 minutes
+3. Visit: `https://harrie19.github.io/UMAJA-Core/`
+
+### Configure Dashboard
+Update `docs/config.js` with your Railway backend URL.
+
+---
+
 ## 🎯 Mission
 
 Bring personalized daily inspiration to **8 billion people** at **$0 cost** through:
