@@ -135,7 +135,7 @@ export function IridescentBlob({ position = [0, 1, 0], status = 'OK' }: Iridesce
   }, [status]);
 
   // Animate rotation, floating, and morphing
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (meshRef.current) {
       timeRef.current += delta;
       
@@ -209,8 +209,7 @@ export function IridescentBlob({ position = [0, 1, 0], status = 'OK' }: Iridesce
           transparent={true}
           opacity={0.85}
           metalness={0.1}
-          clearcoat={1}
-          clearcoatRoughness={0.1}
+          {...{ clearcoat: 1, clearcoatRoughness: 0.1 }}
         />
       </mesh>
     </group>

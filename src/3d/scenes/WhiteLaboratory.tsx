@@ -55,8 +55,7 @@ export function WhiteLaboratory() {
             metalness={0.3}
             emissive="#ffffff"
             emissiveIntensity={0.15}
-            clearcoat={1}
-            clearcoatRoughness={0.05}
+            {...{ clearcoat: 1, clearcoatRoughness: 0.05 }}
           />
         </mesh>
         {/* Frame border - thicker and more prominent */}
@@ -76,8 +75,7 @@ export function WhiteLaboratory() {
             metalness={0.3}
             emissive="#ffffff"
             emissiveIntensity={0.15}
-            clearcoat={1}
-            clearcoatRoughness={0.05}
+            {...{ clearcoat: 1, clearcoatRoughness: 0.05 }}
           />
         </mesh>
         {/* Frame border - thicker and more prominent */}
