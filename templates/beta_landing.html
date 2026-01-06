@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}UMAJA Beta - Join the Guinea Pigs!{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="beta-badge">🐰 Versuchskaninchen BETA 🐰</div>
+        <h1>Welcome to UMAJA Beta!</h1>
+        <p>"Die Erde ist ein Land, und alle Menschen sind seine Bürger"</p>
+        <p style="font-size: 16px; opacity: 0.8;">The Earth is one country, and mankind its citizens</p>
+    </div>
+
+    <!-- Honest Disclaimer -->
+    <div class="card">
+        <div class="alert alert-warning">
+            <span class="alert-icon">⚠️</span>
+            <div>
+                <strong>You are a guinea pig!</strong> This is beta software. Bugs exist. Things will break. 
+                But you'll help us build AI that serves all 8 billion people.
+            </div>
+        </div>
+    </div>
+
+    <!-- What You Get -->
+    <div class="card">
+        <div class="card-header">🎁 What You Get</div>
+        <div class="card-body">
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 15px 0;">✅ <strong>Lifetime Free Access</strong> - Forever, as thanks for being here first</li>
+                <li style="margin: 15px 0;">✅ <strong>All 3 Personalities</strong> - Professor, Worrier, Enthusiast</li>
+                <li style="margin: 15px 0;">✅ <strong>Shape the Product</strong> - Your feedback directly influences development</li>
+                <li style="margin: 15px 0;">✅ <strong>Founding User Badge</strong> - You were here when it mattered</li>
+                <li style="margin: 15px 0;">✅ <strong>Priority Support</strong> - We actually care about your experience</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card">
+        <div class="card-header">🗓️ The Journey Ahead</div>
+        <div class="card-body">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 1: Beta (NOW)</div>
+                        <div class="timeline-description">
+                            100% free. You're here. We're learning. Breaking things. Fixing them. Building together.
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 2: Freemium (6-12 months)</div>
+                        <div class="timeline-description">
+                            Free forever: You, students, children, NGOs. Paid: Businesses and professionals.
+                            Fair pricing based on ability to pay.
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 3: Global (2027+)</div>
+                        <div class="timeline-description">
+                            Serving 8 billion people. Unity of humanity through service. 
+                            This is why we exist.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bahá'í Principles -->
+    <div class="card">
+        <div class="card-header">💚 Our Principles (Bahá'í-Inspired)</div>
+        <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <div style="font-size: 32px; margin-bottom: 10px;">🌍</div>
+                    <strong>Unity of Humanity</strong><br>
+                    <span style="opacity: 0.8;">We serve all 8 billion equally</span>
+                </div>
+                <div>
+                    <div style="font-size: 32px; margin-bottom: 10px;">✨</div>
+                    <strong>Service, Not Profit</strong><br>
+                    <span style="opacity: 0.8;">Mission first, always</span>
+                </div>
+                <div>
+                    <div style="font-size: 32px; margin-bottom: 10px;">🔒</div>
+                    <strong>Privacy First</strong><br>
+                    <span style="opacity: 0.8;">No tracking, no surveillance</span>
+                </div>
+                <div>
+                    <div style="font-size: 32px; margin-bottom: 10px;">🤝</div>
+                    <strong>Transparency</strong><br>
+                    <span style="opacity: 0.8;">Open source, open hearts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consent Form -->
+    <div class="card">
+        <div class="card-header">📝 Beta Agreement (4 Checkboxes Required)</div>
+        <div class="card-body">
+            <form id="consentForm">
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="beta" required>
+                        <span>✅ I understand this is BETA software with bugs and limitations</span>
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="analytics" required>
+                        <span>✅ I consent to anonymous analytics to help improve the product (NO personal data, just usage patterns)</span>
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="free_forever" required>
+                        <span>✅ I understand I get FREE ACCESS FOREVER as a beta user</span>
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="future_paid" required>
+                        <span>✅ I understand future users may pay, but I never will (because I'm awesome and here first)</span>
+                    </label>
+                </div>
+
+                <div class="alert alert-info">
+                    <span class="alert-icon">ℹ️</span>
+                    <div>
+                        <strong>Privacy Promise:</strong> We collect ZERO personal data. 
+                        Just anonymous session IDs to understand what works. 
+                        You can delete your data anytime. Full GDPR compliance.
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary" style="font-size: 20px; padding: 15px 50px;">
+                        🚀 Launch UMAJA Beta!
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin: 40px 0; opacity: 0.7;">
+        <p>Built with love for 8 billion people 🌍</p>
+        <p style="font-size: 14px; margin-top: 10px;">
+            <a href="{{ github_repo }}" style="color: white;">GitHub</a> | 
+            <a href="{{ privacy_url }}" style="color: white;">Privacy Policy</a> | 
+            <a href="mailto:{{ contact_email }}" style="color: white;">Contact</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('consentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Check all checkboxes are checked
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    
+    if (!allChecked) {
+        alert('Please check all 4 boxes to continue!');
+        return;
+    }
+    
+    // Collect consent data
+    const consentData = {
+        beta: document.querySelector('input[name="beta"]').checked,
+        analytics: document.querySelector('input[name="analytics"]').checked,
+        free_forever: document.querySelector('input[name="free_forever"]').checked,
+        future_paid: document.querySelector('input[name="future_paid"]').checked
+    };
+    
+    try {
+        const response = await fetch('/api/beta/consent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(consentData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Redirect to dashboard
+            window.location.href = '/app';
+        } else {
+            alert('Something went wrong. Please try again!');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Connection error. Please try again!');
+    }
+});
+</script>
+{% endblock %}

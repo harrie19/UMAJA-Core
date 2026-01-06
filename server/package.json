@@ -1,0 +1,18 @@
+{
+  "name": "reality-stream-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for Reality Agent streaming",
+  "main": "reality-stream.js",
+  "scripts": {
+    "start": "node reality-stream.js",
+    "dev": "node reality-stream.js"
+  },
+  "keywords": ["websocket", "reality", "streaming"],
+  "author": "UMAJA-Core",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^4.6.0",
+    "express": "^4.18.0",
+    "cors": "^2.8.5"
+  }
+}
