@@ -28,7 +28,9 @@ class VektorAnalyzer:
         Initialize the VektorAnalyzer with a sentence transformer model.
         
         Args:
-            model_name: Name of the sentence transformer model to use
+            model_name: Name of the sentence transformer model to use.
+                       Can be short name like 'all-MiniLM-L6-v2' or
+                       full name like 'sentence-transformers/all-MiniLM-L6-v2'.
                        Default: 'all-MiniLM-L6-v2' (lightweight and efficient)
         """
         logger.info(f"Loading sentence transformer model: {model_name}")
@@ -38,23 +40,10 @@ class VektorAnalyzer:
                                    os.environ.get('HF_HOME',
                                    os.path.expanduser('~/.cache/huggingface')))
         
-        # Ensure full model name for sentence-transformers
-        if not model_name.startswith('sentence-transformers/'):
-            full_model_name = f'sentence-transformers/{model_name}'
-        else:
-            full_model_name = model_name
-        
-        try:
-            # Try to load model (will use cache if available)
-            self.model = SentenceTransformer(full_model_name, cache_folder=cache_dir)
-            self.model_name = model_name
-            logger.info(f"Successfully loaded model: {model_name}")
-        except Exception as e:
-            logger.warning(f"Failed to load full model name '{full_model_name}', trying '{model_name}': {e}")
-            # Fallback to original model name if full name fails
-            self.model = SentenceTransformer(model_name, cache_folder=cache_dir)
-            self.model_name = model_name
-            logger.info(f"Successfully loaded model with fallback: {model_name}")
+        # Load model (SentenceTransformer handles both short and full names)
+        self.model = SentenceTransformer(model_name, cache_folder=cache_dir)
+        self.model_name = model_name
+        logger.info(f"Successfully loaded model: {model_name}")
         
     def encode_texts(self, texts: List[str]) -> np.ndarray:
         """

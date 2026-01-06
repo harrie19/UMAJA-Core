@@ -52,24 +52,7 @@ jobs:
       
       - name: ⬇️ Download sentence-transformer models (before firewall)
         run: |
-          python -c "
-          from sentence_transformers import SentenceTransformer
-          import os
-          
-          # Set cache directory
-          cache_dir = os.path.expanduser('~/.cache/huggingface')
-          os.makedirs(cache_dir, exist_ok=True)
-          
-          print('📥 Downloading sentence-transformers/all-MiniLM-L6-v2...')
-          model1 = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-          print('✅ all-MiniLM-L6-v2 downloaded')
-          
-          print('📥 Downloading sentence-transformers/all-mpnet-base-v2...')
-          model2 = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
-          print('✅ all-mpnet-base-v2 downloaded')
-          
-          print('🎉 All models downloaded and cached!')
-          "
+          python scripts/download_models.py
       
       - name:  🧪 Test RauschenGenerator
         run:  |

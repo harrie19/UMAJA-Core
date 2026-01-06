@@ -61,40 +61,6 @@ else:
 
 
 @pytest.fixture
-def mock_vektor_analyzer(mock_sentence_transformer):
-    """
-    Create a VektorAnalyzer instance with mocked model.
-    """
-    import sys
-    from pathlib import Path
-    
-    # Add src to path if not already there
-    src_path = str(Path(__file__).parent.parent / "src")
-    if src_path not in sys.path:
-        sys.path.insert(0, src_path)
-    
-    from vektor_analyzer import VektorAnalyzer
-    return VektorAnalyzer()
-
-
-@pytest.fixture
-def mock_ethical_encoder(mock_sentence_transformer):
-    """
-    Create an EthicalValueEncoder instance with mocked model.
-    """
-    import sys
-    from pathlib import Path
-    
-    # Add ethics module to path if not already there
-    ethics_path = str(Path(__file__).parent.parent / "umaja_core" / "protocols" / "ethics")
-    if ethics_path not in sys.path:
-        sys.path.insert(0, ethics_path)
-    
-    from value_embeddings import EthicalValueEncoder
-    return EthicalValueEncoder()
-
-
-@pytest.fixture
 def sample_texts():
     """Sample texts for testing semantic analysis."""
     return [
