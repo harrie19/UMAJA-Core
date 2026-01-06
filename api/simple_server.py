@@ -13,6 +13,7 @@ import logging
 from datetime import datetime, timezone
 import signal
 from pathlib import Path
+import numpy as np
 
 # Add src to path for worldtour_generator
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -1002,6 +1003,238 @@ def get_smile_from_cdn(archetype, language, day):
         }), 500
 
 # =============================================================================
+# DUAL-LAYER AGENT API ENDPOINTS
+# =============================================================================
+
+# Initialize dual-layer agent (lazy loading)
+_dual_layer_agent = None
+
+def get_dual_layer_agent():
+    """Get or create DualLayerAgent instance"""
+    global _dual_layer_agent
+    if _dual_layer_agent is None:
+        try:
+            # Import here to avoid issues if not needed
+            sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+            from agents.dual_layer_agent import DualLayerAgent
+            
+            # Get personality from environment or use default
+            personality_id = os.environ.get('DUAL_LAYER_PERSONALITY', 'distinguished_wit')
+            _dual_layer_agent = DualLayerAgent(personality_id=personality_id)
+            logger.info(f"DualLayerAgent initialized with personality: {personality_id}")
+        except Exception as e:
+            logger.error(f"Failed to initialize DualLayerAgent: {e}")
+            raise
+    return _dual_layer_agent
+
+
+@app.route('/api/dual-layer/generate', methods=['POST'])
+@limiter.limit("30 per minute")  # Rate limit dual-layer generation
+def dual_layer_generate():
+    """
+    Generate content using dual-layer architecture
+    
+    Request body:
+    - topic: Topic or theme for generation (required)
+    - content_type: Type of content (joke, city_review, etc.) (optional)
+    - feedback: Feedback for previous generation (-1.0 to 1.0) (optional)
+    
+    Returns:
+    - content: Generated content
+    - metadata: Priority, risk, alignment metrics
+    - vector_state: Current vector layer state summary
+    """
+    try:
+        # Check if dual-layer is enabled
+        use_dual_layer = os.getenv('USE_DUAL_LAYER', 'false').lower() == 'true'
+        if not use_dual_layer:
+            return jsonify({
+                'success': False,
+                'error': 'Dual-layer agent not enabled',
+                'message': 'Set USE_DUAL_LAYER=true to enable this feature'
+            }), 503
+        
+        # Parse request
+        data = request.get_json()
+        if not data or 'topic' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Missing required field: topic'
+            }), 400
+        
+        topic = data.get('topic')
+        content_type = data.get('content_type', 'joke')
+        feedback = data.get('feedback', None)
+        
+        # Get dual-layer agent
+        agent = get_dual_layer_agent()
+        
+        # Generate content
+        result = agent.generate_content(topic, content_type=content_type, feedback=feedback)
+        
+        # Return result
+        return jsonify({
+            'success': True,
+            'content': result['content'],
+            'metadata': result['metadata'],
+            'vector_state': {
+                'identity_norm': float(np.linalg.norm(agent.vector_layer.state.identity)),
+                'goals_norm': float(np.linalg.norm(agent.vector_layer.state.goals)),
+                'context_norm': float(np.linalg.norm(agent.vector_layer.state.context)),
+                'memory_size': len(agent.vector_layer.memory)
+            },
+            'statistics': {
+                'generation_count': agent.generation_count,
+                'veto_count': agent.veto_count,
+                'veto_rate': agent.veto_count / max(agent.generation_count, 1)
+            }
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error in dual-layer generation: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Generation failed',
+            'message': str(e)
+        }), 500
+
+
+@app.route('/api/dual-layer/vector-state', methods=['GET'])
+@limiter.limit("60 per minute")
+def get_vector_state():
+    """
+    Inspect current vector layer state
+    
+    Returns:
+    - identity_norm: L2 norm of identity vector
+    - goals_norm: L2 norm of goals vector
+    - context_norm: L2 norm of context vector
+    - priorities_norm: L2 norm of priorities vector
+    - risk_threshold: Current risk threshold
+    - memory_size: Number of items in memory
+    - update_count: Total number of updates
+    """
+    try:
+        # Check if dual-layer is enabled
+        use_dual_layer = os.getenv('USE_DUAL_LAYER', 'false').lower() == 'true'
+        if not use_dual_layer:
+            return jsonify({
+                'success': False,
+                'error': 'Dual-layer agent not enabled'
+            }), 503
+        
+        agent = get_dual_layer_agent()
+        state = agent.vector_layer.get_state_summary()
+        
+        return jsonify({
+            'success': True,
+            'state': state,
+            'statistics': agent.get_statistics()
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting vector state: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Failed to get vector state',
+            'message': str(e)
+        }), 500
+
+
+@app.route('/api/dual-layer/update-goals', methods=['POST'])
+@limiter.limit("10 per minute")  # Limit goal updates
+def update_goals():
+    """
+    Manually adjust vector layer goals
+    
+    Request body:
+    - goal: New goal description (required)
+    
+    Returns:
+    - success: Whether update was successful
+    - new_goal: The goal text that was set
+    """
+    try:
+        # Check if dual-layer is enabled
+        use_dual_layer = os.getenv('USE_DUAL_LAYER', 'false').lower() == 'true'
+        if not use_dual_layer:
+            return jsonify({
+                'success': False,
+                'error': 'Dual-layer agent not enabled'
+            }), 503
+        
+        data = request.get_json()
+        if not data or 'goal' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Missing required field: goal'
+            }), 400
+        
+        goal_text = data.get('goal')
+        
+        agent = get_dual_layer_agent()
+        agent.update_goals(goal_text)
+        
+        return jsonify({
+            'success': True,
+            'new_goal': goal_text,
+            'message': 'Goals updated successfully'
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error updating goals: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Failed to update goals',
+            'message': str(e)
+        }), 500
+
+
+@app.route('/api/dual-layer/status', methods=['GET'])
+def dual_layer_status():
+    """
+    Check if dual-layer agent is enabled and operational
+    
+    Returns:
+    - enabled: Whether dual-layer is enabled
+    - operational: Whether agent is initialized and working
+    - personality: Current personality ID
+    """
+    try:
+        use_dual_layer = os.getenv('USE_DUAL_LAYER', 'false').lower() == 'true'
+        
+        if not use_dual_layer:
+            return jsonify({
+                'enabled': False,
+                'operational': False,
+                'message': 'Dual-layer agent not enabled. Set USE_DUAL_LAYER=true to enable.'
+            }), 200
+        
+        # Try to initialize agent if not already done
+        try:
+            agent = get_dual_layer_agent()
+            operational = True
+            personality_id = agent.personality_id
+        except:
+            operational = False
+            personality_id = None
+        
+        return jsonify({
+            'enabled': True,
+            'operational': operational,
+            'personality': personality_id,
+            'message': 'Dual-layer agent is operational' if operational else 'Dual-layer agent failed to initialize'
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error checking dual-layer status: {str(e)}")
+        return jsonify({
+            'enabled': False,
+            'operational': False,
+            'error': str(e)
+        }), 500
+
+# =============================================================================
 # ERROR HANDLERS
 # =============================================================================
 
@@ -1019,7 +1252,11 @@ def not_found(error):
             "/api/smile/<archetype>",
             "/cdn/status",
             "/cdn/manifest",
-            "/api/smile/cdn/<archetype>/<language>/<day>"
+            "/api/smile/cdn/<archetype>/<language>/<day>",
+            "/api/dual-layer/status",
+            "/api/dual-layer/generate",
+            "/api/dual-layer/vector-state",
+            "/api/dual-layer/update-goals"
         ]
     }), 404
 
