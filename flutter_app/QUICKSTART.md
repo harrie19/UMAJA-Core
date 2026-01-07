@@ -177,9 +177,9 @@ Once running, you should see:
 
 2. **Personalities Screen**
    - 3 personality cards:
-     - 🎩 John Cleese
-     - 🤖 C-3PO
-     - 🎪 Robin Williams
+     - 🎩 The Distinguished Wit
+     - 🤖 The Anxious Analyzer
+     - 🎪 The Energetic Improviser
    - Tap to select
 
 3. **Settings Screen**

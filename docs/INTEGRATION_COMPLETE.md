@@ -9,17 +9,17 @@ This document summarizes the comprehensive integration of UMAJA-Core capabilitie
 **Status:** ✅ Complete
 
 Three AI comedian personalities fully integrated:
-- **John Cleese Style** 🎩
+- **The Distinguished Wit** 🎩
   - Dry British wit, absurdist observations
   - Voice params: pitch 0.8, speed 0.9, 150 WPM
   - Templates with sophisticated sarcasm
   
-- **C-3PO Style** 🤖
+- **The Anxious Analyzer** 🤖
   - Protocol-obsessed, analytical, anxious
   - Voice params: pitch 1.3, speed 1.1, 180 WPM
   - Statistics and formal language
   
-- **Robin Williams Style** 🎪
+- **The Energetic Improviser** 🎪
   - High-energy, improvisational, heartfelt
   - Voice params: pitch 1.1, speed 1.2, 190 WPM
   - Dynamic voice changes and emotional range
@@ -168,7 +168,7 @@ User Request
 UMAJA Core (umaja_core_integration.py)
     ↓
 ├─→ Personality Engine (personality_engine.py)
-│   ├─→ John Cleese, C-3PO, Robin Williams
+│   ├─→ The Distinguished Wit, The Anxious Analyzer, The Energetic Improviser
 │   └─→ Professor, Worrier, Enthusiast
 │
 ├─→ World Tour Generator (worldtour_generator.py)

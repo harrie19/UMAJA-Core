@@ -5,9 +5,9 @@ This guide explains how to automate daily worldtour content generation and posti
 ## 📋 Overview
 
 The UMAJA Worldtour visits a new city daily, generating comedy content from 3 AI personalities:
-- 🎩 **John Cleese**: British wit and observational humor
-- 🤖 **C-3PO**: Protocol-obsessed analytical comedy  
-- 🎪 **Robin Williams**: High-energy improvisational style
+- 🎩 **The Distinguished Wit**: British wit and observational humor
+- 🤖 **The Anxious Analyzer**: Protocol-obsessed analytical comedy  
+- 🎪 **The Energetic Improviser**: High-energy improvisational style
 
 ## 🔄 Manual Daily Posts
 

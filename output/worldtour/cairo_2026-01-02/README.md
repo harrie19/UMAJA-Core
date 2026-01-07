@@ -9,7 +9,7 @@ Generated: 2026-01-02 14:22:04
 
 ## Generated Content
 
-### 1. John Cleese - City Review
+### 1. The Distinguished Wit - City Review
 
 **Topic**: Now, the curious thing about Cairo is that it's rather like a beautiful disaster...
 
@@ -21,7 +21,7 @@ Generated: 2026-01-02 14:22:04
 
 ---
 
-### 3. Robin Williams - Cultural Debate
+### 3. The Energetic Improviser - Cultural Debate
 
 **Topic**: Imagine if local food in Cairo was a Broadway musical!
 

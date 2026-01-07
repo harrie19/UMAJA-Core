@@ -14,9 +14,9 @@ The UMAJA Worldtour has officially launched! Our 3 AI comedians are visiting cit
 ### Latest Visit: Cairo 🇪🇬
 - **Date**: January 2, 2026
 - **Content Generated**: 
-  - John Cleese: City Review
-  - C-3PO: Food Review
-  - Robin Williams: Cultural Debate
+  - The Distinguished Wit: City Review
+  - The Anxious Analyzer: Food Review
+  - The Energetic Improviser: Cultural Debate
 - **Content Location**: `output/worldtour/cairo_2026-01-02/`
 
 ### Next Steps

@@ -70,14 +70,14 @@ Wir stehen vor einer beispiellosen Transformation:
 - Menschliche Fehler UND KI-Fehler gleichermaßen humorvoll behandeln
 
 **Beispiel-Content:**
-> **John Cleese:** "Now, the curious thing about AI assistants is that they're rather like
+> **The Distinguished Wit:** "Now, the curious thing about AI assistants is that they're rather like
 > extremely intelligent butlers who occasionally mistake your cat for a small motorcycle.
 > Which is, of course, perfectly understandable when you think about it."
 
-> **C-3PO:** "According to my calculations, there's a 97.3% chance that humans will continue
+> **The Anxious Analyzer:** "According to my calculations, there's a 97.3% chance that humans will continue
 > to be confused by technology for the foreseeable future. I find this... oddly comforting."
 
-> **Robin Williams:** "Imagine AI as that friend who knows EVERYTHING but still can't figure out
+> **The Energetic Improviser:** "Imagine AI as that friend who knows EVERYTHING but still can't figure out
 > why you're crying at a dog video. That's the future, folks! Super smart, beautifully confused!"
 
 **Effekt:**
@@ -100,11 +100,11 @@ Wir stehen vor einer beispiellosen Transformation:
 - Den Wandel als Abenteuer präsentieren
 
 **Beispiel-Content:**
-> **John Cleese:** "I say, imagine explaining to your Victorian ancestors that in 2025,
+> **The Distinguished Wit:** "I say, imagine explaining to your Victorian ancestors that in 2025,
 > people earn money by playing video games and reviewing cat videos. They'd think we've
 > all gone mad. And they'd be absolutely right. But it's marvelous, isn't it?"
 
-> **Robin Williams:** "Your job gets automated? PERFECT! Now you can finally pursue that
+> **The Energetic Improviser:** "Your job gets automated? PERFECT! Now you can finally pursue that
 > dream of becoming a professional nap critic! Or a cloud shape analyst! The future is WEIRD
 > and that's what makes it AWESOME!"
 
@@ -128,13 +128,13 @@ Wir stehen vor einer beispiellosen Transformation:
 - Universelle menschliche Erfahrungen hervorheben
 
 **Beispiel-Content (World Tour):**
-> **C-3PO in New York:** "Fascinating! New Yorkers walk at 1.4x the speed of normal humans.
+> **The Anxious Analyzer in New York:** "Fascinating! New Yorkers walk at 1.4x the speed of normal humans.
 > They also consume 2.7x more coffee. I suspect a correlation."
 
-> **C-3PO in Tokyo:** "Astonishing! Tokyoites form perfect queues with 99.2% efficiency.
+> **The Anxious Analyzer in Tokyo:** "Astonishing! Tokyoites form perfect queues with 99.2% efficiency.
 > This is the most organized thing I've calculated since... well, since Tokyo yesterday."
 
-> **John Cleese:** "You see, whether you're in London queueing politely or in Rome arguing
+> **The Distinguished Wit:** "You see, whether you're in London queueing politely or in Rome arguing
 > passionately, we're all just trying to get somewhere. And usually, we're late. How perfectly human!"
 
 **Effekt:**
@@ -194,7 +194,7 @@ Wir stehen vor einer beispiellosen Transformation:
 > — Mit einem Lächeln, 2025
 
 **Beispiel-Content:**
-> **John Cleese:** "Bahá'u'lláh said the earth is one country. Now we have the internet,
+> **The Distinguished Wit:** "Bahá'u'lláh said the earth is one country. Now we have the internet,
 > which proves he was absolutely right. We're all in the same digital country. And like
 > any country, it has magnificent monuments (cat videos) and questionable governance (comment sections).
 > But it's OURS. All of us. Together. How splendid!"

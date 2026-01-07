@@ -76,13 +76,13 @@ flutter_app/
 - AppBar with title "🎭 Personalities"
 - Header text: "Choose Your Comedy Style"
 - List of 3 PersonalityCard widgets:
-  1. **John Cleese** (🎩)
+  1. **The Distinguished Wit** (🎩)
      - Style: British humor
      - Description: British wit, dry humor, and brilliant observational comedy
-  2. **C-3PO** (🤖)
-     - Style: Protocol droid
-     - Description: Protocol-obsessed, analytical, and endearingly nervous droid
-  3. **Robin Williams** (🎪)
+  2. **The Anxious Analyzer** (🤖)
+     - Style: Analytical protocol
+     - Description: Protocol-obsessed, analytical, and endearingly nervous
+  3. **The Energetic Improviser** (🎪)
      - Style: Energetic improviser
      - Description: High-energy improvisation with heartfelt, inspiring moments
 - Info card explaining about personalities
@@ -140,7 +140,7 @@ class Personality {
 ```
 
 **Predefined Personalities**:
-- john_cleese, c3po, robin_williams
+- distinguished_wit, anxious_analyzer, energetic_improviser
 
 ### DailySmile Model
 ```dart

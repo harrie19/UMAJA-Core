@@ -1,10 +1,10 @@
 # 🎭 UMAJA Personality Guide
 
-Complete guide to the three AI comedian personalities and how to use them effectively.
+Complete guide to the three fictional AI comedian archetypes and how to use them effectively.
 
 ## Overview
 
-UMAJA features three distinct comedian personalities, each with unique:
+UMAJA features three distinct fictional comedian archetypes, each with unique:
 - Comedy style
 - Voice characteristics
 - Humor markers
@@ -12,10 +12,10 @@ UMAJA features three distinct comedian personalities, each with unique:
 
 ---
 
-## John Cleese 🎩
+## The Distinguished Wit 🎩
 
 ### Style Profile
-**Comedy Style:** Dry British wit, Monty Python humor, absurdist observations  
+**Comedy Style:** Dry British wit, sophisticated humor, absurdist observations  
 **Voice:** Deep, measured, sarcastic  
 **Tone:** Sophisticated, deadpan, understated
 
@@ -59,10 +59,10 @@ UMAJA features three distinct comedian personalities, each with unique:
 
 ---
 
-## C-3PO 🤖
+## The Anxious Analyzer 🤖
 
 ### Style Profile
-**Comedy Style:** Overly polite protocol droid, statistical obsession, anxious  
+**Comedy Style:** Overly polite protocol expert, statistical obsession, anxious  
 **Voice:** Higher pitch, robotic cadence, formal  
 **Tone:** Precise, worried, by-the-book
 
@@ -107,7 +107,7 @@ UMAJA features three distinct comedian personalities, each with unique:
 
 ---
 
-## Robin Williams 🎪
+## The Energetic Improviser 🎪
 
 ### Style Profile
 **Comedy Style:** Energetic improv, rapid topic changes, warm humanity  
@@ -160,12 +160,12 @@ UMAJA features three distinct comedian personalities, each with unique:
 
 ## Comparison Table
 
-| Feature | John Cleese | C-3PO | Robin Williams |
+| Feature | The Distinguished Wit | The Anxious Analyzer | The Energetic Improviser |
 |---------|-------------|-------|----------------|
 | **Energy Level** | Low (measured) | Medium (anxious) | High (explosive) |
 | **Pace** | Slow, deliberate | Moderate, precise | Fast, varied |
 | **Vocabulary** | Sophisticated | Technical | Colloquial |
-| **References** | British culture | Star Wars, protocols | Pop culture, emotions |
+| **References** | British culture | Protocols, statistics | Pop culture, emotions |
 | **Emotional Range** | Narrow (dry) | Narrow (anxious) | Wide (all emotions) |
 | **Best For** | Satire | Data/Tech | Stories |
 
@@ -175,21 +175,21 @@ UMAJA features three distinct comedian personalities, each with unique:
 
 ### Choosing the Right Personality
 
-**Use John Cleese for:**
+**Use The Distinguished Wit for:**
 - Business/corporate topics
 - Cultural observations
 - Historical events
 - Sophisticated audiences
 - Written content (blogs, essays)
 
-**Use C-3PO for:**
+**Use The Anxious Analyzer for:**
 - Technical explanations
 - Statistics and data
 - Process descriptions
-- Sci-fi references
+- Scientific references
 - Younger audiences
 
-**Use Robin Williams for:**
+**Use The Energetic Improviser for:**
 - Emotional stories
 - Entertainment topics
 - Celebrations
@@ -204,21 +204,21 @@ Control how strongly the personality is applied (0.0 to 1.0):
 # Subtle personality (0.3-0.5)
 personality_engine.generate_text(
     topic="pizza",
-    personality="john_cleese",
+    personality="distinguished_wit",
     style_intensity=0.3  # More natural, less comedy
 )
 
 # Balanced (0.6-0.8) - Recommended
 personality_engine.generate_text(
     topic="pizza",
-    personality="john_cleese",
+    personality="distinguished_wit",
     style_intensity=0.7  # Good balance
 )
 
 # Maximum personality (0.9-1.0)
 personality_engine.generate_text(
     topic="pizza",
-    personality="john_cleese",
+    personality="distinguished_wit",
     style_intensity=1.0  # Over-the-top comedy
 )
 ```
@@ -246,19 +246,19 @@ personality_engine.generate_text(
 
 Each personality has distinct voice characteristics:
 
-### John Cleese Voice
+### The Distinguished Wit Voice
 - **Pitch:** 0.8 (slightly lower)
 - **Speed:** 0.9 (measured pace)
 - **Accent:** British (TLD: co.uk)
 - **Rate:** 150 words/minute
 
-### C-3PO Voice
+### The Anxious Analyzer Voice
 - **Pitch:** 1.3 (higher)
 - **Speed:** 1.1 (slightly faster, anxious)
 - **Accent:** Neutral/American
 - **Rate:** 180 words/minute
 
-### Robin Williams Voice
+### The Energetic Improviser Voice
 - **Pitch:** 1.1 (varied, slightly higher)
 - **Speed:** 1.2 (fast, energetic)
 - **Accent:** American
@@ -271,29 +271,29 @@ Each personality has distinct voice characteristics:
 ### Mixing Personalities
 
 For variety, consider rotating personalities for series:
-- Episode 1: John Cleese reviews New York
-- Episode 2: C-3PO reviews Tokyo
-- Episode 3: Robin Williams reviews Paris
+- Episode 1: The Distinguished Wit reviews New York
+- Episode 2: The Anxious Analyzer reviews Tokyo
+- Episode 3: The Energetic Improviser reviews Paris
 
 ### Cross-Personality Debates
 
 Create "debates" between personalities:
 ```python
-# John Cleese's take
-cleese_text = generate_text("pizza", "john_cleese")
+# The Distinguished Wit's take
+wit_text = generate_text("pizza", "distinguished_wit")
 
-# C-3PO's rebuttal
-c3po_text = generate_text("pizza", "c3po")
+# The Anxious Analyzer's rebuttal
+analyzer_text = generate_text("pizza", "anxious_analyzer")
 
-# Robin Williams mediates
-robin_text = generate_text("pizza", "robin_williams")
+# The Energetic Improviser mediates
+improviser_text = generate_text("pizza", "energetic_improviser")
 ```
 
 ### Audience Targeting
 
-- **John Cleese:** 30-60 years old, educated, British/European
-- **C-3PO:** 18-35 years old, tech-savvy, Star Wars fans
-- **Robin Williams:** All ages, general audience, Americans
+- **The Distinguished Wit:** 30-60 years old, educated, British/European
+- **The Anxious Analyzer:** 18-35 years old, tech-savvy, science fans
+- **The Energetic Improviser:** All ages, general audience, Americans
 
 ---
 
@@ -308,17 +308,17 @@ robin_text = generate_text("pizza", "robin_williams")
 - Religious commentary
 - Medical/legal advice
 
-**John Cleese:**
+**The Distinguished Wit:**
 - Too verbose (keep under 500 words)
 - Breaking character with modern slang
 - Losing the British tone
 
-**C-3PO:**
+**The Anxious Analyzer:**
 - Forgetting statistics/numbers
 - Being too confident (should be anxious)
 - Dropping the formal speech pattern
 
-**Robin Williams:**
+**The Energetic Improviser:**
 - Losing energy in text
 - Being mean-spirited (should be warm)
 - Forgetting voice change markers
@@ -329,24 +329,24 @@ robin_text = generate_text("pizza", "robin_williams")
 
 ### City Review
 
-**John Cleese:**
+**The Distinguished Wit:**
 > "The essential absurdity of Tokyo becomes clear when one attempts to navigate its subway system. Rather like a three-dimensional chess game designed by a committee of caffeinated philosophers..."
 
-**C-3PO:**
+**The Anxious Analyzer:**
 > "Oh my! Tokyo's transit system consists of precisely 158 stations across 13 lines, creating 2,847 possible route combinations, which results in a 73.4% probability of tourist confusion..."
 
-**Robin Williams:**
+**The Energetic Improviser:**
 > "*switches to excited voice* TOKYO! *laughs* It's like if Blade Runner and Hello Kitty had a beautiful baby! Picture this: you're on a train, it's packed, everyone's quiet, and you're thinking..."
 
 ### Food Review
 
-**John Cleese:**
+**The Distinguished Wit:**
 > "Attempting to eat sushi with chopsticks requires the coordination of a trained acrobat and the patience of a British person in a queue..."
 
-**C-3PO:**
+**The Anxious Analyzer:**
 > "Goodness! Sushi contains exactly 7 ingredients arranged in 143 possible combinations, with a 91.2% success rate when consumed with proper utensil protocols..."
 
-**Robin Williams:**
+**The Energetic Improviser:**
 > "*whispers dramatically* So sushi and I... we have a relationship. *laughs* It's complicated! Raw fish on rice? Genius! Pure genius! *chef's kiss*"
 
 ---

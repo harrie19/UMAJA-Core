@@ -269,15 +269,15 @@ def ab_test_content(version_a, version_b, metric="laughter"):
 
 #### 3 Comedian Personalities orchestrieren
 ```python
-# John Cleese (Dry British wit)
+# The Distinguished Wit (Dry British wit)
 "Now, the curious thing about Baghdad is that it's rather like 
 organized chaos with tea breaks."
 
-# C-3PO (Statistical obsession)
+# The Anxious Analyzer (Statistical obsession)
 "Goodness! By my calculations, this city contains exactly 
 7.2 million potential smile recipients!"
 
-# Robin Williams (Energetic improv)
+# The Energetic Improviser (Energetic improv)
 "Baghdad! BOOM! What if the Tigris River was actually just 
 Earth's really long shower? Ancient Mesopotamia — 
 the original 'Let me Google that for you!'"

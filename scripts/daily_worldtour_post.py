@@ -55,8 +55,8 @@ def print_error(text):
 
 
 def get_next_personality(last_personality=None):
-    """Rotate through personalities: John → C-3PO → Robin"""
-    personalities = ['john_cleese', 'c3po', 'robin_williams']
+    """Rotate through personalities: The Distinguished Wit → The Anxious Analyzer → The Energetic Improviser"""
+    personalities = ['distinguished_wit', 'anxious_analyzer', 'energetic_improviser']
     
     if not last_personality:
         return personalities[0]

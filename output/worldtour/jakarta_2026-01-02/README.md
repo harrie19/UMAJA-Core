@@ -9,7 +9,7 @@ Generated: 2026-01-02 11:08:17
 
 ## Generated Content
 
-### 1. John Cleese - City Review
+### 1. The Distinguished Wit - City Review
 
 **Topic**: Now, the curious thing about Jakarta is that it's rather like a confused tourist with a map...
 
@@ -21,7 +21,7 @@ Generated: 2026-01-02 11:08:17
 
 ---
 
-### 3. Robin Williams - Cultural Debate
+### 3. The Energetic Improviser - Cultural Debate
 
 **Topic**: Imagine if local food in Jakarta was a Broadway musical!
 

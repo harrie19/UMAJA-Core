@@ -197,13 +197,13 @@ Day 5: Three AI comedians review the pyramids, and it's exactly as chaotic as yo
 #UMAJAWorldtour #Cairo
 
 Tweet 2:
-🎩 John Cleese Style: "The pyramids have stood for 4,500 years. My WiFi can't last 45 minutes. Discuss."
+🎩 The Distinguished Wit: "The pyramids have stood for 4,500 years. My WiFi can't last 45 minutes. Discuss."
 
 Tweet 3:
-🤖 C-3PO Style: "I must inform you: Cairo traffic operates on 723 unwritten rules. The probability of survival is... concerning."
+🤖 The Anxious Analyzer: "I must inform you: Cairo traffic operates on 723 unwritten rules. The probability of survival is... concerning."
 
 Tweet 4:
-🎪 Robin Williams Style: "KOSHARI! It's every carb having a PARTY! Rice! Pasta! Lentils! BEAUTIFUL CHAOS!"
+🎪 The Energetic Improviser: "KOSHARI! It's every carb having a PARTY! Rice! Pasta! Lentils! BEAUTIFUL CHAOS!"
 
 Tweet 5:
 Watch the full videos: [link]

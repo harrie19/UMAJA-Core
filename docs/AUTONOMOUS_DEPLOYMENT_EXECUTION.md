@@ -110,18 +110,18 @@ $ curl http://127.0.0.1:5000/api/ai-agents
   "content": {
     "personalities": [
       {
-        "id": "john_cleese",
-        "name": "John Cleese Style",
+        "id": "distinguished_wit",
+        "name": "The Distinguished Wit",
         "description": "British wit, dry humor, observational comedy"
       },
       {
-        "id": "c3po",
-        "name": "C-3PO Style",
+        "id": "anxious_analyzer",
+        "name": "The Anxious Analyzer",
         "description": "Protocol-obsessed, analytical, endearingly nervous"
       },
       {
-        "id": "robin_williams",
-        "name": "Robin Williams Style",
+        "id": "energetic_improviser",
+        "name": "The Energetic Improviser",
         "description": "High-energy, improvisational, heartfelt"
       }
     ],

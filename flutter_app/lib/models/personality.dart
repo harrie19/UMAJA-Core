@@ -17,22 +17,22 @@ class Personality {
   /// Predefined comedian personalities
   static const List<Personality> personalities = [
     Personality(
-      id: 'john_cleese',
-      name: 'John Cleese',
+      id: 'distinguished_wit',
+      name: 'The Distinguished Wit',
       description: 'British wit, dry humor, and brilliant observational comedy',
       style: 'British humor',
       emoji: '🎩',
     ),
     Personality(
-      id: 'c3po',
-      name: 'C-3PO',
-      description: 'Protocol-obsessed, analytical, and endearingly nervous droid',
-      style: 'Protocol droid',
+      id: 'anxious_analyzer',
+      name: 'The Anxious Analyzer',
+      description: 'Protocol-obsessed, analytical, and endearingly nervous',
+      style: 'Analytical protocol',
       emoji: '🤖',
     ),
     Personality(
-      id: 'robin_williams',
-      name: 'Robin Williams',
+      id: 'energetic_improviser',
+      name: 'The Energetic Improviser',
       description: 'High-energy improvisation with heartfelt, inspiring moments',
       style: 'Energetic improviser',
       emoji: '🎪',

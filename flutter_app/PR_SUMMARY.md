@@ -131,9 +131,9 @@ A fully functional, production-ready Flutter app with:
 
 #### Personalities Screen ✅
 - ✅ List of 3 comedian personalities:
-  - 🎩 **John Cleese** - British humor
-  - 🤖 **C-3PO** - Protocol droid
-  - 🎪 **Robin Williams** - Energetic improviser
+  - 🎩 **The Distinguished Wit** - British humor
+  - 🤖 **The Anxious Analyzer** - Protocol droid
+  - 🎪 **The Energetic Improviser** - Energetic improviser
 - ✅ Each with avatar/icon and brief description
 - ✅ Tap to select personality
 - ✅ Visual selection feedback
