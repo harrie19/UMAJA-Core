@@ -12,6 +12,9 @@ eggs/
 .eggs/
 # lib/ - commented out to allow Flutter app lib directory
 lib64/
+
+# Allow white-room-lab TypeScript libraries
+!white-room-lab/src/lib/
 parts/
 sdist/
 var/
